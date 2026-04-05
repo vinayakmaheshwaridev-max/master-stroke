@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Pavilion — Team Registration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#adb3b0",
+                        "secondary-container": "#e4e4cc",
+                        "inverse-primary": "#ffffff",
+                        "error-container": "#fe8b70",
+                        "surface-tint": "#5f5e60",
+                        "on-secondary-fixed-variant": "#5b5d4a",
+                        "surface-bright": "#f9f9f7",
+                        "on-primary-fixed-variant": "#5c5b5d",
+                        "secondary": "#5f604d",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#9e422c",
+                        "on-primary-fixed": "#3f3f41",
+                        "secondary-fixed-dim": "#d6d6be",
+                        "surface": "#f9f9f7",
+                        "outline": "#767c79",
+                        "surface-container": "#ecefec",
+                        "tertiary-dim": "#395959",
+                        "primary-container": "#e4e2e4",
+                        "on-background": "#2d3432",
+                        "surface-variant": "#dee4e0",
+                        "inverse-on-surface": "#9c9d9b",
+                        "surface-dim": "#d4dcd8",
+                        "on-surface": "#2d3432",
+                        "tertiary-container": "#d4f8f7",
+                        "on-primary": "#faf7f9",
+                        "tertiary": "#456565",
+                        "on-tertiary-fixed": "#2d4d4d",
+                        "error-dim": "#5c1202",
+                        "primary-fixed": "#e4e2e4",
+                        "on-secondary": "#fbfae1",
+                        "on-error-container": "#742410",
+                        "background": "#f9f9f7",
+                        "surface-container-low": "#f2f4f2",
+                        "surface-container-highest": "#dee4e0",
+                        "on-secondary-fixed": "#3f412f",
+                        "on-surface-variant": "#5a605e",
+                        "secondary-fixed": "#e4e4cc",
+                        "primary-dim": "#535254",
+                        "on-tertiary-fixed-variant": "#4a6a6a",
+                        "surface-container-high": "#e5e9e6",
+                        "primary": "#5f5e60",
+                        "inverse-surface": "#0c0f0e",
+                        "primary-fixed-dim": "#d6d3d6",
+                        "on-tertiary": "#e0fffe",
+                        "tertiary-fixed-dim": "#c6e9e9",
+                        "secondary-dim": "#535442",
+                        "on-primary-container": "#525154",
+                        "on-error": "#fff7f6",
+                        "on-tertiary-container": "#406060"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .premium-shadow {
+            box-shadow: 0px 20px 40px rgba(45, 52, 50, 0.06);
+        }
+        .primary-gradient {
+            background: linear-gradient(145deg, #5f5e60 0%, #535254 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-secondary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-stone-50/80 backdrop-blur-md shadow-sm flex justify-between items-center px-8 h-20 max-w-full mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-zinc-800 font-headline">The Pavilion</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-zinc-500 hover:text-zinc-800 transition-colors" href="#">Home</a>
+<a class="text-zinc-500 hover:text-zinc-800 transition-colors" href="#">Schedule</a>
+<a class="text-zinc-500 hover:text-zinc-800 transition-colors" href="#">Standings</a>
+<a class="text-zinc-500 hover:text-zinc-800 transition-colors" href="#">Info</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:block text-zinc-500 font-medium hover:text-zinc-800 transition-colors px-4 py-2">Login</button>
+<button class="primary-gradient text-on-primary px-6 py-2.5 rounded-full font-semibold shadow-sm scale-95 active:scale-90 transition-transform">Register</button>
+<span class="material-symbols-outlined text-zinc-600 cursor-pointer p-2 rounded-full hover:bg-stone-100/50 transition-colors">notifications</span>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-6 min-h-screen">
+<div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+<!-- Left Side: Editorial Content -->
+<div class="lg:col-span-5 space-y-8">
+<div class="space-y-4">
+<span class="inline-block px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold tracking-widest uppercase">SEASON 2024</span>
+<h1 class="text-5xl lg:text-6xl font-extrabold tracking-tighter text-on-surface leading-none">Assemble Your Squad.</h1>
+<p class="text-on-surface-variant text-lg leading-relaxed max-w-md">
+                        Join the most prestigious cricket league of the summer. Professional facilities, curated matchups, and an elite community of players.
+                    </p>
+</div>
+<div class="relative rounded-2xl overflow-hidden aspect-[4/3] premium-shadow border border-white/20">
+<img class="object-cover w-full h-full" data-alt="dramatic wide shot of a professional green cricket stadium at sunrise with soft morning mist and warm golden light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIS8vYn6LFg1oJfLQJ-UeRY3Mzfk8_w4l3W0-zt188D4k0eDwQzHV3sS1nQVALgBhJ5ckQDpCfnJKAs9KKqjzC9Y0kY65pgn0VAmXGjVNaAqWIjRiYOX4qMP5XRCvvSLflhT6tV-5ZW1RrDmzX9cw1PbY_4ugUVS9sym9kto86KHjIAyv8CMU24i6wpt8NiZvkCSy3m9jUUBjdfgfq-N_bYdwIVqHucqfk0FcNE0MYzxGeTkcZ_W5yeiW9Y5bkdrVJET92iwAjFDs"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/40 to-transparent"></div>
+<div class="absolute bottom-6 left-6 text-white">
+<p class="text-sm font-medium opacity-80 italic">"The stadium is the stage, but the team is the heart."</p>
+</div>
+</div>
+</div>
+<!-- Right Side: The Form Canvas -->
+<div class="lg:col-span-7">
+<div class="bg-surface-container-lowest rounded-3xl p-8 lg:p-12 premium-shadow border border-outline-variant/10">
+<!-- Registration Open State -->
+<div id="registration-form-container">
+<header class="mb-10">
+<h2 class="text-2xl font-bold tracking-tight text-on-surface">Team Application</h2>
+<p class="text-on-surface-variant mt-1">Please provide accurate details for your squad's leadership.</p>
+</header>
+<form class="space-y-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
+<!-- Team Name -->
+<div class="col-span-2 md:col-span-1">
+<label class="block text-[11px] font-bold tracking-widest text-on-surface-variant uppercase mb-2">Team Name</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3.5 text-on-surface focus:ring-4 focus:ring-primary-fixed-dim/30 transition-all placeholder:text-outline/50" placeholder="e.g. Ivory Stallions" type="text"/>
+<!-- Error State Simulation -->
+<div class="hidden flex items-center gap-1 mt-2 text-error text-xs font-medium">
+<span class="material-symbols-outlined text-[14px]">error</span>
+                                            This team name is already taken.
+                                        </div>
+</div>
+</div>
+<!-- Captain Name -->
+<div class="col-span-2 md:col-span-1">
+<label class="block text-[11px] font-bold tracking-widest text-on-surface-variant uppercase mb-2">Captain Name</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3.5 text-on-surface focus:ring-4 focus:ring-primary-fixed-dim/30 transition-all placeholder:text-outline/50" placeholder="Full Legal Name" type="text"/>
+</div>
+<!-- Age -->
+<div class="col-span-2 md:col-span-1">
+<label class="block text-[11px] font-bold tracking-widest text-on-surface-variant uppercase mb-2">Captain's Age</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3.5 text-on-surface focus:ring-4 focus:ring-primary-fixed-dim/30 transition-all placeholder:text-outline/50" min="16" placeholder="Min 16 years" type="number"/>
+</div>
+<!-- Mobile Number -->
+<div class="col-span-2 md:col-span-1">
+<label class="block text-[11px] font-bold tracking-widest text-on-surface-variant uppercase mb-2">Mobile Number</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3.5 text-on-surface focus:ring-4 focus:ring-primary-fixed-dim/30 transition-all placeholder:text-outline/50" placeholder="+1 (555) 000-0000" type="tel"/>
+</div>
+<!-- Email -->
+<div class="col-span-2">
+<label class="block text-[11px] font-bold tracking-widest text-on-surface-variant uppercase mb-2">Email Address</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3.5 text-on-surface focus:ring-4 focus:ring-primary-fixed-dim/30 transition-all placeholder:text-outline/50" placeholder="captain@squad.com" type="email"/>
+</div>
+</div>
+<!-- T&C Checkbox -->
+<div class="flex items-start gap-3 py-2">
+<input class="mt-1 rounded border-outline-variant/30 text-primary focus:ring-primary-fixed-dim/30 w-5 h-5" id="terms" type="checkbox"/>
+<label class="text-sm text-on-surface-variant leading-relaxed" for="terms">
+                                    I agree to the <button class="text-primary font-semibold hover:underline decoration-2 underline-offset-4" type="button">Terms &amp; Conditions</button> and confirm all provided information is accurate.
+                                </label>
+</div>
+<button class="w-full primary-gradient text-on-primary py-5 rounded-2xl font-bold text-lg premium-shadow transition-transform active:scale-[0.98] mt-4" type="submit">
+                                Submit Registration
+                            </button>
+</form>
+</div>
+<!-- Hidden Success State (Example Structure) -->
+<div class="hidden text-center py-12 space-y-6">
+<div class="w-20 h-20 bg-secondary-container text-on-secondary-container rounded-full flex items-center justify-center mx-auto">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'wght' 600;">check_circle</span>
+</div>
+<div>
+<h2 class="text-3xl font-bold tracking-tight text-on-surface">Application Submitted</h2>
+<p class="text-on-surface-variant max-w-xs mx-auto mt-4 leading-relaxed">
+                                Your application has been submitted. The organiser will review your details and send login credentials via WhatsApp within 48 hours.
+                            </p>
+</div>
+<button class="secondary-fixed bg-secondary-container text-on-secondary-container px-8 py-3 rounded-full font-bold hover:opacity-90 transition-opacity">
+                            View Status
+                        </button>
+</div>
+<!-- Hidden Closed State (Guard simulation) -->
+<div class="hidden py-16 text-center space-y-6">
+<div class="w-16 h-16 bg-error-container/20 text-error rounded-full flex items-center justify-center mx-auto">
+<span class="material-symbols-outlined text-3xl">lock_clock</span>
+</div>
+<h2 class="text-2xl font-bold text-on-surface">Registration is currently closed</h2>
+<p class="text-on-surface-variant max-w-xs mx-auto">
+                            We have reached our maximum capacity for the current season. Please join the waitlist for 2025.
+                        </p>
+<button class="bg-on-surface text-surface px-8 py-3 rounded-full font-bold">Join Waitlist</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 mt-auto border-t border-stone-200/20 bg-stone-50 flex flex-col items-center justify-center text-center px-4">
+<div class="flex gap-8 mb-6">
+<a class="text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" href="#">Privacy Policy</a>
+<a class="text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" href="#">Terms of Service</a>
+<a class="text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" href="#">Contact Us</a>
+<a class="text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" href="#">Support</a>
+</div>
+<p class="text-xs text-zinc-500">© 2024 The Curated Pavilion. All rights reserved.</p>
+</footer>
+<!-- T&C Modal (Simulated Visibility with hidden class) -->
+<div class="hidden fixed inset-0 z-[100] bg-on-surface/95 backdrop-blur-sm p-6 md:p-12 overflow-y-auto">
+<div class="max-w-3xl mx-auto bg-surface rounded-3xl p-8 md:p-16 relative">
+<button class="absolute top-8 right-8 text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-3xl">close</span>
+</button>
+<h3 class="text-4xl font-bold tracking-tighter mb-8">Terms &amp; Conditions</h3>
+<div class="prose prose-stone max-w-none text-on-surface-variant space-y-6 leading-relaxed">
+<p class="font-bold text-on-surface">1. Eligibility and Registration</p>
+<p>Teams must consist of exactly 11 active players plus up to 4 reserves. The captain must be at least 18 years of age at the time of registration. All information provided in this form must be accurate and verifiable.</p>
+<p class="font-bold text-on-surface">2. Code of Conduct</p>
+<p>The Pavilion maintains a strict editorial standard of sportsmanship. Any team found violating the "spirit of the game" or engaging in unsportsmanlike behavior will be immediately disqualified without refund of league fees.</p>
+<p class="font-bold text-on-surface">3. Privacy and Communication</p>
+<p>By submitting this form, you consent to receive official communications via WhatsApp and Email. We protect your data as part of our premium commitment; your information will never be sold to third-party advertisers.</p>
+<p class="pt-8 italic text-sm">Last updated: June 2024</p>
+</div>
+<div class="mt-12 flex justify-end">
+<button class="primary-gradient text-on-primary px-10 py-4 rounded-2xl font-bold shadow-lg">I Understand &amp; Accept</button>
+</div>
+</div>
+</div>
+</body></html>

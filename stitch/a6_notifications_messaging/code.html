@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Pavilion — Admin Messaging</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#adb3b0",
+                    "secondary-container": "#e4e4cc",
+                    "inverse-primary": "#ffffff",
+                    "error-container": "#fe8b70",
+                    "surface-tint": "#5f5e60",
+                    "on-secondary-fixed-variant": "#5b5d4a",
+                    "surface-bright": "#f9f9f7",
+                    "on-primary-fixed-variant": "#5c5b5d",
+                    "secondary": "#5f604d",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#9e422c",
+                    "on-primary-fixed": "#3f3f41",
+                    "secondary-fixed-dim": "#d6d6be",
+                    "surface": "#f9f9f7",
+                    "outline": "#767c79",
+                    "surface-container": "#ecefec",
+                    "tertiary-dim": "#395959",
+                    "primary-container": "#e4e2e4",
+                    "on-background": "#2d3432",
+                    "surface-variant": "#dee4e0",
+                    "inverse-on-surface": "#9c9d9b",
+                    "surface-dim": "#d4dcd8",
+                    "on-surface": "#2d3432",
+                    "tertiary-container": "#d4f8f7",
+                    "on-primary": "#faf7f9",
+                    "tertiary-fixed": "#d4f8f7",
+                    "on-secondary-container": "#525341",
+                    "tertiary": "#456565",
+                    "on-tertiary-fixed": "#2d4d4d",
+                    "error-dim": "#5c1202",
+                    "primary-fixed": "#e4e2e4",
+                    "on-secondary": "#fbfae1",
+                    "on-error-container": "#742410",
+                    "background": "#f9f9f7",
+                    "surface-container-low": "#f2f4f2",
+                    "surface-container-highest": "#dee4e0",
+                    "on-secondary-fixed": "#3f412f",
+                    "on-surface-variant": "#5a605e",
+                    "secondary-fixed": "#e4e4cc",
+                    "primary-dim": "#535254",
+                    "on-tertiary-fixed-variant": "#4a6a6a",
+                    "surface-container-high": "#e5e9e6",
+                    "primary": "#5f5e60",
+                    "inverse-surface": "#0c0f0e",
+                    "primary-fixed-dim": "#d6d3d6",
+                    "on-tertiary": "#e0fffe",
+                    "tertiary-fixed-dim": "#c6e9e9",
+                    "secondary-dim": "#535442",
+                    "on-primary-container": "#525154",
+                    "on-error": "#fff7f6",
+                    "on-tertiary-container": "#406060"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .primary-gradient {
+            background: linear-gradient(145deg, #5f5e60 0%, #535254 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- Top Navigation Anchor (Desktop only version for Header) -->
+<header class="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-md shadow-sm hidden md:block">
+<div class="flex justify-between items-center px-8 h-20 max-w-full mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-zinc-800 dark:text-zinc-100 font-headline">The Pavilion</div>
+<nav class="flex gap-8">
+<a class="text-zinc-500 hover:text-zinc-800 font-inter tracking-tight leading-relaxed transition-colors" href="#">Home</a>
+<a class="text-zinc-500 hover:text-zinc-800 font-inter tracking-tight leading-relaxed transition-colors" href="#">Schedule</a>
+<a class="text-zinc-500 hover:text-zinc-800 font-inter tracking-tight leading-relaxed transition-colors" href="#">Standings</a>
+<a class="text-zinc-500 hover:text-zinc-800 font-inter tracking-tight leading-relaxed transition-colors" href="#">Info</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined p-2 rounded-full hover:bg-stone-100/50 transition-colors" data-icon="notifications">notifications</button>
+<img alt="User profile" class="w-10 h-10 rounded-full object-cover" data-alt="Close-up portrait of a professional man with a neutral expression against a soft-focus studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmLSEGbUARw_nT__ogXBk-Mlfc6QMr1s0IQDIX8OTkYMUCTtV-JwIwwNdlY3mPO9aTuPO_f9DwrifFpLTo2FG--UgizviDXNj_99L0ubmojM2etlDZ9dY__i6B76N6ctA_bMWQP8r2cTMo3iqiS8nlNMaL_eg-zBrY_p4jMpdZdFAxBO_kIl5gdbI1Ozok7vBAWWH2MYCyitvTstYAB-3n-HM_u4eQ0c6Tl7-AuyGCT-Z-m5NLZmAzZgSDMTBRgWsrJzu8CNxhEmo"/>
+</div>
+</div>
+</header>
+<!-- Side Navigation Sidebar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-stone-100 flex flex-col p-4 gap-2 z-40 hidden md:flex">
+<div class="mb-8 px-2 py-4">
+<h1 class="text-lg font-black text-zinc-900 font-headline uppercase tracking-widest">Tournament Admin</h1>
+<p class="text-xs font-medium tracking-wide text-zinc-500">Super User</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 hover:bg-stone-200/50 rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-sm font-medium tracking-wide">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 hover:bg-stone-200/50 rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="text-sm font-medium tracking-wide">Teams</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 hover:bg-stone-200/50 rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="text-sm font-medium tracking-wide">Scheduler</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 hover:bg-stone-200/50 rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="sports_score">sports_score</span>
+<span class="text-sm font-medium tracking-wide">Scores</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 hover:bg-stone-200/50 rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="info">info</span>
+<span class="text-sm font-medium tracking-wide">Tournament</span>
+</a>
+<!-- Active State: Messages -->
+<a class="flex items-center gap-3 px-4 py-3 bg-white text-zinc-900 rounded-xl shadow-sm transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="text-sm font-medium tracking-wide">Messages</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 hover:bg-stone-200/50 rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-sm font-medium tracking-wide">Settings</span>
+</a>
+</nav>
+<button class="mt-auto mb-4 primary-gradient text-on-primary py-3 px-4 rounded-xl flex items-center justify-center gap-2 font-medium shadow-lg hover:translate-y-[-2px] transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+            New Match
+        </button>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-20 md:pt-0 min-h-screen">
+<div class="max-w-6xl mx-auto p-8 md:p-12">
+<header class="mb-12 flex flex-col gap-2">
+<span class="text-sm font-label uppercase tracking-[0.1em] text-outline">Communication Hub</span>
+<h1 class="text-4xl font-headline font-extrabold tracking-tight text-on-background">Notifications &amp; Messaging</h1>
+</header>
+<!-- Asymmetric Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left: Message Form (Bento Style) -->
+<section class="lg:col-span-5 bg-surface-container-low rounded-[2rem] p-8 shadow-sm">
+<h2 class="text-xl font-headline font-bold mb-6 text-on-surface">Compose Broadcast</h2>
+<form class="space-y-6">
+<div class="space-y-2">
+<label class="text-xs font-label uppercase tracking-widest text-on-surface-variant px-1">Recipient Group</label>
+<select class="w-full bg-surface-container-lowest border-outline-variant border-opacity-20 rounded-xl py-3 px-4 focus:ring-4 focus:ring-primary-fixed-dim/30 focus:border-outline-variant transition-all outline-none appearance-none">
+<option>All Registered Teams</option>
+<option>Group A Participants</option>
+<option>Group B Participants</option>
+<option>Staff &amp; Marshals</option>
+<option>Waitlist Players</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-label uppercase tracking-widest text-on-surface-variant px-1">Notification Type</label>
+<div class="grid grid-cols-2 gap-3">
+<label class="cursor-pointer">
+<input checked="" class="hidden peer" name="type" type="radio"/>
+<div class="p-3 text-center rounded-xl bg-surface-container-lowest border border-outline-variant border-opacity-10 peer-checked:bg-primary peer-checked:text-on-primary transition-all text-sm font-medium">Info</div>
+</label>
+<label class="cursor-pointer">
+<input class="hidden peer" name="type" type="radio"/>
+<div class="p-3 text-center rounded-xl bg-surface-container-lowest border border-outline-variant border-opacity-10 peer-checked:bg-primary peer-checked:text-on-primary transition-all text-sm font-medium">Reminder</div>
+</label>
+<label class="cursor-pointer">
+<input class="hidden peer" name="type" type="radio"/>
+<div class="p-3 text-center rounded-xl bg-surface-container-lowest border border-outline-variant border-opacity-10 peer-checked:bg-primary peer-checked:text-on-primary transition-all text-sm font-medium">Result</div>
+</label>
+<label class="cursor-pointer">
+<input class="hidden peer" name="type" type="radio"/>
+<div class="p-3 text-center rounded-xl bg-surface-container-lowest border border-outline-variant border-opacity-10 peer-checked:bg-error peer-checked:text-on-error transition-all text-sm font-medium">Important</div>
+</label>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-label uppercase tracking-widest text-on-surface-variant px-1">Message Body</label>
+<textarea class="w-full bg-surface-container-lowest border-outline-variant border-opacity-20 rounded-xl py-3 px-4 focus:ring-4 focus:ring-primary-fixed-dim/30 transition-all outline-none resize-none leading-relaxed" placeholder="Draft your announcement here..." rows="5"></textarea>
+</div>
+<button class="w-full primary-gradient text-on-primary py-4 rounded-xl font-bold tracking-tight shadow-md hover:scale-[1.02] active:scale-[0.98] transition-transform" type="submit">
+                            Send Notification
+                        </button>
+</form>
+</section>
+<!-- Right: Message History -->
+<section class="lg:col-span-7 bg-surface-container-lowest rounded-[2rem] p-8 border border-outline-variant border-opacity-5">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-xl font-headline font-bold text-on-surface">Recent History</h2>
+<button class="text-sm font-label uppercase tracking-widest text-primary font-bold hover:underline underline-offset-4">Export Log</button>
+</div>
+<div class="space-y-8">
+<!-- Message Item -->
+<div class="group flex flex-col md:flex-row md:items-center gap-4 py-4 transition-all">
+<div class="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-tertiary-container text-on-tertiary-container">
+<span class="material-symbols-outlined" data-icon="info">info</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-headline font-bold text-on-surface">Match Reschedule: Pitch 4</h3>
+<span class="text-xs font-medium text-outline">12:30 PM, Oct 24</span>
+</div>
+<p class="text-sm text-on-surface-variant leading-relaxed line-clamp-2">The semi-final match between Strikers and Rangers has been moved to Pitch 4 due to ongoing maintenance on the main field.</p>
+<div class="mt-2 flex items-center gap-3">
+<span class="text-[10px] font-label uppercase tracking-[0.1em] px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container">All Teams</span>
+<span class="text-[10px] font-label uppercase tracking-[0.1em] text-outline">Sent by Admin #01</span>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 p-2 text-error hover:bg-error-container/20 rounded-full transition-all">
+<span class="material-symbols-outlined text-xl" data-icon="delete">delete</span>
+</button>
+</div>
+<!-- Message Item -->
+<div class="group flex flex-col md:flex-row md:items-center gap-4 py-4 transition-all">
+<div class="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: 'FILL' 1;">notifications</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-headline font-bold text-on-surface">Registration Deadline Approaching</h3>
+<span class="text-xs font-medium text-outline">09:15 AM, Oct 24</span>
+</div>
+<p class="text-sm text-on-surface-variant leading-relaxed line-clamp-2">Friendly reminder that registration for the Winter Tournament closes in 48 hours. Please finalize your rosters.</p>
+<div class="mt-2 flex items-center gap-3">
+<span class="text-[10px] font-label uppercase tracking-[0.1em] px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container">Waitlist Players</span>
+<span class="text-[10px] font-label uppercase tracking-[0.1em] text-outline">Sent by Admin #02</span>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 p-2 text-error hover:bg-error-container/20 rounded-full transition-all">
+<span class="material-symbols-outlined text-xl" data-icon="delete">delete</span>
+</button>
+</div>
+<!-- Message Item (Important/Error Type) -->
+<div class="group flex flex-col md:flex-row md:items-center gap-4 py-4 transition-all">
+<div class="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-error-container text-on-error-container">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-headline font-bold text-on-surface">Urgent: Weather Alert</h3>
+<span class="text-xs font-medium text-outline">Yesterday</span>
+</div>
+<p class="text-sm text-on-surface-variant leading-relaxed line-clamp-2">Evening matches suspended due to electrical storm forecast. Updates will follow by 6 PM.</p>
+<div class="mt-2 flex items-center gap-3">
+<span class="text-[10px] font-label uppercase tracking-[0.1em] px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container">All Participants</span>
+<span class="text-[10px] font-label uppercase tracking-[0.1em] text-outline">Sent by System</span>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 p-2 text-error hover:bg-error-container/20 rounded-full transition-all">
+<span class="material-symbols-outlined text-xl" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+<!-- Dashboard Insight Cards -->
+<div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface-container p-6 rounded-2xl">
+<span class="text-[10px] font-label uppercase tracking-widest text-on-surface-variant mb-2 block">Reach</span>
+<div class="text-3xl font-headline font-black text-on-background">1,248</div>
+<p class="text-xs text-on-surface-variant mt-1">Recipients reached today</p>
+</div>
+<div class="bg-surface-container p-6 rounded-2xl">
+<span class="text-[10px] font-label uppercase tracking-widest text-on-surface-variant mb-2 block">Engagement</span>
+<div class="text-3xl font-headline font-black text-on-background">84%</div>
+<p class="text-xs text-on-surface-variant mt-1">Read rate on mobile alerts</p>
+</div>
+<div class="bg-surface-container p-6 rounded-2xl">
+<span class="text-[10px] font-label uppercase tracking-widest text-on-surface-variant mb-2 block">Pending</span>
+<div class="text-3xl font-headline font-black text-on-background">3</div>
+<p class="text-xs text-on-surface-variant mt-1">Scheduled broadcasts</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Anchor -->
+<footer class="md:ml-64 w-full py-12 mt-auto border-t border-stone-200/20 dark:border-stone-800/20 bg-stone-50">
+<div class="flex flex-col items-center justify-center text-center px-4">
+<p class="text-xs font-body leading-6 text-zinc-600 mb-4">© 2024 The Curated Pavilion. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-xs font-body text-zinc-600 hover:text-zinc-900 transition-opacity opacity-80" href="#">Privacy Policy</a>
+<a class="text-xs font-body text-zinc-600 hover:text-zinc-900 transition-opacity opacity-80" href="#">Terms of Service</a>
+<a class="text-xs font-body text-zinc-600 hover:text-zinc-900 transition-opacity opacity-80" href="#">Contact Us</a>
+<a class="text-xs font-body text-zinc-600 hover:text-zinc-900 transition-opacity opacity-80" href="#">Support</a>
+</div>
+</div>
+</footer>
+</body></html>

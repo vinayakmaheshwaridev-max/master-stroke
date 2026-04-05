@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Pavilion — Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#adb3b0",
+                    "secondary-container": "#e4e4cc",
+                    "inverse-primary": "#ffffff",
+                    "error-container": "#fe8b70",
+                    "surface-tint": "#5f5e60",
+                    "on-secondary-fixed-variant": "#5b5d4a",
+                    "surface-bright": "#f9f9f7",
+                    "on-primary-fixed-variant": "#5c5b5d",
+                    "secondary": "#5f604d",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#9e422c",
+                    "on-primary-fixed": "#3f3f41",
+                    "secondary-fixed-dim": "#d6d6be",
+                    "surface": "#f9f9f7",
+                    "outline": "#767c79",
+                    "surface-container": "#ecefec",
+                    "tertiary-dim": "#395959",
+                    "primary-container": "#e4e2e4",
+                    "on-background": "#2d3432",
+                    "surface-variant": "#dee4e0",
+                    "inverse-on-surface": "#9c9d9b",
+                    "surface-dim": "#d4dcd8",
+                    "on-surface": "#2d3432",
+                    "tertiary-container": "#d4f8f7",
+                    "on-primary": "#faf7f9",
+                    "tertiary-fixed": "#d4f8f7",
+                    "on-secondary-container": "#525341",
+                    "tertiary": "#456565",
+                    "on-tertiary-fixed": "#2d4d4d",
+                    "error-dim": "#5c1202",
+                    "primary-fixed": "#e4e2e4",
+                    "on-secondary": "#fbfae1",
+                    "on-error-container": "#742410",
+                    "background": "#f9f9f7",
+                    "surface-container-low": "#f2f4f2",
+                    "surface-container-highest": "#dee4e0",
+                    "on-secondary-fixed": "#3f412f",
+                    "on-surface-variant": "#5a605e",
+                    "secondary-fixed": "#e4e4cc",
+                    "primary-dim": "#535254",
+                    "on-tertiary-fixed-variant": "#4a6a6a",
+                    "surface-container-high": "#e5e9e6",
+                    "primary": "#5f5e60",
+                    "inverse-surface": "#0c0f0e",
+                    "primary-fixed-dim": "#d6d3d6",
+                    "on-tertiary": "#e0fffe",
+                    "tertiary-fixed-dim": "#c6e9e9",
+                    "secondary-dim": "#535442",
+                    "on-primary-container": "#525154",
+                    "on-error": "#fff7f6",
+                    "on-tertiary-container": "#406060"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .text-editorial-tight { letter-spacing: -0.02em; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-secondary-container">
+<!-- SideNavBar Anchor -->
+<nav class="h-screen w-64 fixed left-0 top-0 bg-stone-100 dark:bg-stone-950 flex flex-col p-4 gap-2 z-50 overflow-y-auto no-scrollbar">
+<div class="mb-8 px-2 flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">stadium</span>
+</div>
+<div>
+<h1 class="text-lg font-black text-zinc-900 dark:text-white tracking-tighter leading-none">The Pavilion</h1>
+<p class="text-[10px] uppercase tracking-[0.1em] text-outline opacity-70">Curated Admin</p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 mb-6 bg-stone-200/50 dark:bg-stone-900/50 rounded-2xl">
+<img alt="Admin Avatar" class="w-10 h-10 rounded-full bg-surface-container" data-alt="professional portrait of a tournament administrator in a minimalist style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2mmSDXnOXzm45H8UDpAZHIdSRvaZBdu-Z5cW2TAn-jUpAXFjy4-MGNzWCil_L8io24AQiFnIfsTlFLmUB3EzO1lipjFnBSacOU76PdMkBzMnnEyaf9vpzcVI9TwdgrBRF4YdeRU3EZBPTw9meR6CKIXm_1RndWRu6b9r7lWjbTRRlqGOVF1EHeIoZgf6w93eHEaQm8YMgugPzesQNonTzD43Ih1uFCUYd76He7bSJvhUlzOCM1z9LOqKqeIYXp8m9gYV5-W4zh1U"/>
+<div class="overflow-hidden">
+<p class="text-sm font-bold text-zinc-900 dark:text-white truncate">Tournament Admin</p>
+<p class="text-xs text-zinc-500 truncate">Super User</p>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<!-- Active Navigation -->
+<a class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-stone-800 text-zinc-900 dark:text-white rounded-xl shadow-sm hover:translate-x-1 transition-all duration-200 tap-highlight-none" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-sm font-medium tracking-wide">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 tap-highlight-none" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="text-sm font-medium tracking-wide">Teams</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 tap-highlight-none" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-sm font-medium tracking-wide">Scheduler</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 tap-highlight-none" href="#">
+<span class="material-symbols-outlined">sports_score</span>
+<span class="text-sm font-medium tracking-wide">Scores</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 tap-highlight-none" href="#">
+<span class="material-symbols-outlined">info</span>
+<span class="text-sm font-medium tracking-wide">Tournament</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 tap-highlight-none" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="text-sm font-medium tracking-wide">Messages</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 tap-highlight-none" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium tracking-wide">Settings</span>
+</a>
+</div>
+<button class="mt-auto mx-2 bg-gradient-to-br from-primary to-primary-dim text-on-primary py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
+<span class="material-symbols-outlined text-sm">add</span>
+            New Match
+        </button>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen p-10 bg-surface">
+<!-- Header & Toggle Section -->
+<header class="flex justify-between items-end mb-12">
+<div>
+<span class="text-xs font-bold uppercase tracking-widest text-primary opacity-60 mb-2 block">System Overview</span>
+<h2 class="text-5xl font-black text-editorial-tight text-on-surface">Pavilion Hub</h2>
+</div>
+<!-- Registration Toggle Widget -->
+<div class="bg-surface-container-lowest p-4 px-6 rounded-2xl flex items-center gap-8 shadow-sm ring-1 ring-on-surface/5">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold uppercase tracking-wider text-outline">Status</span>
+<p class="text-sm font-bold text-on-surface">Registration Form is OPEN</p>
+</div>
+<div class="relative inline-flex h-6 w-12 items-center rounded-full bg-secondary-container transition-colors focus:outline-none ring-2 ring-transparent ring-offset-2">
+<span class="translate-x-7 inline-block h-4 w-4 transform rounded-full bg-on-secondary-container transition-transform"></span>
+</div>
+</div>
+</header>
+<!-- Bento Grid Metrics -->
+<section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
+<!-- Large Focus Card -->
+<div class="col-span-2 row-span-2 bg-surface-container-lowest rounded-3xl p-8 flex flex-col justify-between shadow-sm border border-on-surface/5 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 w-32 h-32 bg-primary/5 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
+<div class="z-10">
+<span class="material-symbols-outlined text-primary mb-4 p-3 bg-primary-container/30 rounded-2xl">person_add</span>
+<h3 class="text-lg font-bold text-on-surface-variant">Total Registrations</h3>
+<div class="flex items-baseline gap-2 mt-2">
+<span class="text-7xl font-black text-editorial-tight">1,284</span>
+<span class="text-sm font-bold text-secondary flex items-center">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                            12%
+                        </span>
+</div>
+</div>
+<div class="z-10 mt-8 flex gap-2">
+<div class="h-1 flex-1 bg-primary-container rounded-full overflow-hidden">
+<div class="h-full w-[70%] bg-primary"></div>
+</div>
+<span class="text-[10px] font-black uppercase text-outline">Season Goal</span>
+</div>
+</div>
+<!-- Mini Metric 1 -->
+<div class="bg-surface-container-low rounded-3xl p-6 flex flex-col justify-between hover:bg-surface-container-lowest transition-colors border border-transparent hover:border-on-surface/5">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary p-2 bg-white rounded-xl">hourglass_empty</span>
+<span class="text-[10px] font-bold px-2 py-1 bg-error-container/20 text-error rounded-full">ACTION REQ</span>
+</div>
+<div>
+<h3 class="text-sm font-medium text-on-surface-variant">Pending Approval</h3>
+<p class="text-3xl font-black mt-1">42</p>
+</div>
+</div>
+<!-- Mini Metric 2 -->
+<div class="bg-surface-container-low rounded-3xl p-6 flex flex-col justify-between hover:bg-surface-container-lowest transition-colors border border-transparent hover:border-on-surface/5">
+<span class="material-symbols-outlined text-primary p-2 bg-white rounded-xl w-fit">check_circle</span>
+<div>
+<h3 class="text-sm font-medium text-on-surface-variant">Approved Teams</h3>
+<p class="text-3xl font-black mt-1">118</p>
+</div>
+</div>
+<!-- Mini Metric 3 -->
+<div class="bg-surface-container-low rounded-3xl p-6 flex flex-col justify-between hover:bg-surface-container-lowest transition-colors border border-transparent hover:border-on-surface/5">
+<span class="material-symbols-outlined text-primary p-2 bg-white rounded-xl w-fit">payments</span>
+<div>
+<h3 class="text-sm font-medium text-on-surface-variant">Payment Pending</h3>
+<p class="text-3xl font-black mt-1">15</p>
+</div>
+</div>
+<!-- Mini Metric 4 -->
+<div class="bg-surface-container-low rounded-3xl p-6 flex flex-col justify-between hover:bg-surface-container-lowest transition-colors border border-transparent hover:border-on-surface/5">
+<span class="material-symbols-outlined text-primary p-2 bg-white rounded-xl w-fit">event</span>
+<div>
+<h3 class="text-sm font-medium text-on-surface-variant">Today's Matches</h3>
+<p class="text-3xl font-black mt-1">08</p>
+</div>
+</div>
+</section>
+<!-- Bottom Layout: Recent Reg + Calendar Asymmetry -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+<!-- Recent Registrations Table -->
+<div class="lg:col-span-2">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-xl font-extrabold tracking-tight">Recent Registrations</h3>
+<a class="text-xs font-bold text-primary underline-offset-4 hover:underline" href="#">View All Teams</a>
+</div>
+<div class="bg-surface-container-lowest rounded-[2rem] overflow-hidden shadow-sm border border-on-surface/5">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.15em] text-outline">Lead Name</th>
+<th class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.15em] text-outline">Team Name</th>
+<th class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.15em] text-outline">Mobile</th>
+<th class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.15em] text-outline">Submitted</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-on-surface/5">
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container/40 flex items-center justify-center text-[10px] font-bold">AJ</div>
+<span class="font-bold text-sm">Arthur Jensen</span>
+</div>
+</td>
+<td class="px-8 py-5 text-sm font-medium">Lords XI</td>
+<td class="px-8 py-5 text-sm text-on-surface-variant font-mono">+44 7911 123456</td>
+<td class="px-8 py-5 text-sm text-outline">2 mins ago</td>
+</tr>
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary-container/40 flex items-center justify-center text-[10px] font-bold">SK</div>
+<span class="font-bold text-sm">Sanjay Kumar</span>
+</div>
+</td>
+<td class="px-8 py-5 text-sm font-medium">Brahmaputra Warriors</td>
+<td class="px-8 py-5 text-sm text-on-surface-variant font-mono">+91 98765 43210</td>
+<td class="px-8 py-5 text-sm text-outline">1 hour ago</td>
+</tr>
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container/40 flex items-center justify-center text-[10px] font-bold">MD</div>
+<span class="font-bold text-sm">Marcus Dash</span>
+</div>
+</td>
+<td class="px-8 py-5 text-sm font-medium">Oval Strikers</td>
+<td class="px-8 py-5 text-sm text-on-surface-variant font-mono">+61 412 345 678</td>
+<td class="px-8 py-5 text-sm text-outline">3 hours ago</td>
+</tr>
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container/40 flex items-center justify-center text-[10px] font-bold">LH</div>
+<span class="font-bold text-sm">Liam Hughes</span>
+</div>
+</td>
+<td class="px-8 py-5 text-sm font-medium">The Pavilion Club</td>
+<td class="px-8 py-5 text-sm text-on-surface-variant font-mono">+44 7700 900011</td>
+<td class="px-8 py-5 text-sm text-outline">5 hours ago</td>
+</tr>
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary-container/40 flex items-center justify-center text-[10px] font-bold">RV</div>
+<span class="font-bold text-sm">Ravi Varma</span>
+</div>
+</td>
+<td class="px-8 py-5 text-sm font-medium">Royal Challengers</td>
+<td class="px-8 py-5 text-sm text-on-surface-variant font-mono">+91 99887 76655</td>
+<td class="px-8 py-5 text-sm text-outline">Yesterday</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Contextual Action Side-Bar -->
+<div class="space-y-6">
+<h3 class="text-xl font-extrabold tracking-tight">Today's Focus</h3>
+<div class="bg-primary text-on-primary rounded-[2rem] p-8 shadow-xl shadow-primary/10 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-20">
+<span class="material-symbols-outlined text-6xl">stadium</span>
+</div>
+<p class="text-xs font-bold uppercase tracking-widest opacity-70 mb-1">Upcoming Match</p>
+<p class="text-xl font-bold mb-6">Lords XI vs Oval Strikers</p>
+<div class="flex justify-between items-center text-sm font-medium opacity-90 border-t border-on-primary/10 pt-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-base">schedule</span>
+                            14:30 GMT
+                        </div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-base">location_on</span>
+                            Main Oval
+                        </div>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-[2rem] p-8">
+<h4 class="text-sm font-black uppercase tracking-widest text-outline mb-4">Quick Stats</h4>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium">Approved Teams</span>
+<span class="text-sm font-bold">118 / 128</span>
+</div>
+<div class="h-1.5 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[92%]"></div>
+</div>
+<p class="text-[10px] text-on-surface-variant leading-relaxed">The tournament is reaching maximum capacity. Consider closing registrations soon to finalize the bracket.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer Anchor -->
+<footer class="w-full py-12 mt-16 border-t border-stone-200/20 dark:border-stone-800/20 flex flex-col items-center justify-center text-center px-4">
+<p class="text-xs font-body leading-6 text-zinc-600 dark:text-zinc-400">© 2024 The Curated Pavilion. All rights reserved.</p>
+<div class="flex gap-6 mt-4">
+<a class="text-xs font-body text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="#">Privacy Policy</a>
+<a class="text-xs font-body text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="#">Terms of Service</a>
+<a class="text-xs font-body text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="#">Contact Us</a>
+<a class="text-xs font-body text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="#">Support</a>
+</div>
+</footer>
+</main>
+</body></html>

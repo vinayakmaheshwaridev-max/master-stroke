@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#adb3b0",
+                        "secondary-container": "#e4e4cc",
+                        "inverse-primary": "#ffffff",
+                        "error-container": "#fe8b70",
+                        "surface-tint": "#5f5e60",
+                        "on-secondary-fixed-variant": "#5b5d4a",
+                        "surface-bright": "#f9f9f7",
+                        "on-primary-fixed-variant": "#5c5b5d",
+                        "secondary": "#5f604d",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#9e422c",
+                        "on-primary-fixed": "#3f3f41",
+                        "secondary-fixed-dim": "#d6d6be",
+                        "surface": "#f9f9f7",
+                        "outline": "#767c79",
+                        "surface-container": "#ecefec",
+                        "tertiary-dim": "#395959",
+                        "primary-container": "#e4e2e4",
+                        "on-background": "#2d3432",
+                        "surface-variant": "#dee4e0",
+                        "inverse-on-surface": "#9c9d9b",
+                        "surface-dim": "#d4dcd8",
+                        "on-surface": "#2d3432",
+                        "tertiary-container": "#d4f8f7",
+                        "on-primary": "#faf7f9",
+                        "tertiary-fixed": "#d4f8f7",
+                        "on-secondary-container": "#525341",
+                        "tertiary": "#456565",
+                        "on-tertiary-fixed": "#2d4d4d",
+                        "error-dim": "#5c1202",
+                        "primary-fixed": "#e4e2e4",
+                        "on-secondary": "#fbfae1",
+                        "on-error-container": "#742410",
+                        "background": "#f9f9f7",
+                        "surface-container-low": "#f2f4f2",
+                        "surface-container-highest": "#dee4e0",
+                        "on-secondary-fixed": "#3f412f",
+                        "on-surface-variant": "#5a605e",
+                        "secondary-fixed": "#e4e4cc",
+                        "primary-dim": "#535254",
+                        "on-tertiary-fixed-variant": "#4a6a6a",
+                        "surface-container-high": "#e5e9e6",
+                        "primary": "#5f5e60",
+                        "inverse-surface": "#0c0f0e",
+                        "primary-fixed-dim": "#d6d3d6",
+                        "on-tertiary": "#e0fffe",
+                        "tertiary-fixed-dim": "#c6e9e9",
+                        "secondary-dim": "#535442",
+                        "on-primary-container": "#525154",
+                        "on-error": "#fff7f6",
+                        "on-tertiary-container": "#406060"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9f9f7; color: #2d3432; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-nav { background: rgba(249, 249, 247, 0.8); backdrop-filter: blur(20px); }
+        .premium-gradient-text { background: linear-gradient(145deg, #5f5e60, #535254); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .staggered-shadow { box-shadow: 0px 20px 40px rgba(45, 52, 50, 0.04); }
+    </style>
+</head>
+<body class="bg-surface selection:bg-primary/20">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 glass-nav shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center px-8 h-20 max-w-7xl mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-zinc-800 dark:text-zinc-100">
+                The Pavilion
+            </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 transition-colors font-medium" href="#">Home</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 transition-colors font-medium" href="#">Schedule</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 transition-colors font-medium" href="#">Standings</a>
+<a class="text-zinc-900 dark:text-white font-semibold border-b-2 border-zinc-800 dark:border-zinc-200 pb-1" href="#">Info</a>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-zinc-600 p-2 rounded-full hover:bg-stone-100/50 transition-colors cursor-pointer">notifications</span>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-medium shadow-sm hover:scale-95 active:scale-90 transition-all">Register</button>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-24 px-6 max-w-7xl mx-auto">
+<!-- Hero Section -->
+<header class="mb-24 flex flex-col md:flex-row gap-12 items-end">
+<div class="md:w-2/3">
+<span class="label-sm uppercase tracking-[0.1em] text-outline font-bold text-xs mb-4 block">Official Guide</span>
+<h1 class="text-6xl md:text-8xl font-black tracking-tighter premium-gradient-text leading-[0.9] mb-8">
+                    Tournament <br/>Protocols
+                </h1>
+<p class="text-xl text-on-surface-variant leading-relaxed max-w-2xl">
+                    Everything you need to know about the premier summer championship. From regulatory compliance to the architecture of victory.
+                </p>
+</div>
+<div class="md:w-1/3 w-full h-48 md:h-64 rounded-xl overflow-hidden grayscale contrast-125 opacity-80">
+<img alt="Cricket Pitch Detail" class="w-full h-full object-cover" data-alt="Close-up of a pristine cricket pitch with white chalk lines and short green grass in morning sunlight with soft shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGt-exZkJXyDrtAXlpQQIuAlvut8_x8jyNS0hP7f5W96KcECzHC12mzNmGGPaXiRXdSg6DGV0FNovQzkOsu4Pc7TG-NBg40W3rDt94nZKg4RMnrR_L8l5Uedya0YMLROTf5HcIC4Ghg_WKXg7R1aXmggXXaTew4dazvG395qjCAgnA2Ht0-cLuw2p64fMZUazLLynlUAlkjhb8v9FzVEzaiEryfidq1JlYRNBdo8kzE9022KB2xQkEIzKjSLP3eCN-hnkQiIKXJh8"/>
+</div>
+</header>
+<!-- Bento Layout for Sections -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Tournament Rules: The Playing Conditions -->
+<section class="md:col-span-8 bg-surface-container-low rounded-[2rem] p-12 staggered-shadow">
+<div class="flex items-center gap-3 mb-10">
+<span class="material-symbols-outlined text-primary scale-125">gavel</span>
+<h2 class="text-3xl font-bold tracking-tight">Playing Conditions</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+<div class="space-y-6">
+<div>
+<h3 class="font-bold text-lg mb-2">01. Match Format</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Matches follow a strict T20 format. Powerplay persists for the first 6 overs. Standard ICC regulations apply unless specified otherwise by the tournament committee.</p>
+</div>
+<div>
+<h3 class="font-bold text-lg mb-2">02. The Ball</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Official tournament balls (Grade A Leather) will be provided for every inning. Replacements only occur if the ball is deemed unfit by both umpires.</p>
+</div>
+</div>
+<div class="space-y-6">
+<div>
+<h3 class="font-bold text-lg mb-2">03. Player Conduct</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">A zero-tolerance policy exists for dissent. Any breach of the spirit of cricket results in immediate point deduction or disqualification.</p>
+</div>
+<div>
+<h3 class="font-bold text-lg mb-2">04. Rain &amp; Stoppage</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Duckworth-Lewis-Stern (DLS) method will be utilized for all rain-affected matches. A minimum of 5 overs must be completed for a valid result.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Prize Structure -->
+<section class="md:col-span-4 bg-primary text-on-primary rounded-[2rem] p-12 flex flex-col justify-between">
+<div>
+<span class="material-symbols-outlined mb-6 scale-150">military_tech</span>
+<h2 class="text-4xl font-bold tracking-tight mb-8">Prize <br/>Hierarchy</h2>
+<ul class="space-y-8">
+<li class="flex justify-between items-baseline border-b border-on-primary/10 pb-4">
+<span class="font-medium">Champions</span>
+<span class="text-2xl font-black">$25,000</span>
+</li>
+<li class="flex justify-between items-baseline border-b border-on-primary/10 pb-4">
+<span class="font-medium">Runners Up</span>
+<span class="text-xl font-bold">$12,000</span>
+</li>
+<li class="flex justify-between items-baseline border-b border-on-primary/10 pb-4">
+<span class="font-medium">Third Place</span>
+<span class="text-lg font-semibold">$5,000</span>
+</li>
+<li class="flex justify-between items-baseline">
+<span class="font-medium opacity-80 italic">Player of Series</span>
+<span class="font-bold">MacBook Pro</span>
+</li>
+</ul>
+</div>
+<div class="mt-12 text-xs opacity-60 uppercase tracking-widest">Rewards disbursed within 14 days</div>
+</section>
+<!-- Fees & Payment -->
+<section class="md:col-span-5 bg-secondary-container rounded-[2rem] p-12">
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-secondary">payments</span>
+<h2 class="text-2xl font-bold">Financials</h2>
+</div>
+<div class="bg-surface/50 p-8 rounded-2xl mb-8">
+<div class="flex justify-between mb-4">
+<span class="text-on-surface-variant text-sm">Base Registration</span>
+<span class="font-bold">$1,200</span>
+</div>
+<div class="flex justify-between border-t border-secondary/10 pt-4">
+<span class="text-on-surface-variant text-sm">Facility Surcharge</span>
+<span class="font-bold">$150</span>
+</div>
+</div>
+<div class="space-y-4">
+<p class="text-xs font-bold uppercase tracking-wider text-secondary">UPI / Transfer Details</p>
+<div class="flex items-center gap-4 bg-white p-4 rounded-xl">
+<div class="w-12 h-12 bg-stone-100 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-zinc-400">qr_code_2</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant">Merchant VPA</p>
+<p class="font-mono font-bold text-sm">pavilion.tournament@upi</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Terms & Conditions -->
+<section class="md:col-span-7 bg-surface-container-low rounded-[2rem] p-12 overflow-hidden relative">
+<h2 class="text-2xl font-bold mb-6">Terms of Engagement</h2>
+<div class="space-y-6 max-h-64 overflow-y-auto pr-4 scrollbar-hide text-sm text-on-surface-variant leading-relaxed">
+<p>By registering for The Pavilion Tournament, teams acknowledge that they have read and agreed to all safety protocols and medical liability waivers. The organizers reserve the right to reschedule matches due to weather or venue availability without prior consent.</p>
+<p>Intellectual Property: Any photographs or video recordings taken during the event may be used by the tournament organizers for promotional purposes. Players waive all rights to royalties for such digital assets.</p>
+<p>Insurance: All participating teams must provide proof of collective accident insurance for their roster. The Pavilion is not liable for individual injuries sustained during competitive play.</p>
+<p>Refund Policy: Registration fees are non-refundable after the official draw date. Cancellations prior to the draw are subject to a 20% administrative deduction.</p>
+</div>
+<div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-surface-container-low to-transparent pointer-events-none"></div>
+</section>
+<!-- Contact Info -->
+<section class="md:col-span-12 bg-surface-container-highest rounded-[2rem] p-12 flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="text-center md:text-left">
+<h2 class="text-3xl font-black tracking-tight mb-2">Need Assistance?</h2>
+<p class="text-on-surface-variant">Our concierge team is available 09:00 - 18:00 EST</p>
+</div>
+<div class="flex flex-wrap justify-center gap-4">
+<div class="bg-surface p-4 px-8 rounded-full flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">mail</span>
+<span class="font-medium">ops@thepavilion.com</span>
+</div>
+<div class="bg-surface p-4 px-8 rounded-full flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">call</span>
+<span class="font-medium">+1 (555) 890-2341</span>
+</div>
+<div class="bg-surface p-4 px-8 rounded-full flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<span class="font-medium">St. George Pavilion, Sector 4</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 mt-auto border-t border-stone-200/20 dark:border-stone-800/20 bg-stone-50 dark:bg-stone-900">
+<div class="flex flex-col items-center justify-center text-center px-4 max-w-7xl mx-auto">
+<div class="flex gap-8 mb-8 text-xs font-body leading-6 text-zinc-600 dark:text-zinc-400">
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-opacity opacity-80" href="#">Privacy Policy</a>
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-opacity opacity-80" href="#">Terms of Service</a>
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-opacity opacity-80" href="#">Contact Us</a>
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-opacity opacity-80" href="#">Support</a>
+</div>
+<p class="text-xs font-body leading-6 text-zinc-600 dark:text-zinc-400">© 2024 The Curated Pavilion. All rights reserved.</p>
+</div>
+</footer>
+</body></html>

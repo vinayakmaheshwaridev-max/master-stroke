@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Team Management | The Pavilion</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#adb3b0",
+                        "secondary-container": "#e4e4cc",
+                        "inverse-primary": "#ffffff",
+                        "error-container": "#fe8b70",
+                        "surface-tint": "#5f5e60",
+                        "on-secondary-fixed-variant": "#5b5d4a",
+                        "surface-bright": "#f9f9f7",
+                        "on-primary-fixed-variant": "#5c5b5d",
+                        "secondary": "#5f604d",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#9e422c",
+                        "on-primary-fixed": "#3f3f41",
+                        "secondary-fixed-dim": "#d6d6be",
+                        "surface": "#f9f9f7",
+                        "outline": "#767c79",
+                        "surface-container": "#ecefec",
+                        "tertiary-dim": "#395959",
+                        "primary-container": "#e4e2e4",
+                        "on-background": "#2d3432",
+                        "surface-variant": "#dee4e0",
+                        "inverse-on-surface": "#9c9d9b",
+                        "surface-dim": "#d4dcd8",
+                        "on-surface": "#2d3432",
+                        "tertiary-container": "#d4f8f7",
+                        "on-primary": "#faf7f9",
+                        "tertiary-fixed": "#d4f8f7",
+                        "on-secondary-container": "#525341",
+                        "tertiary": "#456565",
+                        "on-tertiary-fixed": "#2d4d4d",
+                        "error-dim": "#5c1202",
+                        "primary-fixed": "#e4e2e4",
+                        "on-secondary": "#fbfae1",
+                        "on-error-container": "#742410",
+                        "background": "#f9f9f7",
+                        "surface-container-low": "#f2f4f2",
+                        "surface-container-highest": "#dee4e0",
+                        "on-secondary-fixed": "#3f412f",
+                        "on-surface-variant": "#5a605e",
+                        "secondary-fixed": "#e4e4cc",
+                        "primary-dim": "#535254",
+                        "on-tertiary-fixed-variant": "#4a6a6a",
+                        "surface-container-high": "#e5e9e6",
+                        "primary": "#5f5e60",
+                        "inverse-surface": "#0c0f0e",
+                        "primary-fixed-dim": "#d6d3d6",
+                        "on-tertiary": "#e0fffe",
+                        "tertiary-fixed-dim": "#c6e9e9",
+                        "secondary-dim": "#535442",
+                        "on-primary-container": "#525154",
+                        "on-error": "#fff7f6",
+                        "on-tertiary-container": "#406060"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased overflow-hidden">
+<aside class="h-screen w-64 fixed left-0 top-0 bg-stone-100 dark:bg-stone-950 flex flex-col p-4 gap-2 transition-all duration-200 tap-highlight-none">
+<div class="mb-8 px-4 py-2">
+<h1 class="text-lg font-black text-zinc-900 dark:text-white tracking-tighter">THE PAVILION</h1>
+<p class="text-[10px] uppercase tracking-[0.2em] text-outline">Tournament Management</p>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl transition-all duration-200 hover:translate-x-1 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-stone-800 text-zinc-900 dark:text-white rounded-xl shadow-sm transition-all duration-200 hover:translate-x-1 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">groups</span>
+                Teams
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl transition-all duration-200 hover:translate-x-1 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+                Scheduler
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl transition-all duration-200 hover:translate-x-1 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">sports_score</span>
+                Scores
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl transition-all duration-200 hover:translate-x-1 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">info</span>
+                Tournament
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl transition-all duration-200 hover:translate-x-1 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">notifications</span>
+                Messages
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl transition-all duration-200 hover:translate-x-1 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+</nav>
+<div class="mt-auto p-4 bg-stone-200/50 dark:bg-stone-900/50 rounded-2xl flex items-center gap-3">
+<img alt="Admin Avatar" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" data-alt="Portrait of a professional administrator in a sharp suit with a neutral office background, soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdt3EeWal_cxBE4L2HD3JTmgTXkS-y_Ofgbmf78mKOYFQm5SqgWc7sCfAKViSYKUR8mORLrbmHa9X0j5SaXnMwhSPpBpTA3-PUmA5hAhdu6YfSW2HwBl8NTIiLjUmgSS70B_c1hyR7dJshnZBEjjaxan0TQnLe_kY9xfwf7Aj-KYQUeatoJRXfwOkl5iEZP9iALJ1A5mu0Q5hiQL8I-AMjGpGWeJ8_2gD5vlPa4T58_eg5KMlU_2h1UfT83lYadkwQC9zlHg4QliU"/>
+<div class="overflow-hidden">
+<p class="text-xs font-bold text-zinc-900 truncate">Tournament Admin</p>
+<p class="text-[10px] text-zinc-500 uppercase tracking-wider">Super User</p>
+</div>
+</div>
+</aside>
+<main class="ml-64 min-h-screen overflow-y-auto bg-surface-bright">
+<header class="sticky top-0 z-10 flex justify-between items-center px-12 h-24 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-md">
+<div>
+<h2 class="text-3xl font-extrabold tracking-tight text-on-surface">Team Management</h2>
+<p class="text-sm text-outline-variant font-medium">Review and oversee player registrations</p>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-gradient-to-br from-primary to-primary-dim text-on-primary px-6 py-2.5 rounded-xl font-semibold shadow-lg hover:scale-105 active:scale-95 transition-all text-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                    New Match
+                </button>
+<button class="p-2.5 rounded-xl bg-surface-container-low text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<div class="px-12 py-8">
+<div class="flex flex-col gap-8">
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-2">
+<button class="px-6 py-2 rounded-full text-sm font-semibold bg-primary text-on-primary shadow-sm whitespace-nowrap">All Teams</button>
+<button class="px-6 py-2 rounded-full text-sm font-medium bg-surface-container-low text-on-surface hover:bg-surface-container transition-colors whitespace-nowrap">Pending</button>
+<button class="px-6 py-2 rounded-full text-sm font-medium bg-surface-container-low text-on-surface hover:bg-surface-container transition-colors whitespace-nowrap">Approved</button>
+<button class="px-6 py-2 rounded-full text-sm font-medium bg-surface-container-low text-on-surface hover:bg-surface-container transition-colors whitespace-nowrap">Rejected</button>
+<button class="px-6 py-2 rounded-full text-sm font-medium bg-surface-container-low text-on-surface hover:bg-surface-container transition-colors whitespace-nowrap">Payment Pending</button>
+</div>
+<div class="bg-surface-container-lowest rounded-[2rem] shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="px-6 py-5 text-[11px] font-bold uppercase tracking-widest text-outline-variant">#</th>
+<th class="px-6 py-5 text-[11px] font-bold uppercase tracking-widest text-outline-variant">Team Name</th>
+<th class="px-6 py-5 text-[11px] font-bold uppercase tracking-widest text-outline-variant">Captain</th>
+<th class="px-6 py-5 text-[11px] font-bold uppercase tracking-widest text-outline-variant">Mobile</th>
+<th class="px-6 py-5 text-[11px] font-bold uppercase tracking-widest text-outline-variant">Email</th>
+<th class="px-6 py-5 text-[11px] font-bold uppercase tracking-widest text-outline-variant">Age</th>
+<th class="px-6 py-5 text-[11px] font-bold uppercase tracking-widest text-outline-variant text-center">Status</th>
+<th class="px-6 py-5 text-[11px] font-bold uppercase tracking-widest text-outline-variant text-center">Paid</th>
+<th class="px-6 py-5 text-[11px] font-bold uppercase tracking-widest text-outline-variant text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-low/30">
+<tr class="hover:bg-surface-container-low/20 transition-colors group">
+<td class="px-6 py-6 text-sm text-outline-variant font-medium">01</td>
+<td class="px-6 py-6 font-bold text-on-surface">The Highflyers</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant">Arjun Sharma</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant font-mono">+91 98765 43210</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant">arjun.s@pavilion.com</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant">24</td>
+<td class="px-6 py-6 text-center">
+<span class="inline-flex px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-orange-100 text-orange-700">Pending</span>
+</td>
+<td class="px-6 py-6 text-center">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20" type="checkbox"/>
+</td>
+<td class="px-6 py-6 text-right space-x-2">
+<button class="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-all" title="Approve">
+<span class="material-symbols-outlined">check_circle</span>
+</button>
+<button class="p-2 text-error hover:bg-red-50 rounded-lg transition-all" title="Reject">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+<button class="p-2 text-primary hover:bg-surface-container rounded-lg transition-all" title="View Details">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/20 transition-colors">
+<td class="px-6 py-6 text-sm text-outline-variant font-medium">02</td>
+<td class="px-6 py-6 font-bold text-on-surface">Royal Strikers</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant">David Miller</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant font-mono">+91 88888 12345</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant">miller@cricket.org</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant">29</td>
+<td class="px-6 py-6 text-center">
+<span class="inline-flex px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700">Approved</span>
+</td>
+<td class="px-6 py-6 text-center">
+<input checked="" class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20" type="checkbox"/>
+</td>
+<td class="px-6 py-6 text-right space-x-2">
+<button class="p-2 text-primary hover:bg-surface-container rounded-lg transition-all" title="View Details">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/20 transition-colors">
+<td class="px-6 py-6 text-sm text-outline-variant font-medium">03</td>
+<td class="px-6 py-6 font-bold text-on-surface">Desert Lions</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant">Sam Curran</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant font-mono">+91 77777 55555</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant">sam@lions.club</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant">21</td>
+<td class="px-6 py-6 text-center">
+<span class="inline-flex px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-red-100 text-red-700">Rejected</span>
+</td>
+<td class="px-6 py-6 text-center">
+<input class="w-5 h-5 rounded border-outline-variant bg-surface-container-low text-outline opacity-50" disabled="" type="checkbox"/>
+</td>
+<td class="px-6 py-6 text-right space-x-2">
+<button class="p-2 text-primary hover:bg-surface-container rounded-lg transition-all" title="View Details">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/20 transition-colors">
+<td class="px-6 py-6 text-sm text-outline-variant font-medium">04</td>
+<td class="px-6 py-6 font-bold text-on-surface">Coastal Giants</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant">Neha Patil</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant font-mono">+91 91234 56789</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant">neha.p@giantz.com</td>
+<td class="px-6 py-6 text-sm text-on-surface-variant">26</td>
+<td class="px-6 py-6 text-center">
+<span class="inline-flex px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-orange-100 text-orange-700">Pending</span>
+</td>
+<td class="px-6 py-6 text-center">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20" type="checkbox"/>
+</td>
+<td class="px-6 py-6 text-right space-x-2">
+<button class="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-all" title="Approve">
+<span class="material-symbols-outlined">check_circle</span>
+</button>
+<button class="p-2 text-error hover:bg-red-50 rounded-lg transition-all" title="Reject">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+<button class="p-2 text-primary hover:bg-surface-container rounded-lg transition-all" title="View Details">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-8 py-5 bg-stone-50/50 flex justify-between items-center text-xs text-outline-variant font-medium">
+<span>Showing 4 of 128 registered teams</span>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-surface-container rounded-lg disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class="w-full py-12 mt-auto border-t border-stone-200/20 dark:border-stone-800/20 bg-stone-50 dark:bg-stone-900 flex flex-col items-center justify-center text-center px-4">
+<div class="flex gap-6 mb-4">
+<a class="text-xs font-body text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 opacity-80" href="#">Privacy Policy</a>
+<a class="text-xs font-body text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 opacity-80" href="#">Terms of Service</a>
+<a class="text-xs font-body text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 opacity-80" href="#">Contact Us</a>
+<a class="text-xs font-body text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 opacity-80" href="#">Support</a>
+</div>
+<p class="text-xs font-body leading-6 text-zinc-600 dark:text-zinc-400">© 2024 The Curated Pavilion. All rights reserved.</p>
+</footer>
+</main>
+<div class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+<div class="bg-surface-container-lowest w-full max-w-md rounded-[2.5rem] shadow-[0px_20px_40px_rgba(45,52,50,0.06)] overflow-hidden">
+<div class="p-8">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="text-2xl font-extrabold tracking-tight text-on-surface">Team Approved</h3>
+<p class="text-sm text-outline-variant mt-1 font-medium">Credentials generated successfully</p>
+</div>
+<button class="p-2 hover:bg-surface-container rounded-full text-outline-variant">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/10 mb-8 space-y-4">
+<div>
+<label class="text-[10px] uppercase tracking-widest font-bold text-outline-variant block mb-1">Login URL</label>
+<p class="text-sm font-semibold text-primary break-all">https://thepavilion.app/portal/login</p>
+</div>
+<div>
+<label class="text-[10px] uppercase tracking-widest font-bold text-outline-variant block mb-1">Registered Mobile</label>
+<p class="text-sm font-semibold text-on-surface">+91 98765 43210</p>
+</div>
+<div>
+<label class="text-[10px] uppercase tracking-widest font-bold text-outline-variant block mb-1">Temporary Password</label>
+<p class="text-sm font-mono font-bold text-on-surface bg-white px-2 py-1 inline-block rounded shadow-sm">PAV-8821-XQ</p>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<button class="w-full bg-[#25D366] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:brightness-105 transition-all shadow-md">
+<svg class="w-5 h-5 fill-current" viewbox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"></path></svg>
+                        Share on WhatsApp
+                    </button>
+<button class="w-full bg-surface-container-high text-on-surface-variant py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined text-lg">content_copy</span>
+                        Copy Credentials
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

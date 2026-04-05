@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Match Scheduler | The Pavilion</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#adb3b0",
+                        "secondary-container": "#e4e4cc",
+                        "inverse-primary": "#ffffff",
+                        "error-container": "#fe8b70",
+                        "surface-tint": "#5f5e60",
+                        "on-secondary-fixed-variant": "#5b5d4a",
+                        "surface-bright": "#f9f9f7",
+                        "on-primary-fixed-variant": "#5c5b5d",
+                        "secondary": "#5f604d",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#9e422c",
+                        "on-primary-fixed": "#3f3f41",
+                        "secondary-fixed-dim": "#d6d6be",
+                        "surface": "#f9f9f7",
+                        "outline": "#767c79",
+                        "surface-container": "#ecefec",
+                        "tertiary-dim": "#395959",
+                        "primary-container": "#e4e2e4",
+                        "on-background": "#2d3432",
+                        "surface-variant": "#dee4e0",
+                        "inverse-on-surface": "#9c9d9b",
+                        "surface-dim": "#d4dcd8",
+                        "on-surface": "#2d3432",
+                        "tertiary-container": "#d4f8f7",
+                        "on-primary": "#faf7f9",
+                        "tertiary-fixed": "#d4f8f7",
+                        "on-secondary-container": "#525341",
+                        "tertiary": "#456565",
+                        "on-tertiary-fixed": "#2d4d4d",
+                        "error-dim": "#5c1202",
+                        "primary-fixed": "#e4e2e4",
+                        "on-secondary": "#fbfae1",
+                        "on-error-container": "#742410",
+                        "background": "#f9f9f7",
+                        "surface-container-low": "#f2f4f2",
+                        "surface-container-highest": "#dee4e0",
+                        "on-secondary-fixed": "#3f412f",
+                        "on-surface-variant": "#5a605e",
+                        "secondary-fixed": "#e4e4cc",
+                        "primary-dim": "#535254",
+                        "on-tertiary-fixed-variant": "#4a6a6a",
+                        "surface-container-high": "#e5e9e6",
+                        "primary": "#5f5e60",
+                        "inverse-surface": "#0c0f0e",
+                        "primary-fixed-dim": "#d6d3d6",
+                        "on-tertiary": "#e0fffe",
+                        "tertiary-fixed-dim": "#c6e9e9",
+                        "secondary-dim": "#535442",
+                        "on-primary-container": "#525154",
+                        "on-error": "#fff7f6",
+                        "on-tertiary-container": "#406060"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9f9f7; color: #2d3432; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-nav { background: rgba(249, 249, 247, 0.8); backdrop-filter: blur(20px); }
+        .premium-shadow { shadow: 0px 20px 40px rgba(45, 52, 50, 0.06); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-surface selection:bg-secondary-container">
+<!-- SideNavBar (Authority Source: JSON) -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-stone-100 dark:bg-stone-950 flex flex-col p-4 gap-2 z-40">
+<div class="mb-8 px-2 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="Admin Avatar" class="w-full h-full object-cover" data-alt="close up of a professional cricket ball on a mahogany table with warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_MpK3Vm8EN3VkVimLGb25kP9eLLfAspg9JZhMEbef3AHKjbZ_px5shp3cGtskXNPTCEw7UaLjsPS2RImCos3k39IuwyX6dcI19wqtCXPTalvDrZZ0aE2ZlETsQOlpc4hWHe06LkdasEMY2sNSFj-_yYeYlMeEYYml5dJQ_V3J92afm8HeM2upQ4YOZFQpSfFQ1DCHMpBWkKlBDTjHubMByOeXov_-nD9rueFCASB3PaEgmD49zK0WROuIRDcrZtmC3E0PNdBvxEY"/>
+</div>
+<div>
+<h2 class="text-sm font-black text-zinc-900 dark:text-white tracking-tight">Tournament Admin</h2>
+<p class="text-[10px] uppercase tracking-widest text-zinc-500">Super User</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+                Teams
+            </a>
+<!-- Active Tab: Scheduler -->
+<a class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-stone-800 text-zinc-900 dark:text-white rounded-xl shadow-sm hover:translate-x-1 transition-all duration-200 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+                Scheduler
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="sports_score">sports_score</span>
+                Scores
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="info">info</span>
+                Tournament
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+                Messages
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Settings
+            </a>
+</nav>
+<button class="mt-auto bg-primary text-on-primary py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-transform active:scale-95">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+            New Match
+        </button>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen p-8 md:p-12">
+<!-- Header Section -->
+<header class="mb-12">
+<h1 class="text-4xl font-extrabold tracking-tighter text-on-background mb-2">Match Scheduler</h1>
+<p class="text-on-surface-variant font-body leading-relaxed max-w-2xl">
+                Organize the upcoming season's fixtures. Manage team pairings, venue allocations, and match timings with surgical precision.
+            </p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Create Match Form (Bento Style) -->
+<section class="lg:col-span-5 bg-surface-container-low rounded-[2rem] p-8 space-y-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-bold tracking-tight">Create Fixture</h3>
+<span class="text-[10px] font-bold tracking-widest text-secondary-dim bg-secondary-container px-3 py-1 rounded-full uppercase">Automatic ID: #MT-842</span>
+</div>
+<form class="space-y-6">
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="text-xs font-bold tracking-wide uppercase text-on-surface-variant ml-1">Team A</label>
+<select class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm focus:ring-4 focus:ring-primary-fixed-dim/30">
+<option>Select Home Team</option>
+<option>St. Andrews XI</option>
+<option>Victoria Royals</option>
+<option>The Pavilion Stars</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold tracking-wide uppercase text-on-surface-variant ml-1">Team B</label>
+<select class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm focus:ring-4 focus:ring-primary-fixed-dim/30">
+<option>Select Away Team</option>
+<option>Regent Park CC</option>
+<option>Highbury United</option>
+<option>Northern Knights</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="text-xs font-bold tracking-wide uppercase text-on-surface-variant ml-1">Date</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm focus:ring-4 focus:ring-primary-fixed-dim/30" type="date"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold tracking-wide uppercase text-on-surface-variant ml-1">Time</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm focus:ring-4 focus:ring-primary-fixed-dim/30" type="time"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold tracking-wide uppercase text-on-surface-variant ml-1">Venue / Ground</label>
+<select class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm focus:ring-4 focus:ring-primary-fixed-dim/30">
+<option>The Main Oval</option>
+<option>Secondary Grounds</option>
+<option>West Wing Arena</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold tracking-wide uppercase text-on-surface-variant ml-1">Notes</label>
+<textarea class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm focus:ring-4 focus:ring-primary-fixed-dim/30" placeholder="Special requirements, weather contingency plans..." rows="3"></textarea>
+</div>
+<button class="w-full bg-gradient-to-br from-primary to-primary-dim text-on-primary py-4 rounded-xl font-bold text-sm tracking-wide shadow-lg shadow-primary/10 hover:opacity-90 transition-all active:scale-[0.98]" type="submit">
+                        Schedule Match
+                    </button>
+</form>
+</section>
+<!-- Scheduled Matches List -->
+<section class="lg:col-span-7 bg-surface rounded-[2rem] space-y-8">
+<div class="flex items-center justify-between">
+<h3 class="text-xl font-bold tracking-tight">Scheduled Matches</h3>
+<div class="flex items-center gap-2">
+<button class="p-2 bg-surface-container-low rounded-lg hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="filter_list">filter_list</span>
+</button>
+<button class="p-2 bg-surface-container-low rounded-lg hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="sort">sort</span>
+</button>
+</div>
+</div>
+<div class="space-y-4">
+<!-- Match Row 1 -->
+<div class="group bg-surface-container-lowest p-6 rounded-2xl flex items-center justify-between hover:bg-surface-container-low transition-all duration-300">
+<div class="flex items-center gap-6">
+<div class="text-center w-12">
+<p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Match</p>
+<p class="text-lg font-black">#839</p>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-3">
+<span class="font-bold text-on-surface">St. Andrews XI</span>
+<span class="text-xs font-medium text-outline-variant">vs</span>
+<span class="font-bold text-on-surface">Victoria Royals</span>
+</div>
+<div class="flex items-center gap-4 text-xs text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="calendar_today">calendar_today</span> Oct 12, 2024</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 14:30 PM</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="location_on">location_on</span> The Main Oval</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-bold rounded-full uppercase tracking-tighter">Upcoming</span>
+<button class="p-2 hover:bg-surface-container-highest rounded-full transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+</div>
+</div>
+<!-- Match Row 2 -->
+<div class="group bg-surface-container-lowest p-6 rounded-2xl flex items-center justify-between hover:bg-surface-container-low transition-all duration-300">
+<div class="flex items-center gap-6">
+<div class="text-center w-12">
+<p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Match</p>
+<p class="text-lg font-black">#840</p>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-3">
+<span class="font-bold text-on-surface">Highbury United</span>
+<span class="text-xs font-medium text-outline-variant">vs</span>
+<span class="font-bold text-on-surface">Northern Knights</span>
+</div>
+<div class="flex items-center gap-4 text-xs text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="calendar_today">calendar_today</span> Oct 14, 2024</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 09:00 AM</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="location_on">location_on</span> West Wing Arena</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-xs font-bold text-primary hover:underline px-4 py-2 bg-surface-container-highest rounded-full">Enter Score</button>
+<button class="p-2 hover:bg-surface-container-highest rounded-full transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Match Row 3 -->
+<div class="group bg-surface-container-lowest p-6 rounded-2xl flex items-center justify-between hover:bg-surface-container-low transition-all duration-300">
+<div class="flex items-center gap-6">
+<div class="text-center w-12">
+<p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Match</p>
+<p class="text-lg font-black">#841</p>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-3">
+<span class="font-bold text-on-surface">The Pavilion Stars</span>
+<span class="text-xs font-medium text-outline-variant">vs</span>
+<span class="font-bold text-on-surface">Regent CC</span>
+</div>
+<div class="flex items-center gap-4 text-xs text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="calendar_today">calendar_today</span> Oct 15, 2024</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 11:30 AM</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="location_on">location_on</span> The Main Oval</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-3 py-1 bg-surface-container text-on-surface-variant text-[10px] font-bold rounded-full uppercase tracking-tighter">Draft</span>
+<button class="p-2 hover:bg-surface-container-highest rounded-full transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+</div>
+</div>
+</div>
+<div class="relative overflow-hidden rounded-[2rem] h-48 bg-surface-container-high group">
+<img alt="Stadium background" class="w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-700" data-alt="panoramic landscape view of an empty emerald green cricket field with stadium seats under a bright blue summer sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBG9v8qOrlchzF0EsYNy-i7zYmCz1NZk1omR0ZEPZZLHFlQM49MpgwCerhJ89oJMxD2XATWuZK7DQ4TuHYayzbFRw85talxtjODv4OMRbK2SbzPlyetGja3MEGkekF8T4kOb4uTIFsmkKIoIGVod6wq8oXGZ1HTf-ZcC27dzMffG3-KL_l4CJsxTXgPK8CW9IIj8ZOTKW9oKvf4gx7p15vl3bgrj_I5XNurpXI4vvGDaE8K3Rh0FL1TuxXsgPqcqkbDvjKlbUKLQQU"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
+<p class="text-sm font-bold uppercase tracking-[0.2em] mb-2">Ground Availability</p>
+<h4 class="text-2xl font-black text-on-background">Main Oval is fully booked until Oct 20th.</h4>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer (Authority Source: JSON) -->
+<footer class="ml-64 w-auto py-12 mt-auto border-t border-stone-200/20 dark:border-stone-800/20 bg-stone-50 dark:bg-stone-900 flex flex-col items-center justify-center text-center px-4">
+<div class="flex gap-8 mb-6">
+<a class="text-zinc-600 dark:text-zinc-400 text-xs font-body hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="#">Privacy Policy</a>
+<a class="text-zinc-600 dark:text-zinc-400 text-xs font-body hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="#">Terms of Service</a>
+<a class="text-zinc-600 dark:text-zinc-400 text-xs font-body hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="#">Contact Us</a>
+<a class="text-zinc-600 dark:text-zinc-400 text-xs font-body hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="#">Support</a>
+</div>
+<p class="text-zinc-600 dark:text-zinc-400 text-xs font-body leading-6">© 2024 The Curated Pavilion. All rights reserved.</p>
+</footer>
+</body></html>

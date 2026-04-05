@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "outline-variant": "#adb3b0",
+                      "secondary-container": "#e4e4cc",
+                      "inverse-primary": "#ffffff",
+                      "error-container": "#fe8b70",
+                      "surface-tint": "#5f5e60",
+                      "on-secondary-fixed-variant": "#5b5d4a",
+                      "surface-bright": "#f9f9f7",
+                      "on-primary-fixed-variant": "#5c5b5d",
+                      "secondary": "#5f604d",
+                      "surface-container-lowest": "#ffffff",
+                      "error": "#9e422c",
+                      "on-primary-fixed": "#3f3f41",
+                      "secondary-fixed-dim": "#d6d6be",
+                      "surface": "#f9f9f7",
+                      "outline": "#767c79",
+                      "surface-container": "#ecefec",
+                      "tertiary-dim": "#395959",
+                      "primary-container": "#e4e2e4",
+                      "on-background": "#2d3432",
+                      "surface-variant": "#dee4e0",
+                      "inverse-on-surface": "#9c9d9b",
+                      "surface-dim": "#d4dcd8",
+                      "on-surface": "#2d3432",
+                      "tertiary-container": "#d4f8f7",
+                      "on-primary": "#faf7f9",
+                      "tertiary-fixed": "#d4f8f7",
+                      "on-secondary-container": "#525341",
+                      "tertiary": "#456565",
+                      "on-tertiary-fixed": "#2d4d4d",
+                      "error-dim": "#5c1202",
+                      "primary-fixed": "#e4e2e4",
+                      "on-secondary": "#fbfae1",
+                      "on-error-container": "#742410",
+                      "background": "#f9f9f7",
+                      "surface-container-low": "#f2f4f2",
+                      "surface-container-highest": "#dee4e0",
+                      "on-secondary-fixed": "#3f412f",
+                      "on-surface-variant": "#5a605e",
+                      "secondary-fixed": "#e4e4cc",
+                      "primary-dim": "#535254",
+                      "on-tertiary-fixed-variant": "#4a6a6a",
+                      "surface-container-high": "#e5e9e6",
+                      "primary": "#5f5e60",
+                      "inverse-surface": "#0c0f0e",
+                      "primary-fixed-dim": "#d6d3d6",
+                      "on-tertiary": "#e0fffe",
+                      "tertiary-fixed-dim": "#c6e9e9",
+                      "secondary-dim": "#535442",
+                      "on-primary-container": "#525154",
+                      "on-error": "#fff7f6",
+                      "on-tertiary-container": "#406060"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Inter"],
+                      "body": ["Inter"],
+                      "label": ["Inter"]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f9f9f7; color: #2d3432; }
+        .glass-nav { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .hero-gradient { background: linear-gradient(145deg, #5f5e60 0%, #3f3f41 100%); }
+    </style>
+</head>
+<body class="bg-surface text-on-background selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-md shadow-sm dark:shadow-none flex justify-between items-center px-8 h-20 max-w-full mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-zinc-800 dark:text-zinc-100">
+            The Pavilion
+        </div>
+<div class="hidden md:flex items-center gap-10 font-inter tracking-tight leading-relaxed">
+<a class="text-zinc-900 dark:text-white font-semibold border-b-2 border-zinc-800 dark:border-zinc-200 pb-1 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 transition-colors" href="#">Home</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 transition-colors" href="#">Schedule</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 transition-colors" href="#">Standings</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 transition-colors" href="#">Info</a>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-zinc-700 dark:text-zinc-300 cursor-pointer scale-95 active:scale-90 transition-transform">notifications</span>
+<button class="px-6 py-2 bg-primary text-on-primary rounded-full font-medium scale-95 active:scale-90 transition-transform">Register</button>
+<button class="px-6 py-2 text-zinc-700 dark:text-zinc-300 font-medium scale-95 active:scale-90 transition-transform">Login</button>
+</div>
+</nav>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative h-[870px] w-full flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Stadium" class="w-full h-full object-cover brightness-[0.4] contrast-125" data-alt="dramatic wide angle shot of a professional cricket stadium at dusk with bright floodlights and a perfectly manicured green grass field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI7wa6XmomIENUl2XNse4iRcExYprBiFjkcJjloS7Psn2abAXSTwdF8f8eVyBFBkB0E4Xz2FG1wcNo9K3nXbdenygJ1bp_ZbJEi3JP6T2C7GyWYslhFj4RGlzyxS-vXp-eHOJOm4JBu4cR6mkN65vHjKzbGn1bJFYS-Xu82xJS5I0_xqPiDB5hXW2vtAh90MYy0YlhM11p9IAng96JAhua3BUXBtQC1_LMOO81_f0OAGLk8KVW6cy97-IjczrGOiWoWPAlIdlIN4I"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10 text-center px-4 max-w-5xl">
+<div class="inline-block px-4 py-1.5 mb-6 rounded-full bg-secondary-container text-on-secondary-container font-medium tracking-widest text-[10px] uppercase">
+                    Edition Year 2024
+                </div>
+<h1 class="text-6xl md:text-8xl font-black tracking-tighter text-on-primary mb-6 leading-none">
+                    The Pavilion <br/>Cricket Tournament
+                </h1>
+<p class="text-lg md:text-2xl text-on-primary/80 font-light tracking-wide mb-12 max-w-2xl mx-auto leading-relaxed">
+                    The ultimate battle of the best. Where precision meets passion under the floodlights.
+                </p>
+<div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+<button class="px-12 py-5 hero-gradient text-on-primary rounded-full text-lg font-bold shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300">
+                        Register Your Team
+                    </button>
+<!-- Alternative state if admin toggle was off -->
+<!-- 
+                    <button disabled class="px-12 py-5 bg-outline-variant/30 text-on-surface-variant cursor-not-allowed rounded-full text-lg font-bold">
+                        Registration Closed
+                    </button>
+                    -->
+</div>
+</div>
+</section>
+<!-- Tournament Info (Bento Style) -->
+<section class="py-24 px-8 max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Large Info Card -->
+<div class="md:col-span-8 bg-surface-container-low p-12 rounded-[2rem] flex flex-col justify-between">
+<div>
+<span class="label-sm text-primary font-bold tracking-widest uppercase text-xs">Overview</span>
+<h2 class="text-4xl font-extrabold tracking-tight mt-4 mb-8">Ground A Excellence</h2>
+<p class="text-lg text-on-surface-variant max-w-lg leading-relaxed">
+                            Experience cricket in its purest form. Our venue Ground A features a world-class batting surface and lush outfield designed for the high-octane T20 format.
+                        </p>
+</div>
+<div class="mt-12 flex gap-12">
+<div>
+<span class="block text-3xl font-black text-primary">32</span>
+<span class="text-sm font-medium text-on-surface-variant">Top-tier Teams</span>
+</div>
+<div>
+<span class="block text-3xl font-black text-primary">T20</span>
+<span class="text-sm font-medium text-on-surface-variant">Match Format</span>
+</div>
+<div>
+<span class="block text-3xl font-black text-primary">12</span>
+<span class="text-sm font-medium text-on-surface-variant">Days of Play</span>
+</div>
+</div>
+</div>
+<!-- Prize Pool Card -->
+<div class="md:col-span-4 bg-primary p-12 rounded-[2rem] text-on-primary flex flex-col justify-between relative overflow-hidden">
+<div class="relative z-10">
+<span class="material-symbols-outlined text-4xl mb-4" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+<h3 class="text-2xl font-bold mb-2">Grand Prize Pool</h3>
+<p class="text-on-primary/60 text-sm">Winning team takes all the glory and the gold.</p>
+</div>
+<div class="relative z-10 mt-8">
+<span class="text-5xl font-black tracking-tighter">$25,000</span>
+</div>
+<!-- Abstract decoration -->
+<div class="absolute -right-8 -bottom-8 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+</div>
+<!-- Date Card -->
+<div class="md:col-span-5 bg-surface-container-highest p-12 rounded-[2rem] flex items-center gap-8">
+<div class="flex-shrink-0 w-20 h-20 bg-surface-container-lowest rounded-2xl flex flex-col items-center justify-center text-primary">
+<span class="text-xs font-bold uppercase">Oct</span>
+<span class="text-3xl font-black">15</span>
+</div>
+<div>
+<h4 class="text-xl font-bold">Tournament Kickoff</h4>
+<p class="text-on-surface-variant text-sm mt-1">Ground A, Main Pavilion • 09:00 AM</p>
+</div>
+</div>
+<!-- Mini Rules Card -->
+<div class="md:col-span-7 bg-surface-container-high p-12 rounded-[2rem] flex items-center justify-between">
+<div>
+<h4 class="text-xl font-bold">Format &amp; Structure</h4>
+<p class="text-on-surface-variant text-sm mt-1">Knockout stages followed by grand finale.</p>
+</div>
+<span class="material-symbols-outlined text-primary text-5xl">sports_cricket</span>
+</div>
+</div>
+</section>
+<!-- Rules Section (Editorial Style) -->
+<section class="py-24 bg-surface-container-lowest">
+<div class="max-w-4xl mx-auto px-8">
+<div class="text-center mb-16">
+<span class="label-sm text-primary font-bold tracking-widest uppercase text-xs">Standardized Play</span>
+<h2 class="text-5xl font-extrabold tracking-tight mt-4">Tournament Rules</h2>
+</div>
+<div class="space-y-16">
+<div class="flex gap-8 group">
+<span class="text-6xl font-black text-outline-variant/30 group-hover:text-primary transition-colors duration-300">01</span>
+<div>
+<h3 class="text-2xl font-bold mb-4">Official T20 Standard</h3>
+<p class="text-on-surface-variant leading-relaxed">Matches will strictly follow the international T20 format with 20 overs per side. All equipment must be pre-approved by the tournament committee.</p>
+</div>
+</div>
+<div class="flex gap-8 group">
+<span class="text-6xl font-black text-outline-variant/30 group-hover:text-primary transition-colors duration-300">02</span>
+<div>
+<h3 class="text-2xl font-bold mb-4">Player Eligibility</h3>
+<p class="text-on-surface-variant leading-relaxed">Each team must register exactly 15 players. All players must present valid identification at check-in. No changes are permitted after the first ball is bowled.</p>
+</div>
+</div>
+<div class="flex gap-8 group">
+<span class="text-6xl font-black text-outline-variant/30 group-hover:text-primary transition-colors duration-300">03</span>
+<div>
+<h3 class="text-2xl font-bold mb-4">Umpire Finality</h3>
+<p class="text-on-surface-variant leading-relaxed">The umpire's decision is final in all circumstances. Any display of dissent or poor sportsmanship will result in immediate penalty points for the team.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Terms and Organiser -->
+<section class="py-24 px-8 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-24">
+<div>
+<h3 class="text-sm font-black uppercase tracking-[0.2em] text-primary mb-8">Terms &amp; Conditions</h3>
+<div class="h-64 overflow-y-auto pr-8 custom-scrollbar space-y-4 text-sm text-on-surface-variant/80 border-l-2 border-surface-container-high pl-8">
+<p>1. By registering, teams agree to abide by all local stadium regulations and safety protocols.</p>
+<p>2. The Pavilion Organising Committee reserves the right to reschedule matches due to inclement weather or unforeseen venue issues.</p>
+<p>3. Registration fees are non-refundable once the tournament bracket has been finalized and published.</p>
+<p>4. All participants must hold active medical insurance. The organizers are not liable for on-field injuries.</p>
+<p>5. Teams must arrive at the venue at least 60 minutes prior to their scheduled start time.</p>
+<p>6. Professional photography will be taking place. By attending, you consent to being photographed for promotional purposes.</p>
+<p>7. Smoking and alcohol are strictly prohibited within the Ground A premises.</p>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-[2.5rem] p-12 relative overflow-hidden">
+<h3 class="text-sm font-black uppercase tracking-[0.2em] text-primary mb-8">Organized By</h3>
+<div class="flex items-center gap-6 mb-8">
+<div class="w-20 h-20 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-primary">stadium</span>
+</div>
+<div>
+<h4 class="text-2xl font-bold">The Curated Pavilion</h4>
+<p class="text-on-surface-variant text-sm">Elite Sporting Events Management</p>
+</div>
+</div>
+<div class="space-y-4 text-on-surface-variant text-sm italic">
+<p>“Delivering world-class cricket experiences since 2012. Our mission is to elevate local sports to a premium, editorial standard.”</p>
+<div class="flex gap-4 mt-8">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">alternate_email</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">public</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">call</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 mt-auto border-t border-stone-200/20 dark:border-stone-800/20 bg-stone-50 dark:bg-stone-900 flex flex-col items-center justify-center text-center px-4">
+<div class="flex flex-wrap justify-center gap-8 mb-8 text-xs font-body leading-6 text-zinc-600 dark:text-zinc-400">
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 opacity-80 transition-opacity" href="#">Privacy Policy</a>
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 opacity-80 transition-opacity" href="#">Terms of Service</a>
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 opacity-80 transition-opacity" href="#">Contact Us</a>
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 opacity-80 transition-opacity" href="#">Support</a>
+</div>
+<p class="text-xs font-body text-zinc-500 dark:text-zinc-400">
+            © 2024 The Curated Pavilion. All rights reserved.
+        </p>
+</footer>
+<style>
+        /* Custom Scrollbar for T&C */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #ecefec;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #adb3b0;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #767c79;
+        }
+    </style>
+</body></html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Pavilion — Points Table</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#adb3b0",
+                        "secondary-container": "#e4e4cc",
+                        "inverse-primary": "#ffffff",
+                        "error-container": "#fe8b70",
+                        "surface-tint": "#5f5e60",
+                        "on-secondary-fixed-variant": "#5b5d4a",
+                        "surface-bright": "#f9f9f7",
+                        "on-primary-fixed-variant": "#5c5b5d",
+                        "secondary": "#5f604d",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#9e422c",
+                        "on-primary-fixed": "#3f3f41",
+                        "secondary-fixed-dim": "#d6d6be",
+                        "surface": "#f9f9f7",
+                        "outline": "#767c79",
+                        "surface-container": "#ecefec",
+                        "tertiary-dim": "#395959",
+                        "primary-container": "#e4e2e4",
+                        "on-background": "#2d3432",
+                        "surface-variant": "#dee4e0",
+                        "inverse-on-surface": "#9c9d9b",
+                        "surface-dim": "#d4dcd8",
+                        "on-surface": "#2d3432",
+                        "tertiary-container": "#d4f8f7",
+                        "on-primary": "#faf7f9",
+                        "tertiary-fixed": "#d4f8f7",
+                        "on-secondary-container": "#525341",
+                        "tertiary": "#456565",
+                        "on-tertiary-fixed": "#2d4d4d",
+                        "error-dim": "#5c1202",
+                        "primary-fixed": "#e4e2e4",
+                        "on-secondary": "#fbfae1",
+                        "on-error-container": "#742410",
+                        "background": "#f9f9f7",
+                        "surface-container-low": "#f2f4f2",
+                        "surface-container-highest": "#dee4e0",
+                        "on-secondary-fixed": "#3f412f",
+                        "on-surface-variant": "#5a605e",
+                        "secondary-fixed": "#e4e4cc",
+                        "primary-dim": "#535254",
+                        "on-tertiary-fixed-variant": "#4a6a6a",
+                        "surface-container-high": "#e5e9e6",
+                        "primary": "#5f5e60",
+                        "inverse-surface": "#0c0f0e",
+                        "primary-fixed-dim": "#d6d3d6",
+                        "on-tertiary": "#e0fffe",
+                        "tertiary-fixed-dim": "#c6e9e9",
+                        "secondary-dim": "#535442",
+                        "on-primary-container": "#525154",
+                        "on-error": "#fff7f6",
+                        "on-tertiary-container": "#406060"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9f7;
+            color: #2d3432;
+        }
+        .glass-nav {
+            background: rgba(249, 249, 247, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-md shadow-sm dark:shadow-none h-20 flex justify-between items-center px-8 max-w-full mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold tracking-tighter text-zinc-800 dark:text-zinc-100 font-headline">The Pavilion</span>
+<div class="hidden md:flex gap-6 items-center">
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 font-inter tracking-tight leading-relaxed" href="#">Home</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 font-inter tracking-tight leading-relaxed" href="#">Schedule</a>
+<a class="text-zinc-900 dark:text-white font-semibold border-b-2 border-zinc-800 dark:border-zinc-200 pb-1 font-inter tracking-tight leading-relaxed" href="#">Standings</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 font-inter tracking-tight leading-relaxed" href="#">Info</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-zinc-700 dark:text-zinc-300 p-2 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 rounded-full transition-colors scale-95 active:scale-90" data-icon="notifications">notifications</button>
+<div class="h-10 w-10 rounded-full overflow-hidden border border-surface-variant">
+<img alt="User profile" data-alt="professional corporate headshot of a smiling man in his 30s with clean background and soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAy7Kg5_x7VIqGWBNb9lyspJm047w4H3YwUZYC9RxKw9n5_GyVRMI3yquHQWk9KvaQ0Co9ukjbq4ndc-OY7ALaecfeQNcWJWDGSbDiRPucdvyQ7RF-t1bBJv4rYJPM6PasKyHXj1h4yWTqbyzJLHUX_1agmlUJ_fTW5E_7Riby-QxddGJOnbie92ViMTF9VHxYRXQlhfS1wUPZyUe5QuTQ6ui5GyjoeLn_DvHGyesfAIZFdQeQWvpzcrr8VCNhGmIEuaU4i2fknG84"/>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto flex gap-12">
+<!-- SideNav (Internal Dashboard Flow) -->
+<aside class="hidden lg:flex flex-col w-64 h-[calc(100vh-160px)] sticky top-32 bg-stone-100 dark:bg-stone-950 p-4 gap-2 rounded-3xl">
+<div class="mb-6 px-2">
+<h3 class="text-lg font-black text-zinc-900 dark:text-white uppercase tracking-tighter">Tournament Admin</h3>
+<p class="text-xs text-zinc-500 font-medium">Super User</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span> Dashboard
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span> Teams
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span> Scheduler
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-stone-800 text-zinc-900 dark:text-white rounded-xl shadow-sm hover:translate-x-1 transition-all duration-200 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="sports_score">sports_score</span> Scores
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 rounded-xl hover:translate-x-1 transition-all duration-200 text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined" data-icon="info">info</span> Tournament
+                </a>
+</nav>
+<button class="mt-auto bg-primary text-on-primary rounded-xl py-3 px-4 font-bold tracking-tight shadow-lg hover:shadow-xl transition-all scale-95 active:scale-90">
+                New Match
+            </button>
+</aside>
+<!-- Main Content Area: Points Table -->
+<section class="flex-1">
+<header class="mb-12">
+<div class="flex justify-between items-end">
+<div>
+<span class="text-xs font-bold uppercase tracking-[0.15em] text-primary mb-2 block">Group Stage 2024</span>
+<h1 class="text-5xl font-black font-headline tracking-tighter text-on-surface">U6 — Points Table</h1>
+</div>
+<div class="flex gap-3">
+<button class="material-symbols-outlined p-2 rounded-full border border-outline-variant/20 text-on-surface-variant hover:bg-surface-container-low transition-colors" data-icon="file_download">file_download</button>
+<button class="material-symbols-outlined p-2 rounded-full border border-outline-variant/20 text-on-surface-variant hover:bg-surface-container-low transition-colors" data-icon="filter_list">filter_list</button>
+</div>
+</div>
+<div class="mt-6 flex gap-2">
+<span class="px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold tracking-wider">IPL FORMAT</span>
+<span class="px-4 py-1 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-bold tracking-wider">LIVE UPDATES</span>
+</div>
+</header>
+<!-- Table Container -->
+<div class="bg-surface-container-low rounded-3xl p-1 overflow-hidden">
+<div class="bg-surface-container-lowest rounded-[1.4rem] overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-[10px] md:text-xs font-bold text-on-surface-variant uppercase tracking-widest bg-surface-container-low/50">
+<th class="py-6 px-6 w-16 text-center">Rank</th>
+<th class="py-6 px-6">Team Name</th>
+<th class="py-6 px-4 text-center">P</th>
+<th class="py-6 px-4 text-center">W</th>
+<th class="py-6 px-4 text-center">L</th>
+<th class="py-6 px-4 text-center">T</th>
+<th class="py-6 px-6 text-center text-primary">Points</th>
+<th class="py-6 px-8 text-right">NRR</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-stone-100">
+<!-- Row 1 -->
+<tr class="hover:bg-stone-50/50 transition-colors">
+<td class="py-5 px-6 text-center font-bold text-zinc-400">01</td>
+<td class="py-5 px-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="stars">stars</span>
+</div>
+<span class="font-bold tracking-tight text-on-surface">Mumbai Titans</span>
+</div>
+</td>
+<td class="py-5 px-4 text-center font-medium">12</td>
+<td class="py-5 px-4 text-center font-medium">9</td>
+<td class="py-5 px-4 text-center font-medium text-zinc-400">3</td>
+<td class="py-5 px-4 text-center font-medium text-zinc-400">0</td>
+<td class="py-5 px-6 text-center font-black text-primary text-lg">18</td>
+<td class="py-5 px-8 text-right font-mono font-bold text-zinc-600">+1.242</td>
+</tr>
+<!-- Highlighted Row (User Team) -->
+<tr class="bg-secondary-container/20 border-l-4 border-secondary transition-colors">
+<td class="py-5 px-6 text-center font-bold text-secondary">02</td>
+<td class="py-5 px-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="person">person</span>
+</div>
+<div class="flex flex-col">
+<span class="font-black tracking-tight text-on-surface">The Pavilion XI</span>
+<span class="text-[10px] font-bold text-secondary-dim uppercase tracking-tighter">Your Team</span>
+</div>
+</div>
+</td>
+<td class="py-5 px-4 text-center font-medium">11</td>
+<td class="py-5 px-4 text-center font-medium">8</td>
+<td class="py-5 px-4 text-center font-medium text-zinc-400">3</td>
+<td class="py-5 px-4 text-center font-medium text-zinc-400">0</td>
+<td class="py-5 px-6 text-center font-black text-secondary text-lg">16</td>
+<td class="py-5 px-8 text-right font-mono font-bold text-secondary">+0.988</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-stone-50/50 transition-colors">
+<td class="py-5 px-6 text-center font-bold text-zinc-400">03</td>
+<td class="py-5 px-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="bolt">bolt</span>
+</div>
+<span class="font-bold tracking-tight text-on-surface">Chennai Superstars</span>
+</div>
+</td>
+<td class="py-5 px-4 text-center font-medium">12</td>
+<td class="py-5 px-4 text-center font-medium">7</td>
+<td class="py-5 px-4 text-center font-medium text-zinc-400">5</td>
+<td class="py-5 px-4 text-center font-medium text-zinc-400">0</td>
+<td class="py-5 px-6 text-center font-black text-primary text-lg">14</td>
+<td class="py-5 px-8 text-right font-mono font-bold text-zinc-600">+0.420</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-stone-50/50 transition-colors">
+<td class="py-5 px-6 text-center font-bold text-zinc-400">04</td>
+<td class="py-5 px-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="diamond">diamond</span>
+</div>
+<span class="font-bold tracking-tight text-on-surface">Royal Bengals</span>
+</div>
+</td>
+<td class="py-5 px-4 text-center font-medium">12</td>
+<td class="py-5 px-4 text-center font-medium">6</td>
+<td class="py-5 px-4 text-center font-medium text-zinc-400">6</td>
+<td class="py-5 px-4 text-center font-medium text-zinc-400">0</td>
+<td class="py-5 px-6 text-center font-black text-primary text-lg">12</td>
+<td class="py-5 px-8 text-right font-mono font-bold text-zinc-600">+0.115</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-stone-50/50 transition-colors">
+<td class="py-5 px-6 text-center font-bold text-zinc-400">05</td>
+<td class="py-5 px-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="shield">shield</span>
+</div>
+<span class="font-bold tracking-tight text-on-surface">Delhi Defenders</span>
+</div>
+</td>
+<td class="py-5 px-4 text-center font-medium">11</td>
+<td class="py-5 px-4 text-center font-medium">5</td>
+<td class="py-5 px-4 text-center font-medium text-zinc-400">5</td>
+<td class="py-5 px-4 text-center font-medium text-zinc-400">1</td>
+<td class="py-5 px-6 text-center font-black text-primary text-lg">11</td>
+<td class="py-5 px-8 text-right font-mono font-bold text-zinc-600">-0.245</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Asymmetric Informational Cards -->
+<div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="md:col-span-2 bg-surface-container-low rounded-3xl p-8 flex flex-col justify-between">
+<div>
+<h4 class="text-xl font-bold tracking-tight mb-2">Qualification Status</h4>
+<p class="text-on-surface-variant leading-relaxed max-w-md">Top 4 teams advance to the Playoffs. Points tie-breaks are determined by Net Run Rate (NRR) followed by Head-to-Head performance.</p>
+</div>
+<div class="mt-8 flex items-center gap-6">
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full bg-stone-200 border-2 border-surface flex items-center justify-center"><span class="material-symbols-outlined text-xs" data-icon="stars">stars</span></div>
+<div class="w-10 h-10 rounded-full bg-secondary-container border-2 border-surface flex items-center justify-center"><span class="material-symbols-outlined text-xs" data-icon="person">person</span></div>
+<div class="w-10 h-10 rounded-full bg-stone-200 border-2 border-surface flex items-center justify-center"><span class="material-symbols-outlined text-xs" data-icon="bolt">bolt</span></div>
+</div>
+<span class="text-sm font-semibold text-primary">3 Teams already clinched playoffs</span>
+</div>
+</div>
+<div class="bg-primary text-on-primary rounded-3xl p-8 relative overflow-hidden">
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-white/10 text-9xl" data-icon="trending_up">trending_up</span>
+<h4 class="text-lg font-bold mb-4">Live Projection</h4>
+<p class="text-white/80 text-sm mb-6 leading-relaxed">Based on current NRR, <span class="font-bold text-white">The Pavilion XI</span> has a 94% chance of finishing in the top seed.</p>
+<button class="bg-white text-primary px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest shadow-xl">Details</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 mt-auto border-t border-stone-200/20 bg-stone-50 flex flex-col items-center justify-center text-center px-4">
+<div class="flex gap-8 mb-6">
+<a class="text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" href="#">Privacy Policy</a>
+<a class="text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" href="#">Terms of Service</a>
+<a class="text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" href="#">Contact Us</a>
+<a class="text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" href="#">Support</a>
+</div>
+<p class="text-[10px] text-zinc-400 tracking-widest uppercase">© 2024 The Curated Pavilion. All rights reserved.</p>
+</footer>
+</body></html>

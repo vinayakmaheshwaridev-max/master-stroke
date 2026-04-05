@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Pavilion — Team Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#adb3b0",
+                        "secondary-container": "#e4e4cc",
+                        "inverse-primary": "#ffffff",
+                        "error-container": "#fe8b70",
+                        "surface-tint": "#5f5e60",
+                        "on-secondary-fixed-variant": "#5b5d4a",
+                        "surface-bright": "#f9f9f7",
+                        "on-primary-fixed-variant": "#5c5b5d",
+                        "secondary": "#5f604d",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#9e422c",
+                        "on-primary-fixed": "#3f3f41",
+                        "secondary-fixed-dim": "#d6d6be",
+                        "surface": "#f9f9f7",
+                        "outline": "#767c79",
+                        "surface-container": "#ecefec",
+                        "tertiary-dim": "#395959",
+                        "primary-container": "#e4e2e4",
+                        "on-background": "#2d3432",
+                        "surface-variant": "#dee4e0",
+                        "inverse-on-surface": "#9c9d9b",
+                        "surface-dim": "#d4dcd8",
+                        "on-surface": "#2d3432",
+                        "tertiary-container": "#d4f8f7",
+                        "on-primary": "#faf7f9",
+                        "tertiary-fixed": "#d4f8f7",
+                        "on-secondary-container": "#525341",
+                        "tertiary": "#456565",
+                        "on-tertiary-fixed": "#2d4d4d",
+                        "error-dim": "#5c1202",
+                        "primary-fixed": "#e4e2e4",
+                        "on-secondary": "#fbfae1",
+                        "on-error-container": "#742410",
+                        "background": "#f9f9f7",
+                        "surface-container-low": "#f2f4f2",
+                        "surface-container-highest": "#dee4e0",
+                        "on-secondary-fixed": "#3f412f",
+                        "on-surface-variant": "#5a605e",
+                        "secondary-fixed": "#e4e4cc",
+                        "primary-dim": "#535254",
+                        "on-tertiary-fixed-variant": "#4a6a6a",
+                        "surface-container-high": "#e5e9e6",
+                        "primary": "#5f5e60",
+                        "inverse-surface": "#0c0f0e",
+                        "primary-fixed-dim": "#d6d3d6",
+                        "on-tertiary": "#e0fffe",
+                        "tertiary-fixed-dim": "#c6e9e9",
+                        "secondary-dim": "#535442",
+                        "on-primary-container": "#525154",
+                        "on-error": "#fff7f6",
+                        "on-tertiary-container": "#406060"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f9f9f7; color: #2d3432; }
+        .glass { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .whisper-shadow { box-shadow: 0px 20px 40px rgba(45, 52, 50, 0.06); }
+        .primary-gradient { background: linear-gradient(145deg, #5f5e60 0%, #535254 100%); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-md shadow-sm dark:shadow-none flex justify-between items-center px-8 h-20 max-w-full mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-zinc-800 dark:text-zinc-100">The Pavilion</div>
+<div class="hidden md:flex items-center space-x-8 font-inter tracking-tight leading-relaxed">
+<a class="text-zinc-900 dark:text-white font-semibold border-b-2 border-zinc-800 dark:border-zinc-200 pb-1" href="#">Home</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 transition-colors" href="#">Schedule</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 transition-colors" href="#">Standings</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 transition-colors" href="#">Info</a>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative cursor-pointer group">
+<span class="material-symbols-outlined text-zinc-700 dark:text-zinc-300 scale-95 active:scale-90 transition-transform" data-icon="notifications">notifications</span>
+<span class="absolute -top-1 -right-1 flex h-4 w-4">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
+<span class="relative inline-flex rounded-full h-4 w-4 bg-error text-[10px] items-center justify-center text-white font-bold">3</span>
+</span>
+<!-- Messages Dropdown (Admin messages) -->
+<div class="absolute right-0 mt-4 w-80 bg-surface-container-lowest border-none whisper-shadow rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 p-4 z-50">
+<h4 class="text-xs font-bold uppercase tracking-wider text-outline mb-3">Admin Messages</h4>
+<div class="space-y-3">
+<div class="p-3 hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer">
+<p class="text-sm font-semibold">Venue Change</p>
+<p class="text-xs text-on-surface-variant">Match 42 moved to Oval Ground.</p>
+</div>
+<div class="p-3 hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer">
+<p class="text-sm font-semibold">Toss Requirement</p>
+<p class="text-xs text-on-surface-variant">Captains meet at 08:30 AM.</p>
+</div>
+</div>
+</div>
+</div>
+<img alt="User profile" class="h-10 w-10 rounded-full object-cover ring-2 ring-surface-variant" data-alt="professional portrait of a young team captain with a confident expression in a clean studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCF8Jt7LZWNkuKZOgf2vrZLtGMH-rgG64OHdkFnVnyJ7edQxcXo58amcrWH21VWsNCSEpzlVXDEUaT0CF6OPsnuiNxb3nNf6_zmDqZViW6enP3-cPEwCAdturRHFfcTQA5e-C3HS10DIWUwcd093veroFXqMsSj9cQiKJKHT2JiS9WsKwDidJeVffPN-OPQFQoHfGcecF4qwhqOOTRHjqYpoC8tzFWhtblnWL51rbgdCjycDyVfBLUNIXK326sxgIq7B0233joS6lE"/>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-8 max-w-7xl mx-auto">
+<!-- Welcome Banner -->
+<section class="mb-12 relative overflow-hidden rounded-xl h-64 flex items-end p-10 bg-surface-container-low group">
+<div class="absolute inset-0 z-0 overflow-hidden">
+<img alt="Cricket field" class="w-full h-full object-cover opacity-15 grayscale scale-105 group-hover:scale-110 transition-transform duration-700" data-alt="dramatic wide angle shot of a professional cricket stadium at twilight with stadium lights glowing under a deep blue sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3pxpTip6UPUmR8flpFXbzyOe50RHluRZI_2QRiFVLJewOMVNdqoLTu5H8bOrPbaBmVe3X95WWCLg7MsCQ4z02tl04S2wZcYlRF62IhvnLsNHiWyukxq1i1X5kOePcmKHTeR0Om38Tni7nTT0Jq3BeSy_LQKAkszOr89pXvxrLJ785r0u4JmL9lu4w-RjnCL6OelmlpTRmBZtm0iL014dCtrDurFRLACe2nbOu9_ovRZRGcKorbQ_TkYl2LBTzJ5FDI0TnrpRphWI"/>
+</div>
+<div class="relative z-10 flex flex-col md:flex-row justify-between items-end w-full">
+<div>
+<h1 class="text-4xl md:text-5xl font-black tracking-tighter text-on-surface mb-2">Welcome, Royal Challengers!</h1>
+<p class="text-on-surface-variant font-medium tracking-wide">Tournament Phase 02 • Captain's View</p>
+</div>
+<div class="mt-6 md:mt-0 text-right">
+<span class="text-xs font-bold uppercase tracking-widest text-outline mb-1 block">Season Points</span>
+<div class="text-6xl font-black text-primary tracking-tighter">1,240</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Team Status Card (Asymmetric Span) -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-xl p-8 whisper-shadow flex flex-col justify-between">
+<div class="flex justify-between items-start mb-12">
+<div>
+<h2 class="text-2xl font-extrabold tracking-tight mb-1">Team Status</h2>
+<div class="inline-flex items-center px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold tracking-widest uppercase">
+<span class="h-2 w-2 rounded-full bg-secondary mr-2"></span> Active
+                        </div>
+</div>
+<div class="text-right">
+<p class="text-xs font-bold uppercase text-outline">Net Run Rate</p>
+<p class="text-3xl font-black text-on-surface">+1.428</p>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-4 pt-8">
+<div class="flex flex-col">
+<span class="text-xs font-bold text-outline uppercase tracking-tighter mb-1">Played</span>
+<span class="text-4xl font-bold">08</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-outline uppercase tracking-tighter mb-1">Won</span>
+<span class="text-4xl font-bold text-primary">06</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-outline uppercase tracking-tighter mb-1">Lost</span>
+<span class="text-4xl font-bold">02</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-outline uppercase tracking-tighter mb-1">Tied</span>
+<span class="text-4xl font-bold">00</span>
+</div>
+</div>
+</div>
+<!-- Upcoming Match Card -->
+<div class="md:col-span-4 bg-primary-gradient text-on-primary rounded-xl p-8 flex flex-col justify-between whisper-shadow">
+<div>
+<div class="flex justify-between items-center mb-8">
+<span class="text-xs font-bold uppercase tracking-widest opacity-70">Next Match</span>
+<span class="material-symbols-outlined" data-icon="event">event</span>
+</div>
+<div class="flex items-center gap-6 mb-8">
+<div class="text-center">
+<div class="text-4xl font-black">RC</div>
+<div class="text-[10px] font-bold uppercase tracking-widest opacity-60">Home</div>
+</div>
+<div class="text-xl font-light opacity-40">vs</div>
+<div class="text-center">
+<div class="text-4xl font-black">TK</div>
+<div class="text-[10px] font-bold uppercase tracking-widest opacity-60">Away</div>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-lg font-bold tracking-tight mb-1">Oct 24 • 14:30</h3>
+<p class="text-sm opacity-80 mb-6">The Lords Pavilion, London</p>
+<button class="w-full bg-surface-container-lowest text-primary font-bold py-3 px-6 rounded-xl text-sm transition-transform active:scale-95">Match Details</button>
+</div>
+</div>
+<!-- Recent Result Card -->
+<div class="md:col-span-6 bg-surface-container-low rounded-xl p-8 flex items-center justify-between group hover:bg-surface-container-high transition-colors duration-300">
+<div>
+<h3 class="text-xs font-bold uppercase tracking-widest text-outline mb-4">Last Match Result</h3>
+<div class="flex items-baseline gap-4">
+<span class="text-4xl font-black tracking-tighter">184/4</span>
+<span class="text-sm font-medium text-on-surface-variant">(20.0)</span>
+</div>
+<p class="text-sm font-semibold text-secondary mt-2">Defeated Warriors by 24 runs</p>
+</div>
+<div class="h-20 w-20 flex items-center justify-center bg-surface-container-lowest rounded-full whisper-shadow">
+<span class="text-2xl font-black text-primary">W</span>
+</div>
+</div>
+<!-- Quick Action / Messages Summary -->
+<div class="md:col-span-6 bg-surface-container-low rounded-xl p-8">
+<h3 class="text-xs font-bold uppercase tracking-widest text-outline mb-6">Administrative Updates</h3>
+<div class="space-y-4">
+<div class="flex items-start gap-4">
+<div class="mt-1 h-2 w-2 rounded-full bg-error"></div>
+<div>
+<p class="text-sm font-bold">New Tournament Rules Added</p>
+<p class="text-xs text-on-surface-variant leading-relaxed">Please review the updated Powerplay regulations for the semi-finals.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="mt-1 h-2 w-2 rounded-full bg-outline-variant"></div>
+<div>
+<p class="text-sm font-bold">Kit Collection Reminder</p>
+<p class="text-xs text-on-surface-variant leading-relaxed">Official tournament jerseys are ready for collection at the main office.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- SideNavBar (Supressed for Dashboard Main View as requested - Primary Nav in TopAppBar) -->
+<!-- Footer -->
+<footer class="w-full py-12 mt-auto border-t border-stone-200/20 dark:border-stone-800/20 bg-stone-50 dark:bg-stone-900 flex flex-col items-center justify-center text-center px-4">
+<div class="flex gap-8 mb-6 text-xs font-body leading-6 text-zinc-600 dark:text-zinc-400">
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-opacity opacity-80" href="#">Privacy Policy</a>
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-opacity opacity-80" href="#">Terms of Service</a>
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-opacity opacity-80" href="#">Contact Us</a>
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-opacity opacity-80" href="#">Support</a>
+</div>
+<p class="text-xs text-zinc-500 dark:text-zinc-400 opacity-80">© 2024 The Curated Pavilion. All rights reserved.</p>
+</footer>
+<!-- FAB (Suppressed for Dashboard per suppression rules) -->
+</body></html>

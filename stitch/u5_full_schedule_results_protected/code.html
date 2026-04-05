@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tournament Schedule - The Pavilion</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#adb3b0",
+                        "secondary-container": "#e4e4cc",
+                        "inverse-primary": "#ffffff",
+                        "error-container": "#fe8b70",
+                        "surface-tint": "#5f5e60",
+                        "on-secondary-fixed-variant": "#5b5d4a",
+                        "surface-bright": "#f9f9f7",
+                        "on-primary-fixed-variant": "#5c5b5d",
+                        "secondary": "#5f604d",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#9e422c",
+                        "on-primary-fixed": "#3f3f41",
+                        "secondary-fixed-dim": "#d6d6be",
+                        "surface": "#f9f9f7",
+                        "outline": "#767c79",
+                        "surface-container": "#ecefec",
+                        "tertiary-dim": "#395959",
+                        "primary-container": "#e4e2e4",
+                        "on-background": "#2d3432",
+                        "surface-variant": "#dee4e0",
+                        "inverse-on-surface": "#9c9d9b",
+                        "surface-dim": "#d4dcd8",
+                        "on-surface": "#2d3432",
+                        "tertiary-container": "#d4f8f7",
+                        "on-primary": "#faf7f9",
+                        "tertiary-fixed": "#d4f8f7",
+                        "on-secondary-container": "#525341",
+                        "tertiary": "#456565",
+                        "on-tertiary-fixed": "#2d4d4d",
+                        "error-dim": "#5c1202",
+                        "primary-fixed": "#e4e2e4",
+                        "on-secondary": "#fbfae1",
+                        "on-error-container": "#742410",
+                        "background": "#f9f9f7",
+                        "surface-container-low": "#f2f4f2",
+                        "surface-container-highest": "#dee4e0",
+                        "on-secondary-fixed": "#3f412f",
+                        "on-surface-variant": "#5a605e",
+                        "secondary-fixed": "#e4e4cc",
+                        "primary-dim": "#535254",
+                        "on-tertiary-fixed-variant": "#4a6a6a",
+                        "surface-container-high": "#e5e9e6",
+                        "primary": "#5f5e60",
+                        "inverse-surface": "#0c0f0e",
+                        "primary-fixed-dim": "#d6d3d6",
+                        "on-tertiary": "#e0fffe",
+                        "tertiary-fixed-dim": "#c6e9e9",
+                        "secondary-dim": "#535442",
+                        "on-primary-container": "#525154",
+                        "on-error": "#fff7f6",
+                        "on-tertiary-container": "#406060"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .premium-gradient {
+            background: linear-gradient(145deg, #5f5e60 0%, #535254 100%);
+        }
+        .whisper-shadow {
+            box-shadow: 0px 20px 40px rgba(45, 52, 50, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-md shadow-sm dark:shadow-none h-20 flex justify-between items-center px-8 max-w-full mx-auto font-inter tracking-tight leading-relaxed">
+<div class="text-2xl font-bold tracking-tighter text-zinc-800 dark:text-zinc-100">
+            The Pavilion
+        </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 transition-colors scale-95 active:scale-90 transition-transform" href="#">Home</a>
+<a class="text-zinc-900 dark:text-white font-semibold border-b-2 border-zinc-800 dark:border-zinc-200 pb-1 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 transition-colors scale-95 active:scale-90 transition-transform" href="#">Schedule</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 transition-colors scale-95 active:scale-90 transition-transform" href="#">Standings</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-stone-100/50 dark:hover:bg-stone-800/50 transition-colors scale-95 active:scale-90 transition-transform" href="#">Info</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-zinc-700 dark:text-zinc-300 p-2 rounded-full hover:bg-stone-100/50 transition-colors">notifications</button>
+<div class="h-10 w-10 rounded-full bg-surface-container overflow-hidden">
+<img alt="User profile" data-alt="Close-up portrait of a professional man with a friendly expression in soft natural lighting and neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB86YLq-V9FJAe3Ca0C3OFXI3bituLhK5FE18JGiYUKjMGJb0t7DM1Fw-2QWy5LdRevSjzqHwglPZnZ5idYylU9tAir9mkXREDkYie2vyC_IRkP6HINDSsA4fCbVfPpGjDcOBmBC4R5VxyanMCHxJazgHERCH76P3fAdStQ3MhDfPXTxx_cza8jJqUJwPItkjjsRJP_WgigcMNYcrRdjBgRq8t3uXZfnANJNguUl96rEUEg5f29kc73e7-b_djZyWv1ay4TN7JIp9g"/>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto">
+<!-- Header Section -->
+<header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="max-w-2xl">
+<span class="inline-block px-3 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-bold tracking-[0.1em] rounded-full uppercase mb-4">Summer Open 2024</span>
+<h1 class="text-5xl md:text-6xl font-extrabold tracking-[-0.04em] text-on-surface mb-4">Match Schedule</h1>
+<p class="text-lg text-on-surface-variant leading-relaxed">The definitive guide to every wicket, run, and triumph across the tournament’s curated grounds.</p>
+</div>
+<div class="flex flex-wrap gap-3">
+<button class="premium-gradient text-on-primary px-6 py-3 rounded-xl font-semibold flex items-center gap-2 whisper-shadow hover:scale-[1.02] transition-all">
+<span class="material-symbols-outlined text-[20px]">calendar_add_on</span>
+                    Add to Calendar
+                </button>
+</div>
+</header>
+<!-- Filter Tabs -->
+<div class="flex flex-wrap items-center gap-2 mb-10 pb-4">
+<button class="px-5 py-2 rounded-full text-sm font-semibold bg-primary text-on-primary">All Matches</button>
+<button class="px-5 py-2 rounded-full text-sm font-medium text-on-surface-variant bg-surface-container-low hover:bg-surface-container transition-colors">My Team</button>
+<button class="px-5 py-2 rounded-full text-sm font-medium text-on-surface-variant bg-surface-container-low hover:bg-surface-container transition-colors">Upcoming</button>
+<button class="px-5 py-2 rounded-full text-sm font-medium text-on-surface-variant bg-surface-container-low hover:bg-surface-container transition-colors">Completed</button>
+</div>
+<!-- Schedule Grid -->
+<div class="space-y-24">
+<!-- Date Group 1 -->
+<section>
+<div class="flex items-center gap-4 mb-8">
+<div class="h-[1px] flex-grow bg-outline-variant/20"></div>
+<h2 class="text-sm font-bold tracking-[0.15em] text-outline uppercase">Saturday, 12 Oct</h2>
+<div class="h-[1px] flex-grow bg-outline-variant/20"></div>
+</div>
+<div class="space-y-6">
+<!-- Match Card 1 (Completed) -->
+<div class="group bg-surface-container-low rounded-[2rem] p-8 flex flex-col lg:flex-row items-center gap-8 transition-all hover:bg-surface-container-lowest whisper-shadow">
+<div class="flex flex-col items-center lg:items-start min-w-[140px]">
+<span class="text-[11px] font-bold tracking-widest text-outline uppercase mb-1">Match #42</span>
+<span class="text-xl font-bold">09:00 AM</span>
+<span class="text-sm text-on-surface-variant mt-1">Lord's Pavilion</span>
+</div>
+<div class="flex-grow flex items-center justify-center lg:justify-between w-full gap-4 md:gap-12">
+<!-- Team A -->
+<div class="flex flex-col md:flex-row items-center gap-4 text-center md:text-left flex-1 justify-end">
+<span class="text-2xl font-extrabold tracking-tight">Kensington Kings</span>
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-xl font-bold border-4 border-surface-container-lowest">KK</div>
+</div>
+<!-- VS / Score -->
+<div class="flex flex-col items-center">
+<div class="text-[10px] font-black uppercase text-outline mb-2">Result</div>
+<div class="flex items-center gap-4">
+<span class="text-3xl font-black text-on-surface">184/4</span>
+<span class="text-sm font-bold text-outline">VS</span>
+<span class="text-3xl font-black text-on-surface opacity-40">142/8</span>
+</div>
+</div>
+<!-- Team B -->
+<div class="flex flex-col md:flex-row-reverse items-center gap-4 text-center md:text-right flex-1 justify-end">
+<span class="text-2xl font-medium tracking-tight text-on-surface-variant">Marylebone XI</span>
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-xl font-bold border-4 border-surface-container-lowest opacity-60">MX</div>
+</div>
+</div>
+<div class="lg:w-48 text-center lg:text-right">
+<span class="text-sm font-bold text-tertiary">Kings won by 42 runs</span>
+<div class="mt-2">
+<button class="text-[11px] font-bold uppercase tracking-widest text-primary hover:underline">View Scorecard</button>
+</div>
+</div>
+</div>
+<!-- Match Card 2 (Live) -->
+<div class="group bg-surface-container-lowest rounded-[2rem] p-8 flex flex-col lg:flex-row items-center gap-8 transition-all border border-secondary-container/50 whisper-shadow relative overflow-hidden">
+<div class="absolute top-0 right-0 px-6 py-2 bg-error text-on-error text-[10px] font-black tracking-widest rounded-bl-2xl">LIVE</div>
+<div class="flex flex-col items-center lg:items-start min-w-[140px]">
+<span class="text-[11px] font-bold tracking-widest text-outline uppercase mb-1">Match #43</span>
+<span class="text-xl font-bold">02:30 PM</span>
+<span class="text-sm text-on-surface-variant mt-1">Oval Central</span>
+</div>
+<div class="flex-grow flex items-center justify-center lg:justify-between w-full gap-4 md:gap-12">
+<div class="flex flex-col md:flex-row items-center gap-4 text-center md:text-left flex-1 justify-end">
+<span class="text-2xl font-extrabold tracking-tight">Richmond Reds</span>
+<div class="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center text-xl font-bold border-4 border-white">RR</div>
+</div>
+<div class="flex flex-col items-center">
+<div class="flex items-center gap-4">
+<span class="text-3xl font-black text-on-surface">92/1</span>
+<span class="text-sm font-bold text-outline italic">Inning 1</span>
+<span class="text-3xl font-black text-outline">--</span>
+</div>
+</div>
+<div class="flex flex-col md:flex-row-reverse items-center gap-4 text-center md:text-right flex-1 justify-end">
+<span class="text-2xl font-extrabold tracking-tight">Battersea Blues</span>
+<div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center text-xl font-bold border-4 border-white">BB</div>
+</div>
+</div>
+<div class="lg:w-48 text-center lg:text-right">
+<span class="text-sm font-medium text-on-surface-variant">Over: 12.4</span>
+<div class="mt-2">
+<button class="px-4 py-2 bg-secondary-container text-on-secondary-container rounded-full text-[11px] font-bold uppercase tracking-widest">Watch Live</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Date Group 2 -->
+<section>
+<div class="flex items-center gap-4 mb-8">
+<div class="h-[1px] flex-grow bg-outline-variant/20"></div>
+<h2 class="text-sm font-bold tracking-[0.15em] text-outline uppercase">Sunday, 13 Oct</h2>
+<div class="h-[1px] flex-grow bg-outline-variant/20"></div>
+</div>
+<div class="space-y-6">
+<!-- Match Card 3 (Upcoming) -->
+<div class="group bg-surface-container-low rounded-[2rem] p-8 flex flex-col lg:flex-row items-center gap-8 transition-all hover:bg-surface-container-lowest whisper-shadow">
+<div class="flex flex-col items-center lg:items-start min-w-[140px]">
+<span class="text-[11px] font-bold tracking-widest text-outline uppercase mb-1">Match #44</span>
+<span class="text-xl font-bold">10:00 AM</span>
+<span class="text-sm text-on-surface-variant mt-1">Trent Bridge</span>
+</div>
+<div class="flex-grow flex items-center justify-center lg:justify-between w-full gap-4 md:gap-12">
+<div class="flex flex-col md:flex-row items-center gap-4 text-center md:text-left flex-1 justify-end">
+<span class="text-2xl font-medium tracking-tight">Surrey Stars</span>
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-xl font-bold border-4 border-surface-container-lowest">SS</div>
+</div>
+<div class="flex flex-col items-center">
+<div class="px-4 py-1 bg-surface-container-high rounded-full text-[10px] font-black uppercase text-outline tracking-widest">Upcoming</div>
+<div class="text-3xl font-light text-outline mt-2">VS</div>
+</div>
+<div class="flex flex-col md:flex-row-reverse items-center gap-4 text-center md:text-right flex-1 justify-end">
+<span class="text-2xl font-medium tracking-tight">Hampshire Heat</span>
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-xl font-bold border-4 border-surface-container-lowest">HH</div>
+</div>
+</div>
+<div class="lg:w-48 text-center lg:text-right">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">notification_add</button>
+<div class="mt-2">
+<button class="text-[11px] font-bold uppercase tracking-widest text-primary hover:underline">Match Details</button>
+</div>
+</div>
+</div>
+<!-- Match Card 4 (Upcoming / Premium Layout) -->
+<div class="group bg-surface-container-low rounded-[2rem] p-8 flex flex-col lg:flex-row items-center gap-8 transition-all hover:bg-surface-container-lowest whisper-shadow">
+<div class="flex flex-col items-center lg:items-start min-w-[140px]">
+<span class="text-[11px] font-bold tracking-widest text-outline uppercase mb-1">Match #45</span>
+<span class="text-xl font-bold">03:00 PM</span>
+<span class="text-sm text-on-surface-variant mt-1">Old Trafford</span>
+</div>
+<div class="flex-grow flex items-center justify-center lg:justify-between w-full gap-4 md:gap-12">
+<div class="flex flex-col md:flex-row items-center gap-4 text-center md:text-left flex-1 justify-end">
+<span class="text-2xl font-medium tracking-tight">Essex Eagles</span>
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-xl font-bold border-4 border-surface-container-lowest">EE</div>
+</div>
+<div class="flex flex-col items-center">
+<div class="px-4 py-1 bg-surface-container-high rounded-full text-[10px] font-black uppercase text-outline tracking-widest">Upcoming</div>
+<div class="text-3xl font-light text-outline mt-2">VS</div>
+</div>
+<div class="flex flex-col md:flex-row-reverse items-center gap-4 text-center md:text-right flex-1 justify-end">
+<span class="text-2xl font-medium tracking-tight">Yorkshire Yaks</span>
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-xl font-bold border-4 border-surface-container-lowest">YY</div>
+</div>
+</div>
+<div class="lg:w-48 text-center lg:text-right">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">notification_add</button>
+<div class="mt-2">
+<button class="text-[11px] font-bold uppercase tracking-widest text-primary hover:underline">Match Details</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Venue Map (Asymmetric Highlight) -->
+<div class="mt-32 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<div class="lg:col-span-5">
+<h3 class="text-3xl font-extrabold tracking-tight mb-6">Tournament Grounds</h3>
+<p class="text-on-surface-variant leading-relaxed mb-8">Matches are played across six historic venues, each offering a unique atmosphere and pitch condition. Tap a venue to view full technical specs and match history.</p>
+<div class="space-y-4">
+<div class="flex items-center gap-4 p-4 rounded-2xl bg-surface-container-low">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<div>
+<p class="font-bold">Lord's Pavilion</p>
+<p class="text-xs text-outline">St. John's Wood, London</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-2xl bg-surface-container-lowest">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<div>
+<p class="font-bold">The Oval Central</p>
+<p class="text-xs text-outline">Kennington, London</p>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-7 aspect-[16/9] bg-surface-container rounded-[2.5rem] overflow-hidden whisper-shadow">
+<img alt="Tournament Venues" class="w-full h-full object-cover grayscale opacity-80" data-alt="Modern architectural map of a city showing sports venues highlighted in subtle gold pins, minimal design with neutral tones" data-location="London" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdNo4X9Ry9fgnt1eNujpPS6Sak0I2UlJ-PMj2REwH0hijEd6Z8Bd7VDImGIwDGOYeFdhj8OcI68kF0B6oNTpRpo9aeVb5B1dqGWTfY7CEcD_77YhdnZXAIdXG5ta8FPHls-nNgN7J61sI3fK1L7iSRQch2EwyzJZq5xSybHdbAT6CbgUTYp32gok6xy1FhTBjxDVKipQP7-WQ8qOmdvx6zTcEVTiKmrc1bdncMvzsgdTgoy7ivyBK1xnObVT6XtxGuHiPSqpv--W0"/>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 mt-auto border-t border-stone-200/20 dark:border-stone-800/20 bg-stone-50 dark:bg-stone-900 flex flex-col items-center justify-center text-center px-4 font-body text-xs leading-6 text-zinc-600 dark:text-zinc-400">
+<div class="flex gap-8 mb-6">
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 opacity-80 transition-opacity" href="#">Privacy Policy</a>
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 opacity-80 transition-opacity" href="#">Terms of Service</a>
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 opacity-80 transition-opacity" href="#">Contact Us</a>
+<a class="hover:text-zinc-900 dark:hover:text-zinc-100 opacity-80 transition-opacity" href="#">Support</a>
+</div>
+<p>© 2024 The Curated Pavilion. All rights reserved.</p>
+</footer>
+<!-- SideNavBar (Hidden on Mobile) -->
+<aside class="hidden md:flex h-screen w-20 fixed left-0 top-0 bg-stone-100 dark:bg-stone-950 flex flex-col p-4 gap-6 items-center z-[60] border-r border-stone-200/50">
+<div class="text-lg font-black text-zinc-900 dark:text-white mb-8">P</div>
+<button class="w-12 h-12 flex items-center justify-center rounded-xl text-zinc-500 hover:bg-stone-200/50 transition-all"><span class="material-symbols-outlined">dashboard</span></button>
+<button class="w-12 h-12 flex items-center justify-center rounded-xl bg-white text-zinc-900 shadow-sm transition-all"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_month</span></button>
+<button class="w-12 h-12 flex items-center justify-center rounded-xl text-zinc-500 hover:bg-stone-200/50 transition-all"><span class="material-symbols-outlined">groups</span></button>
+<button class="w-12 h-12 flex items-center justify-center rounded-xl text-zinc-500 hover:bg-stone-200/50 transition-all"><span class="material-symbols-outlined">sports_score</span></button>
+<div class="mt-auto">
+<button class="w-12 h-12 flex items-center justify-center rounded-xl text-zinc-500 hover:bg-stone-200/50 transition-all"><span class="material-symbols-outlined">settings</span></button>
+</div>
+</aside>
+<!-- FAB -->
+<button class="fixed bottom-8 right-8 w-16 h-16 premium-gradient text-on-primary rounded-full shadow-2xl flex items-center justify-center z-50 hover:scale-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+</body></html>
