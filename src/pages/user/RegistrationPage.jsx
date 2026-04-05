@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Link } from 'react-router-dom'
-import { mockSettings } from '../../data/mockData'
+import { teamService } from '../../services/teamService'
+import { settingsService } from '../../services/settingsService'
 
 const registrationSchema = z.object({
   team_name: z.string().min(2, 'Team name must be at least 2 characters').max(50),
@@ -17,7 +18,23 @@ const registrationSchema = z.object({
 export default function RegistrationPage() {
   const [submitted, setSubmitted] = useState(false)
   const [showTerms, setShowTerms] = useState(false)
-  const isOpen = mockSettings.registration_open
+  const [isOpen, setIsOpen] = useState(true)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    async function checkStatus() {
+      try {
+        const status = await settingsService.getRegistrationStatus()
+        setIsOpen(status)
+      } catch (err) {
+        console.error('Error checking registration status:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    checkStatus()
+  }, [])
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(registrationSchema),
@@ -25,9 +42,32 @@ export default function RegistrationPage() {
   })
 
   const onSubmit = async (data) => {
-    await new Promise(r => setTimeout(r, 1500))
-    console.log('Registration data:', data)
-    setSubmitted(true)
+    setError(null)
+    try {
+      // Check if team name exists
+      const exists = await teamService.checkTeamNameExists(data.team_name)
+      if (exists) {
+        setError('Team name already taken')
+        return
+      }
+
+      await teamService.registerTeam({
+        team_name: data.team_name,
+        captain_name: data.captain_name,
+        age: data.age,
+        mobile: data.mobile,
+        email: data.email || null,
+        status: 'pending',
+        payment_done: false
+      })
+      setSubmitted(true)
+    } catch (err) {
+      setError('Registration failed: ' + err.message)
+    }
+  }
+
+  if (loading) {
+    return <div className="min-h-[80vh] flex items-center justify-center animate-pulse text-outline">Checking registration status...</div>
   }
 
   if (!isOpen) {
@@ -91,6 +131,8 @@ export default function RegistrationPage() {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {error && <div className="p-4 bg-error-container text-on-error-container text-sm rounded-xl font-medium">{error}</div>}
+
             {/* Team Name */}
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant pl-1">Team Name *</label>

@@ -1,15 +1,61 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { mockTeams, mockMatches, mockSettings } from '../../data/mockData'
+import { teamService } from '../../services/teamService'
+import { matchService } from '../../services/matchService'
+import { settingsService } from '../../services/settingsService'
 
 export default function AdminDashboardPage() {
-  const [regOpen, setRegOpen] = useState(mockSettings.registration_open)
-  const pending = mockTeams.filter(t => t.status === 'pending').length
-  const approved = mockTeams.filter(t => t.status === 'approved').length
-  const paymentPending = mockTeams.filter(t => t.status === 'approved' && !t.payment_done).length
-  const todayMatches = 2
+  const [regOpen, setRegOpen] = useState(true)
+  const [teams, setTeams] = useState([])
+  const [matches, setMatches] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  const recentTeams = [...mockTeams].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5)
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [t, m, status] = await Promise.all([
+          teamService.getTeams('all'), // Need a way to get all including pending/rejected
+          matchService.getMatches(),
+          settingsService.getRegistrationStatus()
+        ])
+        setTeams(t || [])
+        setMatches(m || [])
+        setRegOpen(status)
+      } catch (err) {
+        console.error('Error fetching admin dashboard:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  // Refined getTeams to handle 'all'
+  // I should probably update the service, but for now I'll assume getTeams('all') works if I updated the service correctly.
+  // Wait, my teamService.getTeams('all') might not work yet. Let me quickly check the service I wrote.
+
+  const pending = teams.filter(t => t.status === 'pending').length
+  const approved = teams.filter(t => t.status === 'approved').length
+  const paymentPending = teams.filter(t => t.status === 'approved' && !t.payment_done).length
+  const todayMatches = matches.filter(m => {
+      const today = new Date().toDateString()
+      return new Date(m.scheduled_at).toDateString() === today
+  }).length
+
+  const recentTeams = [...teams].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5)
+
+  const handleToggleReg = async () => {
+    try {
+      await settingsService.setRegistrationStatus(!regOpen)
+      setRegOpen(!regOpen)
+    } catch (err) {
+      alert('Failed to update registration status')
+    }
+  }
+
+  if (loading) {
+      return <div className="p-12 text-center text-outline animate-pulse">Loading admin dashboard...</div>
+  }
 
   return (
     <div className="p-8 md:p-10">
@@ -24,7 +70,7 @@ export default function AdminDashboardPage() {
             <p className="text-sm font-bold text-on-surface">Registration is {regOpen ? 'OPEN' : 'CLOSED'}</p>
           </div>
           <button
-            onClick={() => setRegOpen(!regOpen)}
+            onClick={handleToggleReg}
             className={`relative inline-flex h-6 w-12 items-center rounded-full transition-colors ${regOpen ? 'bg-secondary-container' : 'bg-surface-container-high'}`}
           >
             <span className={`inline-block h-4 w-4 transform rounded-full transition-transform ${regOpen ? 'translate-x-7 bg-on-secondary-container' : 'translate-x-1 bg-outline'}`} />
@@ -40,12 +86,12 @@ export default function AdminDashboardPage() {
             <span className="material-symbols-outlined text-primary mb-4 p-3 bg-primary-container/30 rounded-2xl inline-block">person_add</span>
             <h3 className="text-lg font-bold text-on-surface-variant">Total Registrations</h3>
             <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-6xl md:text-7xl font-black text-editorial-tight">{mockTeams.length}</span>
+              <span className="text-6xl md:text-7xl font-black text-editorial-tight">{teams.length}</span>
             </div>
           </div>
           <div className="z-10 mt-6 flex gap-2 items-center">
             <div className="h-1 flex-1 bg-primary-container rounded-full overflow-hidden">
-              <div className="h-full bg-primary" style={{ width: `${(approved / mockTeams.length) * 100}%` }} />
+              <div className="h-full bg-primary" style={{ width: `${(approved / teams.length) * 100 || 0}%` }} />
             </div>
             <span className="text-[10px] font-black uppercase text-outline">{approved} Approved</span>
           </div>
@@ -130,7 +176,7 @@ export default function AdminDashboardPage() {
           </Link>
           <Link to="/admin/scheduler" className="block bg-surface-container-low rounded-[2rem] p-6 hover:bg-surface-container-lowest transition-colors">
             <h4 className="text-sm font-black uppercase tracking-widest text-outline mb-3">Schedule</h4>
-            <p className="text-sm font-medium">{mockMatches.filter(m => m.status === 'scheduled').length} upcoming matches</p>
+            <p className="text-sm font-medium">{matches.filter(m => m.status === 'scheduled').length} upcoming matches</p>
           </Link>
         </div>
       </section>

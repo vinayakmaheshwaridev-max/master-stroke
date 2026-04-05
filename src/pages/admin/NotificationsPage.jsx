@@ -1,28 +1,51 @@
-import { useState } from 'react'
-import { mockNotifications } from '../../data/mockData'
+import { useEffect, useState } from 'react'
+import { notificationService } from '../../services/notificationService'
+import { teamService } from '../../services/teamService'
 
 export default function NotificationsPage() {
-  const [notifications, setNotifications] = useState(mockNotifications)
+  const [notifications, setNotifications] = useState([])
+  const [teams, setTeams] = useState([])
+  const [loading, setLoading] = useState(true)
   const [form, setForm] = useState({ recipient: 'all', type: 'info', message: '' })
 
-  const handleSend = (e) => {
-    e.preventDefault()
-    const newNotif = {
-      id: String(Date.now()),
-      team_id: form.recipient === 'all' ? null : form.recipient,
-      message: form.message,
-      type: form.type,
-      is_read: false,
-      created_at: new Date().toISOString(),
+  const fetchData = async () => {
+    try {
+      const [n, t] = await Promise.all([
+        notificationService.getNotifications(),
+        teamService.getTeams('approved')
+      ])
+      setNotifications(n || [])
+      setTeams(t || [])
+    } catch (err) {
+      console.error('Error fetching notifications data:', err)
+    } finally {
+      setLoading(false)
     }
-    setNotifications(prev => [newNotif, ...prev])
-    setForm(p => ({ ...p, message: '' }))
   }
 
-  const handleDelete = (id) => setNotifications(prev => prev.filter(n => n.id !== id))
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const handleSend = async (e) => {
+    e.preventDefault()
+    try {
+      const recipientId = form.recipient === 'all' ? null : form.recipient
+      await notificationService.sendNotification(form.message, form.type, recipientId)
+      fetchData() // Refresh list
+      setForm(p => ({ ...p, message: '' }))
+      alert('Notification sent!')
+    } catch (err) {
+      alert('Failed to send notification: ' + err.message)
+    }
+  }
 
   const typeIcons = { info: 'info', reminder: 'notifications', result: 'emoji_events', important: 'warning' }
   const typeColors = { info: 'bg-tertiary-container text-on-tertiary-container', reminder: 'bg-secondary-container text-on-secondary-container', result: 'bg-primary-container text-on-primary-container', important: 'bg-error-container text-on-error-container' }
+
+  if (loading) {
+    return <div className="p-12 text-center text-outline animate-pulse">Loading communication hub...</div>
+  }
 
   return (
     <div className="p-8 md:p-12 max-w-6xl mx-auto">
@@ -38,8 +61,11 @@ export default function NotificationsPage() {
           <form onSubmit={handleSend} className="space-y-5">
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">Recipient</label>
-              <select value={form.recipient} onChange={e => setForm(p=>({...p,recipient:e.target.value}))} className="w-full bg-surface-container-lowest border-outline-variant/20 rounded-xl py-3 px-4 focus:ring-4 focus:ring-primary-fixed-dim/30">
+              <select value={form.recipient} onChange={e => setForm(p=>({...p,recipient:e.target.value}))} className="w-full bg-surface-container-lowest border-outline-variant/20 rounded-xl py-3 px-4 focus:ring-4 focus:ring-primary-fixed-dim/30 font-medium">
                 <option value="all">All Registered Teams</option>
+                {teams.map(t => (
+                    <option key={t.id} value={t.id}>{t.team_name}</option>
+                ))}
               </select>
             </div>
             <div className="space-y-2">
@@ -75,15 +101,15 @@ export default function NotificationsPage() {
                 <div className="flex-grow min-w-0">
                   <p className="text-sm text-on-surface leading-relaxed">{n.message}</p>
                   <div className="mt-1 flex items-center gap-3">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.1em] px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container">{n.team_id ? 'Team' : 'All Teams'}</span>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.1em] px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container">
+                        {n.team_id ? teams.find(t => t.id === n.team_id)?.team_name || 'Team' : 'All Teams'}
+                    </span>
                     <span className="text-[10px] text-outline">{new Date(n.created_at).toLocaleDateString('en-IN',{month:'short',day:'numeric'})}</span>
                   </div>
                 </div>
-                <button onClick={()=>handleDelete(n.id)} className="opacity-0 group-hover:opacity-100 p-2 text-error hover:bg-error-container/20 rounded-full transition-all">
-                  <span className="material-symbols-outlined text-lg">delete</span>
-                </button>
               </div>
             ))}
+            {notifications.length === 0 && <p className="text-center py-10 text-outline-variant">No notification history.</p>}
           </div>
         </section>
       </div>
@@ -91,9 +117,9 @@ export default function NotificationsPage() {
       {/* Stats */}
       <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
         {[
-          { label: 'Reach', value: notifications.length * 8, sub: 'Recipients reached' },
-          { label: 'Read Rate', value: '84%', sub: 'Mobile alerts' },
+          { label: 'Reach', value: teams.length, sub: 'Active Teams' },
           { label: 'Total Sent', value: notifications.length, sub: 'All time' },
+          { label: 'Status', value: 'Live', sub: 'Broadcast System' },
         ].map(s=>(
           <div key={s.label} className="bg-surface-container p-6 rounded-2xl">
             <span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-2 block">{s.label}</span>

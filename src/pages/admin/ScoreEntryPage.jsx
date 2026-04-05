@@ -1,13 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { mockMatches, getTeamName } from '../../data/mockData'
+import { matchService } from '../../services/matchService'
+import { notificationService } from '../../services/notificationService'
 
 export default function ScoreEntryPage() {
   const navigate = useNavigate()
-  const scheduledMatches = mockMatches.filter(m => m.status === 'scheduled')
-  const [selectedMatch, setSelectedMatch] = useState(scheduledMatches[0]?.id || '')
-
-  const match = mockMatches.find(m => m.id === selectedMatch)
+  const [scheduledMatches, setScheduledMatches] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [selectedMatchId, setSelectedMatchId] = useState('')
+  const [match, setMatch] = useState(null)
 
   const [scoreA, setScoreA] = useState({ runs: '', wickets: '', overs: '' })
   const [scoreB, setScoreB] = useState({ runs: '', wickets: '', overs: '' })
@@ -15,10 +16,63 @@ export default function ScoreEntryPage() {
   const [manOfMatch, setManOfMatch] = useState('')
   const [summary, setSummary] = useState('')
 
-  const handlePublish = (e) => {
+  useEffect(() => {
+    async function fetchScheduled() {
+      try {
+        const data = await matchService.getMatches()
+        const filtered = data.filter(m => m.status === 'scheduled')
+        setScheduledMatches(filtered)
+        if (filtered.length > 0) setSelectedMatchId(filtered[0].id)
+      } catch (err) {
+        console.error('Error fetching matches:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchScheduled()
+  }, [])
+
+  useEffect(() => {
+    if (selectedMatchId) {
+      const found = scheduledMatches.find(m => m.id === selectedMatchId)
+      setMatch(found)
+    }
+  }, [selectedMatchId, scheduledMatches])
+
+  const handlePublish = async (e) => {
     e.preventDefault()
-    alert('Result published! Points table will be recalculated.')
-    navigate('/admin/tournament')
+    if (!result) return alert('Please select a match verdict')
+
+    try {
+      const scoreData = {
+        runs_a: parseInt(scoreA.runs),
+        wickets_a: parseInt(scoreA.wickets),
+        overs_a: parseFloat(scoreA.overs),
+        runs_b: parseInt(scoreB.runs),
+        wickets_b: parseInt(scoreB.wickets),
+        overs_b: parseFloat(scoreB.overs),
+        result,
+        man_of_match: manOfMatch,
+        summary
+      }
+
+      await matchService.updateScore(selectedMatchId, scoreData)
+      
+      // Send notification
+      await notificationService.sendNotification(
+        `Final Result: ${match.team_a.team_name} vs ${match.team_b.team_name} - ${summary}`,
+        'result'
+      )
+
+      alert('Result published successfully!')
+      navigate('/admin/tournament')
+    } catch (err) {
+      alert('Failed to publish result: ' + err.message)
+    }
+  }
+
+  if (loading) {
+    return <div className="p-12 text-center text-outline animate-pulse">Loading matches...</div>
   }
 
   return (
@@ -39,15 +93,16 @@ export default function ScoreEntryPage() {
       {/* Match Selector */}
       <div className="mb-8">
         <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 block">Select Match</label>
-        <select value={selectedMatch} onChange={e => setSelectedMatch(e.target.value)} className="bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-4 focus:ring-primary-fixed-dim/30 max-w-md w-full">
+        <select value={selectedMatchId} onChange={e => setSelectedMatchId(e.target.value)} className="bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-4 focus:ring-primary-fixed-dim/30 max-w-md w-full">
           {scheduledMatches.map(m => (
-            <option key={m.id} value={m.id}>Match #{m.match_number}: {getTeamName(m.team_a_id)} vs {getTeamName(m.team_b_id)}</option>
+            <option key={m.id} value={m.id}>Match #{m.match_number}: {m.team_a?.team_name} vs {m.team_b?.team_name}</option>
           ))}
+          {scheduledMatches.length === 0 && <option>No scheduled matches</option>}
         </select>
       </div>
 
       {match && (
-        <form className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <form onSubmit={handlePublish} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8 space-y-6">
             {/* Team A */}
             <section className="bg-surface-container-low rounded-[2rem] p-8 transition-all hover:bg-surface-container">
@@ -55,20 +110,20 @@ export default function ScoreEntryPage() {
                 <div className="w-12 h-12 rounded-2xl bg-surface-container-lowest flex items-center justify-center shadow-sm">
                   <span className="material-symbols-outlined text-primary">shield</span>
                 </div>
-                <h2 className="text-xl font-bold">{getTeamName(match.team_a_id)}</h2>
+                <h2 className="text-xl font-bold">{match.team_a?.team_name}</h2>
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">Runs</label>
-                  <input type="number" value={scoreA.runs} onChange={e => setScoreA(p => ({ ...p, runs: e.target.value }))} placeholder="000" className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
+                  <input type="number" value={scoreA.runs} onChange={e => setScoreA(p => ({ ...p, runs: e.target.value }))} placeholder="000" required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">Wickets</label>
-                  <input type="number" value={scoreA.wickets} onChange={e => setScoreA(p => ({ ...p, wickets: e.target.value }))} placeholder="0" min="0" max="10" className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
+                  <input type="number" value={scoreA.wickets} onChange={e => setScoreA(p => ({ ...p, wickets: e.target.value }))} placeholder="0" min="0" max="10" required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">Overs</label>
-                  <input type="text" value={scoreA.overs} onChange={e => setScoreA(p => ({ ...p, overs: e.target.value }))} placeholder="6.0" className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
+                  <input type="number" step="0.1" value={scoreA.overs} onChange={e => setScoreA(p => ({ ...p, overs: e.target.value }))} placeholder="6.0" required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
                 </div>
               </div>
             </section>
@@ -79,20 +134,20 @@ export default function ScoreEntryPage() {
                 <div className="w-12 h-12 rounded-2xl bg-surface-container-lowest flex items-center justify-center shadow-sm">
                   <span className="material-symbols-outlined text-primary">sports_cricket</span>
                 </div>
-                <h2 className="text-xl font-bold">{getTeamName(match.team_b_id)}</h2>
+                <h2 className="text-xl font-bold">{match.team_b?.team_name}</h2>
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">Runs</label>
-                  <input type="number" value={scoreB.runs} onChange={e => setScoreB(p => ({ ...p, runs: e.target.value }))} placeholder="000" className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
+                  <input type="number" value={scoreB.runs} onChange={e => setScoreB(p => ({ ...p, runs: e.target.value }))} placeholder="000" required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">Wickets</label>
-                  <input type="number" value={scoreB.wickets} onChange={e => setScoreB(p => ({ ...p, wickets: e.target.value }))} placeholder="0" min="0" max="10" className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
+                  <input type="number" value={scoreB.wickets} onChange={e => setScoreB(p => ({ ...p, wickets: e.target.value }))} placeholder="0" min="0" max="10" required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">Overs</label>
-                  <input type="text" value={scoreB.overs} onChange={e => setScoreB(p => ({ ...p, overs: e.target.value }))} placeholder="6.0" className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
+                  <input type="number" step="0.1" value={scoreB.overs} onChange={e => setScoreB(p => ({ ...p, overs: e.target.value }))} placeholder="6.0" required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
                 </div>
               </div>
             </section>
@@ -117,8 +172,8 @@ export default function ScoreEntryPage() {
               <h3 className="text-sm font-bold uppercase tracking-widest text-on-surface-variant mb-6">Match Verdict</h3>
               <div className="space-y-3">
                 {[
-                  { value: 'team_a', label: `${getTeamName(match.team_a_id)} Won` },
-                  { value: 'team_b', label: `${getTeamName(match.team_b_id)} Won` },
+                  { value: 'team_a', label: `${match.team_a?.team_name} Won` },
+                  { value: 'team_b', label: `${match.team_b?.team_name} Won` },
                   { value: 'tie', label: 'Tie Match' },
                   { value: 'no_result', label: 'No Result' },
                 ].map(opt => (
@@ -142,6 +197,7 @@ export default function ScoreEntryPage() {
           </aside>
         </form>
       )}
+      {scheduledMatches.length === 0 && <div className="text-center py-20 text-on-surface-variant">No scheduled matches left for score entry.</div>}
     </div>
   )
 }

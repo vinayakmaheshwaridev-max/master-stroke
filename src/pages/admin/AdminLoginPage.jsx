@@ -14,12 +14,17 @@ export default function AdminLoginPage() {
     e.preventDefault()
     setError('')
     setLoading(true)
-    const result = await adminLogin(email, password)
-    setLoading(false)
-    if (result.success) {
-      navigate('/admin/dashboard')
-    } else {
-      setError(result.error)
+    try {
+      const result = await adminLogin(email, password)
+      if (result.success) {
+        navigate('/admin/dashboard')
+      } else {
+        setError(result.error || 'Invalid admin credentials')
+      }
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
     }
   }
 

@@ -1,22 +1,51 @@
-import { mockMatches, getTeamName, computePointsTable } from '../../data/mockData'
+import { useEffect, useState } from 'react'
+import { teamService } from '../../services/teamService'
+import { matchService } from '../../services/matchService'
+import { computePointsTable } from '../../services/pointsService'
 
 export default function TournamentOverviewPage() {
-  const standings = computePointsTable()
-  const completed = mockMatches.filter(m => m.status === 'completed').length
-  const scheduled = mockMatches.filter(m => m.status === 'scheduled').length
-  const total = mockMatches.length
+  const [standings, setStandings] = useState([])
+  const [matches, setMatches] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [teams, m] = await Promise.all([
+          teamService.getTeams('approved'),
+          matchService.getMatches()
+        ])
+        setMatches(m)
+        const table = computePointsTable(teams, m)
+        setStandings(table)
+      } catch (err) {
+        console.error('Error fetching overview data:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  const completed = matches.filter(m => m.status === 'completed').length
+  const scheduled = matches.filter(m => m.status === 'scheduled').length
+  const total = matches.length
   const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0
 
   const stats = [
     { icon: 'analytics', value: completed, label: 'Played' },
     { icon: 'pending_actions', value: scheduled, label: 'Remaining' },
-    { icon: 'warning', value: 0, label: 'No Matches' },
+    { icon: 'trending_up', value: standings.length, label: 'Teams' },
   ]
+
+  if (loading) {
+    return <div className="p-12 text-center text-outline animate-pulse">Loading overview...</div>
+  }
 
   return (
     <div className="p-8 md:p-10 max-w-[1400px] mx-auto space-y-10">
       <header>
-        <h2 className="text-2xl font-bold tracking-tighter">Tournament Overview</h2>
+        <h2 className="text-2xl font-bold tracking-tighter text-on-surface">Tournament Overview</h2>
         <p className="text-xs font-bold uppercase tracking-[0.05em] text-outline">Season 2024</p>
       </header>
 
@@ -42,7 +71,7 @@ export default function TournamentOverviewPage() {
 
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2">
-          <h3 className="text-xl font-bold mb-4">Points Table</h3>
+          <h3 className="text-xl font-bold mb-4">Live Points Table</h3>
           <div className="bg-surface-container-lowest rounded-[2rem] whisper-shadow overflow-x-auto">
             <table className="w-full text-left border-collapse min-w-[500px]">
               <thead>
@@ -62,7 +91,7 @@ export default function TournamentOverviewPage() {
                     <td className="px-3 py-4 text-center">{t.won}</td>
                     <td className="px-3 py-4 text-center">{t.lost}</td>
                     <td className="px-3 py-4 text-center text-outline">{t.nrr>=0?'+':''}{t.nrr.toFixed(3)}</td>
-                    <td className="px-6 py-4 text-center"><span className="bg-secondary-container px-3 py-1 rounded-full font-bold text-sm">{t.points}</span></td>
+                    <td className="px-6 py-4 text-center"><span className="bg-secondary-container px-3 py-1 rounded-full font-bold text-sm text-on-secondary-container">{t.points}</span></td>
                   </tr>
                 ))}
               </tbody>
@@ -74,20 +103,27 @@ export default function TournamentOverviewPage() {
           <h3 className="text-xl font-bold">Match Center</h3>
           <div>
             <p className="text-[10px] font-bold uppercase tracking-widest text-outline mb-3">Upcoming</p>
-            {mockMatches.filter(m=>m.status==='scheduled').slice(0,3).map(m=>(
+            {matches.filter(m=>m.status==='scheduled').slice(0,3).map(m=>(
               <div key={m.id} className="bg-surface-container-low p-4 rounded-2xl mb-2 hover:bg-surface-container-lowest transition-all">
                 <p className="text-[10px] text-outline mb-1">{new Date(m.scheduled_at).toLocaleDateString('en-IN',{month:'short',day:'numeric'})}</p>
-                <p className="text-sm font-bold">{getTeamName(m.team_a_id)} vs {getTeamName(m.team_b_id)}</p>
+                <p className="text-sm font-bold">{m.team_a?.team_name} vs {m.team_b?.team_name}</p>
               </div>
             ))}
+            {matches.filter(m=>m.status==='scheduled').length === 0 && <p className="text-xs text-outline py-4">No upcoming matches</p>}
           </div>
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-outline mb-3">Completed</p>
-            {mockMatches.filter(m=>m.status==='completed').slice(0,2).map(m=>(
+            <p className="text-[10px] font-bold uppercase tracking-widest text-outline mb-3">Recently Completed</p>
+            {matches.filter(m=>m.status==='completed').reverse().slice(0,3).map(m=>(
               <div key={m.id} className="bg-surface-container-low/50 p-4 rounded-2xl mb-2">
-                <div className="flex justify-between">
-                  <span className="text-sm font-bold">{getTeamName(m.team_a_id)}</span>
-                  <span className="text-sm font-black">{m.runs_a}/{m.wickets_a} vs {m.runs_b}/{m.wickets_b}</span>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-sm font-bold">{m.team_a?.team_name}</p>
+                    <p className="text-xs text-outline">vs {m.team_b?.team_name}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-black text-on-surface">{m.runs_a}/{m.wickets_a}</p>
+                    <p className="text-xs text-primary font-bold">{m.runs_b}/{m.wickets_b}</p>
+                  </div>
                 </div>
               </div>
             ))}

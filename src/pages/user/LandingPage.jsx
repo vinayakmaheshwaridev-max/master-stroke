@@ -1,9 +1,34 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { mockSettings, mockTeams } from '../../data/mockData'
+import { teamService } from '../../services/teamService'
+import { settingsService } from '../../services/settingsService'
 
 export default function LandingPage() {
-  const approvedTeams = mockTeams.filter(t => t.status === 'approved').length
-  const isRegistrationOpen = mockSettings.registration_open
+  const [approvedTeams, setApprovedTeams] = useState(0)
+  const [isRegistrationOpen, setIsRegistrationOpen] = useState(true)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [teams, status] = await Promise.all([
+          teamService.getTeams('approved'),
+          settingsService.getRegistrationStatus()
+        ])
+        setApprovedTeams(teams.length)
+        setIsRegistrationOpen(status)
+      } catch (err) {
+        console.error('Error fetching landing data:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center animate-pulse text-outline">Loading tournament...</div>
+  }
 
   return (
     <div className="bg-surface">

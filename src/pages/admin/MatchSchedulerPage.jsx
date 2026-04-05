@@ -1,29 +1,53 @@
-import { useState } from 'react'
-import { mockMatches, mockTeams, getTeamName } from '../../data/mockData'
+import { useEffect, useState } from 'react'
+import { teamService } from '../../services/teamService'
+import { matchService } from '../../services/matchService'
 
 export default function MatchSchedulerPage() {
-  const [matches, setMatches] = useState(mockMatches)
-  const approvedTeams = mockTeams.filter(t => t.status === 'approved')
+  const [matches, setMatches] = useState([])
+  const [teams, setTeams] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [form, setForm] = useState({ team_a_id: '', team_b_id: '', date: '', time: '', venue: 'Ground A - Main Pitch', notes: '' })
 
-  const [form, setForm] = useState({ team_a: '', team_b: '', date: '', time: '', venue: 'Ground A - Main Pitch', notes: '' })
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const newMatch = {
-      id: String(Date.now()),
-      match_number: matches.length + 1,
-      team_a_id: form.team_a,
-      team_b_id: form.team_b,
-      scheduled_at: `${form.date}T${form.time}:00Z`,
-      venue: form.venue,
-      notes: form.notes,
-      status: 'scheduled',
-      runs_a: null, wickets_a: null, overs_a: null,
-      runs_b: null, wickets_b: null, overs_b: null,
-      result: null, man_of_match: null, summary: null,
+  const fetchData = async () => {
+    try {
+      const [t, m] = await Promise.all([
+        teamService.getTeams('approved'),
+        matchService.getMatches()
+      ])
+      setTeams(t || [])
+      setMatches(m || [])
+    } catch (err) {
+      console.error('Error fetching scheduler data:', err)
+    } finally {
+      setLoading(false)
     }
-    setMatches(prev => [...prev, newMatch])
-    setForm({ team_a: '', team_b: '', date: '', time: '', venue: 'Ground A - Main Pitch', notes: '' })
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const matchData = {
+        team_a_id: form.team_a_id,
+        team_b_id: form.team_b_id,
+        scheduled_at: `${form.date}T${form.time}:00`,
+        venue: form.venue,
+        notes: form.notes,
+        status: 'scheduled',
+      }
+      await matchService.createMatch(matchData)
+      fetchData() // Refresh list
+      setForm({ team_a_id: '', team_b_id: '', date: '', time: '', venue: 'Ground A - Main Pitch', notes: '' })
+    } catch (err) {
+      alert('Failed to schedule match: ' + err.message)
+    }
+  }
+
+  if (loading) {
+      return <div className="p-12 text-center text-outline animate-pulse">Loading scheduler...</div>
   }
 
   return (
@@ -38,22 +62,22 @@ export default function MatchSchedulerPage() {
         <section className="lg:col-span-5 bg-surface-container-low rounded-[2rem] p-8 space-y-6">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-xl font-bold tracking-tight">Create Fixture</h3>
-            <span className="text-[10px] font-bold tracking-widest text-secondary-dim bg-secondary-container px-3 py-1 rounded-full uppercase">#{matches.length + 1}</span>
+            <span className="text-[10px] font-bold tracking-widest text-secondary-dim bg-secondary-container px-3 py-1 rounded-full uppercase">NEW</span>
           </div>
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-xs font-bold tracking-wide uppercase text-on-surface-variant ml-1">Team A</label>
-                <select value={form.team_a} onChange={e => setForm(p => ({ ...p, team_a: e.target.value }))} required className="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm focus:ring-4 focus:ring-primary-fixed-dim/30">
+                <select value={form.team_a_id} onChange={e => setForm(p => ({ ...p, team_a_id: e.target.value }))} required className="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm focus:ring-4 focus:ring-primary-fixed-dim/30">
                   <option value="">Select Team</option>
-                  {approvedTeams.filter(t => t.id !== form.team_b).map(t => <option key={t.id} value={t.id}>{t.team_name}</option>)}
+                  {teams.filter(t => t.id !== form.team_b_id).map(t => <option key={t.id} value={t.id}>{t.team_name}</option>)}
                 </select>
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold tracking-wide uppercase text-on-surface-variant ml-1">Team B</label>
-                <select value={form.team_b} onChange={e => setForm(p => ({ ...p, team_b: e.target.value }))} required className="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm focus:ring-4 focus:ring-primary-fixed-dim/30">
+                <select value={form.team_b_id} onChange={e => setForm(p => ({ ...p, team_b_id: e.target.value }))} required className="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm focus:ring-4 focus:ring-primary-fixed-dim/30">
                   <option value="">Select Team</option>
-                  {approvedTeams.filter(t => t.id !== form.team_a).map(t => <option key={t.id} value={t.id}>{t.team_name}</option>)}
+                  {teams.filter(t => t.id !== form.team_a_id).map(t => <option key={t.id} value={t.id}>{t.team_name}</option>)}
                 </select>
               </div>
             </div>
@@ -98,9 +122,9 @@ export default function MatchSchedulerPage() {
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-on-surface">{getTeamName(match.team_a_id)}</span>
+                      <span className="font-bold text-on-surface">{match.team_a?.team_name}</span>
                       <span className="text-xs font-medium text-outline-variant">vs</span>
-                      <span className="font-bold text-on-surface">{getTeamName(match.team_b_id)}</span>
+                      <span className="font-bold text-on-surface">{match.team_b?.team_name}</span>
                     </div>
                     <div className="flex flex-wrap items-center gap-3 text-xs text-on-surface-variant">
                       <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">calendar_today</span>{new Date(match.scheduled_at).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}</span>

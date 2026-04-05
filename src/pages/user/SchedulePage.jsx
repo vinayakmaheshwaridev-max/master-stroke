@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuthStore } from '../../stores/authStore'
-import { mockMatches, getTeamName } from '../../data/mockData'
+import { matchService } from '../../services/matchService'
 
 export default function SchedulePage() {
   const [filter, setFilter] = useState('all')
+  const [matches, setMatches] = useState([])
+  const [loading, setLoading] = useState(true)
   const { team } = useAuthStore()
-  const teamId = team?.id || '1'
+  const teamId = team?.id
 
   const filters = [
     { key: 'all', label: 'All Matches' },
@@ -14,7 +16,21 @@ export default function SchedulePage() {
     { key: 'completed', label: 'Completed' },
   ]
 
-  const filteredMatches = mockMatches.filter(m => {
+  useEffect(() => {
+    async function fetchMatches() {
+      try {
+        const data = await matchService.getMatches()
+        setMatches(data)
+      } catch (err) {
+        console.error('Error fetching matches:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchMatches()
+  }, [])
+
+  const filteredMatches = matches.filter(m => {
     if (filter === 'my') return m.team_a_id === teamId || m.team_b_id === teamId
     if (filter === 'upcoming') return m.status === 'scheduled'
     if (filter === 'completed') return m.status === 'completed'
@@ -28,6 +44,10 @@ export default function SchedulePage() {
     acc[date].push(match)
     return acc
   }, {})
+
+  if (loading) {
+    return <div className="p-12 text-center text-outline animate-pulse">Loading schedule...</div>
+  }
 
   return (
     <div className="py-8 md:py-12 px-4 md:px-8 max-w-7xl mx-auto">
@@ -67,11 +87,7 @@ export default function SchedulePage() {
               {matches.map(match => {
                 const isCompleted = match.status === 'completed'
                 const isMyMatch = match.team_a_id === teamId || match.team_b_id === teamId
-                const didWin = isCompleted && (
-                  (match.result === 'team_a' && match.team_a_id === teamId) ||
-                  (match.result === 'team_b' && match.team_b_id === teamId)
-                )
-
+                
                 return (
                   <div
                     key={match.id}
@@ -92,10 +108,10 @@ export default function SchedulePage() {
                     <div className="flex-grow flex items-center justify-center lg:justify-between w-full gap-4 md:gap-8">
                       <div className="flex flex-col md:flex-row items-center gap-3 text-center md:text-left flex-1 justify-end">
                         <span className={`text-xl font-extrabold tracking-tight ${match.result === 'team_a' ? '' : match.result ? 'opacity-50' : ''}`}>
-                          {getTeamName(match.team_a_id)}
+                          {match.team_a?.team_name}
                         </span>
                         <div className="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-sm font-bold border-2 border-white">
-                          {getTeamName(match.team_a_id).slice(0, 2).toUpperCase()}
+                          {match.team_a?.team_name?.slice(0, 2).toUpperCase()}
                         </div>
                       </div>
 
@@ -123,10 +139,10 @@ export default function SchedulePage() {
 
                       <div className="flex flex-col md:flex-row-reverse items-center gap-3 text-center md:text-right flex-1 justify-end">
                         <span className={`text-xl font-extrabold tracking-tight ${match.result === 'team_b' ? '' : match.result ? 'opacity-50' : ''}`}>
-                          {getTeamName(match.team_b_id)}
+                          {match.team_b?.team_name}
                         </span>
                         <div className="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-sm font-bold border-2 border-white">
-                          {getTeamName(match.team_b_id).slice(0, 2).toUpperCase()}
+                          {match.team_b?.team_name?.slice(0, 2).toUpperCase()}
                         </div>
                       </div>
                     </div>

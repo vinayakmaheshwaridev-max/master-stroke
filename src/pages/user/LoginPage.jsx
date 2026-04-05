@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 
 export default function LoginPage() {
-  const [mobile, setMobile] = useState('')
+  const [identifier, setIdentifier] = useState('') // Can be email or mobile
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -15,13 +15,17 @@ export default function LoginPage() {
     setError('')
     setLoading(true)
     
-    const result = await login(mobile, password)
-    setLoading(false)
-    
-    if (result.success) {
-      navigate('/dashboard')
-    } else {
-      setError(result.error)
+    try {
+      const result = await login(identifier, password)
+      if (result.success) {
+        navigate('/dashboard')
+      } else {
+        setError(result.error || 'Invalid credentials')
+      }
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -48,19 +52,19 @@ export default function LoginPage() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Mobile */}
+              {/* Identifier */}
               <div className="space-y-2">
-                <label className="block text-xs font-bold tracking-widest text-on-surface-variant uppercase pl-1" htmlFor="mobile">Mobile Number</label>
+                <label className="block text-xs font-bold tracking-widest text-on-surface-variant uppercase pl-1" htmlFor="identifier">Mobile or Email</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <span className="material-symbols-outlined text-outline text-xl">phone_android</span>
+                    <span className="material-symbols-outlined text-outline text-xl">person</span>
                   </div>
                   <input
-                    id="mobile"
-                    type="tel"
-                    value={mobile}
-                    onChange={e => setMobile(e.target.value)}
-                    placeholder="Enter 10-digit mobile"
+                    id="identifier"
+                    type="text"
+                    value={identifier}
+                    onChange={e => setIdentifier(e.target.value)}
+                    placeholder="Enter registered mobile or email"
                     required
                     className="block w-full pl-11 pr-4 py-4 bg-surface-container-low border-none rounded-xl text-on-surface placeholder-outline focus:ring-4 focus:ring-primary-fixed-dim/30 transition-all"
                   />
@@ -108,11 +112,10 @@ export default function LoginPage() {
               </div>
             </form>
 
-            {/* Info Notice */}
             <div className="mt-8 flex items-start gap-3 p-4 bg-secondary-container/30 rounded-2xl border border-outline-variant/10">
               <span className="material-symbols-outlined text-on-secondary-container text-lg mt-0.5">info</span>
               <p className="text-xs text-on-secondary-container leading-relaxed">
-                Use the credentials shared by the tournament admin via WhatsApp after your team was approved.
+                Use the credentials provided after your team approval.
               </p>
             </div>
           </div>

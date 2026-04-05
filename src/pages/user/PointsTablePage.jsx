@@ -1,10 +1,36 @@
+import { useEffect, useState } from 'react'
 import { useAuthStore } from '../../stores/authStore'
-import { computePointsTable } from '../../data/mockData'
+import { teamService } from '../../services/teamService'
+import { matchService } from '../../services/matchService'
+import { computePointsTable } from '../../services/pointsService'
 
 export default function PointsTablePage() {
   const { team } = useAuthStore()
-  const teamId = team?.id || '1'
-  const standings = computePointsTable()
+  const [standings, setStandings] = useState([])
+  const [loading, setLoading] = useState(true)
+  const teamId = team?.id
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [teams, matches] = await Promise.all([
+          teamService.getTeams('approved'),
+          matchService.getMatches()
+        ])
+        const table = computePointsTable(teams, matches)
+        setStandings(table)
+      } catch (err) {
+        console.error('Error fetching points table:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  if (loading) {
+    return <div className="p-12 text-center text-outline animate-pulse">Loading standings...</div>
+  }
 
   return (
     <div className="py-8 md:py-12 px-4 md:px-8 max-w-7xl mx-auto">
@@ -105,8 +131,14 @@ export default function PointsTablePage() {
           <span className="material-symbols-outlined absolute -right-4 -bottom-4 text-white/10 text-[80px]">trending_up</span>
           <h4 className="text-lg font-bold mb-3">Your Standing</h4>
           <p className="text-white/80 text-sm leading-relaxed">
-            Rank <span className="font-bold text-white text-xl">#{standings.find(s => s.id === teamId)?.rank || '-'}</span> with{' '}
-            <span className="font-bold text-white">{standings.find(s => s.id === teamId)?.points || 0}</span> points.
+            {teamId ? (
+              <>
+                Rank <span className="font-bold text-white text-xl">#{standings.find(s => s.id === teamId)?.rank || '-'}</span> with{' '}
+                <span className="font-bold text-white">{standings.find(s => s.id === teamId)?.points || 0}</span> points.
+              </>
+            ) : (
+                "Log in to see your team's standing."
+            )}
           </p>
         </div>
       </div>
