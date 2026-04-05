@@ -1,16 +1,19 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
+import { useTranslation } from '../../i18n'
+import ThemeToggle from '../ui/ThemeToggle'
 
 const navItems = [
-  { to: '/admin/dashboard', icon: 'dashboard', label: 'Dashboard' },
-  { to: '/admin/teams', icon: 'groups', label: 'Teams' },
-  { to: '/admin/scheduler', icon: 'calendar_month', label: 'Scheduler' },
-  { to: '/admin/scores', icon: 'sports_score', label: 'Scores' },
-  { to: '/admin/tournament', icon: 'info', label: 'Tournament' },
-  { to: '/admin/notifications', icon: 'notifications', label: 'Messages' },
+  { to: '/admin/dashboard', icon: 'dashboard', labelKey: 'navigation.dashboard' },
+  { to: '/admin/teams', icon: 'groups', labelKey: 'common.teams' },
+  { to: '/admin/scheduler', icon: 'calendar_month', labelKey: 'navigation.scheduler' },
+  { to: '/admin/scores', icon: 'sports_score', labelKey: 'navigation.scores' },
+  { to: '/admin/tournament', icon: 'info', labelKey: 'navigation.tournament' },
+  { to: '/admin/notifications', icon: 'notifications', labelKey: 'navigation.messages' },
 ]
 
 export default function AdminSidebar() {
+  const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
   const { logout } = useAuthStore()
@@ -25,8 +28,8 @@ export default function AdminSidebar() {
           <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>stadium</span>
         </div>
         <div>
-          <h1 className="text-sm font-black text-zinc-900 tracking-tighter leading-none">Master Stroke</h1>
-          <p className="text-[10px] uppercase tracking-[0.1em] text-outline opacity-70">Box Cricket Admin</p>
+          <h1 className="text-sm font-black text-zinc-900 tracking-tighter leading-none">{t('common.appName')}</h1>
+          <p className="text-[10px] uppercase tracking-[0.1em] text-outline opacity-70">{t('admin.sidebar.boxCricketAdmin')}</p>
         </div>
       </div>
 
@@ -36,8 +39,8 @@ export default function AdminSidebar() {
           A
         </div>
         <div className="overflow-hidden">
-          <p className="text-sm font-bold text-zinc-900 truncate">Tournament Admin</p>
-          <p className="text-[10px] text-zinc-500 uppercase tracking-wider">Super User</p>
+          <p className="text-sm font-bold text-zinc-900 truncate">{t('admin.sidebar.tournamentAdmin')}</p>
+          <p className="text-[10px] text-zinc-500 uppercase tracking-wider">{t('admin.sidebar.superUser')}</p>
         </div>
       </div>
 
@@ -59,7 +62,7 @@ export default function AdminSidebar() {
             >
               {item.icon}
             </span>
-            {item.label}
+            {t(item.labelKey)}
           </Link>
         ))}
       </nav>
@@ -70,17 +73,20 @@ export default function AdminSidebar() {
         className="mb-2 bg-gradient-to-br from-primary to-primary-dim text-on-primary py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform"
       >
         <span className="material-symbols-outlined text-sm">add</span>
-        New Match
+        {t('admin.sidebar.newMatch')}
       </Link>
 
-      {/* Logout */}
-      <button
-        onClick={() => { logout(); navigate('/admin/login') }}
-        className="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-zinc-700 hover:bg-stone-200/50 rounded-xl transition-all text-sm font-medium"
-      >
-        <span className="material-symbols-outlined text-sm">logout</span>
-        Sign Out
-      </button>
+      {/* Theme Toggle + Logout */}
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
+        <button
+          onClick={() => { logout(); navigate('/admin/login') }}
+          className="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-xl transition-all text-sm font-medium"
+        >
+          <span className="material-symbols-outlined text-sm">logout</span>
+          {t('common.signOut')}
+        </button>
+      </div>
     </aside>
   )
 }

@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
 /* ========================================
    MASTER STROKE BOX CRICKET — DESIGN SYSTEM
@@ -59,6 +61,18 @@
   --color-on-error: #fff7f6;
   --color-on-tertiary-container: #406060;
 
+  /* ---- Status Colors (extracted from admin pages) ---- */
+  --color-status-approved-bg: #dcfce7;
+  --color-status-approved-text: #15803d;
+  --color-status-pending-bg: #ffedd5;
+  --color-status-pending-text: #c2410c;
+  --color-status-rejected-bg: #fee2e2;
+  --color-status-rejected-text: #b91c1c;
+  --color-status-scheduled-bg: #e4e4cc;
+  --color-status-scheduled-text: #525341;
+  --color-status-completed-bg: #dcfce7;
+  --color-status-completed-text: #15803d;
+
   /* ---- Typography ---- */
   --font-headline: 'Inter', system-ui, -apple-system, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
@@ -71,10 +85,6 @@
   --radius-2xl: 1.5rem;
   --radius-3xl: 2rem;
 }
-
-/* ---- Google Fonts ---- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
 /* ---- Material Symbols Reset ---- */
 .material-symbols-outlined {
@@ -96,13 +106,11 @@ body {
   color: #525341;
 }
 
-/* ---- Custom Utilities ---- */
-.glass-nav {
-  background: rgba(249, 249, 247, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
+/* ========================================
+   SEMANTIC UTILITIES — Design System
+   ======================================== */
 
+/* ---- Gradient Utilities ---- */
 .primary-gradient {
   background: linear-gradient(145deg, #5f5e60 0%, #535254 100%);
 }
@@ -111,14 +119,20 @@ body {
   background: linear-gradient(145deg, #5f5e60 0%, #3f3f41 100%);
 }
 
-.whisper-shadow {
-  box-shadow: 0px 20px 40px rgba(45, 52, 50, 0.06);
+/* ---- Glass Effect ---- */
+.glass-nav {
+  background: rgba(249, 249, 247, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
+/* ---- Shadow System (consolidated) ---- */
+.whisper-shadow,
 .premium-shadow {
   box-shadow: 0px 20px 40px rgba(45, 52, 50, 0.06);
 }
 
+/* ---- Typography Utilities ---- */
 .text-editorial-tight {
   letter-spacing: -0.02em;
 }
@@ -164,4 +178,143 @@ body {
 
 .animate-slide-in {
   animation: slide-in-right 0.3s ease-out forwards;
+}
+
+/* ========================================
+   DARK THEME
+   Activated via: <html data-theme="dark">
+   Managed by: src/stores/themeStore.js
+   ======================================== */
+
+[data-theme="dark"] {
+  /* ---- Surfaces ---- */
+  --color-surface: #0e1110;
+  --color-surface-bright: #1a1e1c;
+  --color-surface-dim: #0e1110;
+  --color-surface-container-lowest: #090c0b;
+  --color-surface-container-low: #161a18;
+  --color-surface-container: #1a1e1c;
+  --color-surface-container-high: #252928;
+  --color-surface-container-highest: #303432;
+  --color-surface-variant: #252928;
+  --color-surface-tint: #c6c4c7;
+  --color-background: #0e1110;
+
+  /* ---- On-Surface (text on dark bg) ---- */
+  --color-on-surface: #e2e5e3;
+  --color-on-surface-variant: #9ea5a2;
+  --color-on-background: #e2e5e3;
+
+  /* ---- Primary ---- */
+  --color-primary: #c6c4c7;
+  --color-primary-dim: #9e9ca0;
+  --color-primary-container: #3a393b;
+  --color-primary-fixed: #e4e2e4;
+  --color-primary-fixed-dim: #c6c4c7;
+  --color-on-primary: #1a1a1b;
+  --color-on-primary-container: #d6d3d6;
+  --color-on-primary-fixed: #3f3f41;
+  --color-on-primary-fixed-variant: #5c5b5d;
+  --color-inverse-primary: #5f5e60;
+
+  /* ---- Secondary ---- */
+  --color-secondary: #c9c9b2;
+  --color-secondary-dim: #9a9a82;
+  --color-secondary-container: #3a3b2e;
+  --color-secondary-fixed: #e4e4cc;
+  --color-secondary-fixed-dim: #c9c9b2;
+  --color-on-secondary: #1a1b14;
+  --color-on-secondary-container: #d6d6be;
+  --color-on-secondary-fixed: #3f412f;
+  --color-on-secondary-fixed-variant: #5b5d4a;
+
+  /* ---- Tertiary ---- */
+  --color-tertiary: #8ecece;
+  --color-tertiary-dim: #5a9e9e;
+  --color-tertiary-container: #1e3c3c;
+  --color-tertiary-fixed: #d4f8f7;
+  --color-tertiary-fixed-dim: #b0e0e0;
+  --color-on-tertiary: #0e2020;
+  --color-on-tertiary-container: #c0e8e8;
+  --color-on-tertiary-fixed: #2d4d4d;
+  --color-on-tertiary-fixed-variant: #4a6a6a;
+
+  /* ---- Error ---- */
+  --color-error: #ffb4a0;
+  --color-error-dim: #cc6c52;
+  --color-error-container: #4a1a0a;
+  --color-on-error: #2a0800;
+  --color-on-error-container: #ffcfc0;
+
+  /* ---- Outline ---- */
+  --color-outline: #6a706e;
+  --color-outline-variant: #3a403e;
+
+  /* ---- Inverse ---- */
+  --color-inverse-surface: #e2e5e3;
+  --color-inverse-on-surface: #303432;
+
+  /* ---- Status Colors (dark-aware) ---- */
+  --color-status-approved-bg: #0f2918;
+  --color-status-approved-text: #6ee7a0;
+  --color-status-pending-bg: #2a1a08;
+  --color-status-pending-text: #fdb974;
+  --color-status-rejected-bg: #2a0a0a;
+  --color-status-rejected-text: #fca5a5;
+  --color-status-scheduled-bg: #2a2b1e;
+  --color-status-scheduled-text: #c9c9b2;
+  --color-status-completed-bg: #0f2918;
+  --color-status-completed-text: #6ee7a0;
+}
+
+/* ---- Dark theme utility overrides ---- */
+[data-theme="dark"] body {
+  background-color: #0e1110;
+  color: #e2e5e3;
+}
+
+[data-theme="dark"] ::selection {
+  background-color: #3a3b2e;
+  color: #e4e4cc;
+}
+
+[data-theme="dark"] .primary-gradient {
+  background: linear-gradient(145deg, #c6c4c7 0%, #9e9ca0 100%);
+  color: #1a1a1b;
+}
+
+[data-theme="dark"] .hero-gradient {
+  background: linear-gradient(145deg, #303432 0%, #1a1e1c 100%);
+}
+
+[data-theme="dark"] .glass-nav {
+  background: rgba(14, 17, 16, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+[data-theme="dark"] .whisper-shadow,
+[data-theme="dark"] .premium-shadow {
+  box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="dark"] .custom-scrollbar::-webkit-scrollbar-track {
+  background: #1a1e1c;
+}
+[data-theme="dark"] .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #3a403e;
+}
+[data-theme="dark"] .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #6a706e;
+}
+
+/* ---- Smooth theme transition ---- */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html *,
+html *::before,
+html *::after {
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }

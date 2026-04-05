@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
+import { useTranslation } from '../../i18n'
+import { Button, Input, Alert } from '../../components/ui'
 
 export default function AdminLoginPage() {
+  const { t } = useTranslation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -19,7 +22,7 @@ export default function AdminLoginPage() {
       if (result.success) {
         navigate('/admin/dashboard')
       } else {
-        setError(result.error || 'Invalid admin credentials')
+        setError(result.error || t('auth.invalidAdminCredentials'))
       }
     } catch (err) {
       setError(err.message)
@@ -36,58 +39,64 @@ export default function AdminLoginPage() {
             <div className="inline-flex items-center justify-center w-16 h-16 bg-surface-container-highest rounded-xl mb-6 whisper-shadow">
               <span className="material-symbols-outlined text-primary text-3xl">lock</span>
             </div>
-            <h1 className="font-headline font-extrabold text-3xl tracking-tighter text-on-surface mb-2">Master Stroke</h1>
-            <p className="text-on-surface-variant font-medium tracking-tight">Administrative Access Portal</p>
+            <h1 className="font-headline font-extrabold text-3xl tracking-tighter text-on-surface mb-2">{t('common.appName')}</h1>
+            <p className="text-on-surface-variant font-medium tracking-tight">{t('auth.adminAccessPortal')}</p>
           </div>
 
           <div className="bg-surface-container-lowest rounded-3xl p-8 whisper-shadow">
             {error && (
-              <div className="mb-6 p-4 rounded-2xl bg-error-container/20 border border-error/20 flex items-center gap-3 animate-fade-in">
-                <span className="material-symbols-outlined text-error">error</span>
-                <p className="text-sm text-error font-medium">{error}</p>
+              <div className="mb-6">
+                <Alert variant="error">{error}</Alert>
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <label className="block text-xs font-bold tracking-widest text-on-surface-variant uppercase pl-1">Email Address</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <span className="material-symbols-outlined text-outline text-xl">alternate_email</span>
-                  </div>
-                  <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="admin@masterstroke.com" required className="block w-full pl-11 pr-4 py-4 bg-surface-container-low border-none rounded-xl text-on-surface placeholder-outline focus:ring-4 focus:ring-primary-fixed-dim/30 transition-all" />
-                </div>
-              </div>
+              <Input
+                label={t('auth.emailAddress')}
+                icon="alternate_email"
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder={t('auth.placeholderAdminEmail')}
+                required
+              />
 
-              <div className="space-y-2">
-                <label className="block text-xs font-bold tracking-widest text-on-surface-variant uppercase pl-1">Password</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <span className="material-symbols-outlined text-outline text-xl">key</span>
-                  </div>
-                  <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••••••" required className="block w-full pl-11 pr-4 py-4 bg-surface-container-low border-none rounded-xl text-on-surface placeholder-outline focus:ring-4 focus:ring-primary-fixed-dim/30 transition-all" />
-                </div>
-              </div>
+              <Input
+                label={t('auth.password')}
+                icon="key"
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder={t('auth.placeholderPassword')}
+                required
+              />
 
               <div className="pt-2">
-                <button type="submit" disabled={loading} className="w-full primary-gradient text-on-primary font-bold py-4 rounded-xl shadow-lg hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
-                  {loading ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <><span>Authorize Session</span><span className="material-symbols-outlined">login</span></>}
-                </button>
+                <Button
+                  type="submit"
+                  loading={loading}
+                  fullWidth
+                  size="lg"
+                >
+                  {loading ? null : (
+                    <>
+                      <span>{t('auth.authorizeSession')}</span>
+                      <span className="material-symbols-outlined">login</span>
+                    </>
+                  )}
+                </Button>
               </div>
             </form>
 
-            <div className="mt-8 flex items-start gap-3 p-4 bg-secondary-container/30 rounded-2xl border border-outline-variant/10">
-              <span className="material-symbols-outlined text-on-secondary-container text-lg mt-0.5">verified_user</span>
-              <p className="text-xs text-on-secondary-container leading-relaxed">
-                This area is restricted to authorized personnel only. All access attempts are logged.
-              </p>
-            </div>
+            <Alert variant="info" icon="verified_user" className="mt-8">
+              {t('auth.adminAccessHint')}
+            </Alert>
           </div>
 
           <div className="text-center mt-6">
             <a href="/" className="inline-flex items-center gap-2 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors">
               <span className="material-symbols-outlined text-base">arrow_back</span>
-              Back to Tournament
+              {t('common.backToTournament')}
             </a>
           </div>
         </div>

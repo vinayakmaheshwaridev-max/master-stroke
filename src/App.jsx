@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useAuthStore } from './stores/authStore'
+// App.css removed — contained only unused Vite scaffold styles
 
 // Layouts
 import UserLayout from './components/layout/UserLayout'

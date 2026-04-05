@@ -2,8 +2,12 @@ import { useEffect, useState } from 'react'
 import { useAuthStore } from '../../stores/authStore'
 import { matchService } from '../../services/matchService'
 import { notificationService } from '../../services/notificationService'
+import { useTranslation } from '../../i18n'
+import { Card, PageHeader } from '../../components/ui'
+import { SectionLoader } from '../../components/ui/Spinner'
 
 export default function DashboardPage() {
+  const { t } = useTranslation()
   const { team } = useAuthStore()
   const [matches, setMatches] = useState([])
   const [notifications, setNotifications] = useState([])
@@ -30,43 +34,41 @@ export default function DashboardPage() {
     fetchData()
   }, [teamId])
 
-  // Logic to find my stats (Simplified for now, real stats would come from a computed view or function)
   const upcomingMatch = matches.find(m => m.status === 'scheduled' && (m.team_a_id === teamId || m.team_b_id === teamId))
   const recentMatch = [...matches].reverse().find(m => m.status === 'completed' && (m.team_a_id === teamId || m.team_b_id === teamId))
   const opponent = upcomingMatch ? (upcomingMatch.team_a_id === teamId ? upcomingMatch.team_b : upcomingMatch.team_a) : null
 
   if (loading) {
-    return <div className="p-12 text-center text-outline animate-pulse">Loading dashboard...</div>
+    return <SectionLoader message={t('dashboard.loadingDashboard')} />
   }
 
   return (
     <div className="py-8 md:py-12 px-4 md:px-8 max-w-7xl mx-auto">
-      {/* Welcome */}
-      <header className="mb-10">
-        <span className="text-xs font-bold uppercase tracking-[0.15em] text-primary mb-2 block">Team Dashboard</span>
-        <h1 className="text-4xl md:text-5xl font-black tracking-[-0.03em] text-on-surface mb-2">Welcome, {teamName}</h1>
-        <p className="text-on-surface-variant">Your tournament hub — stats, schedule, and updates in one place.</p>
-      </header>
+      <PageHeader
+        subtitle={t('dashboard.teamDashboard')}
+        title={t('dashboard.welcomeTeam', { teamName })}
+        description={t('dashboard.hubDescription')}
+      />
 
       {/* Bento Grid */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-        {/* Team Stats Card (Simplified) */}
-        <div className="md:col-span-8 bg-surface-container-lowest rounded-[2rem] p-8 whisper-shadow relative overflow-hidden group">
+        {/* Team Stats Card */}
+        <Card variant="default" className="md:col-span-8 relative overflow-hidden group">
           <div className="absolute -right-8 -top-8 w-40 h-40 bg-primary/5 rounded-full group-hover:scale-150 transition-transform duration-700" />
           <div className="relative z-10">
             <div className="flex items-center gap-3 mb-6">
               <span className="material-symbols-outlined text-primary p-3 bg-primary-container/30 rounded-2xl">leaderboard</span>
               <div>
-                <h3 className="text-lg font-bold">Season Stats</h3>
-                <span className="text-xs text-on-surface-variant">Live from Tournament</span>
+                <h3 className="text-lg font-bold">{t('dashboard.seasonStats')}</h3>
+                <span className="text-xs text-on-surface-variant">{t('dashboard.liveFromTournament')}</span>
               </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
-                { label: 'Matches', value: matches.filter(m => (m.team_a_id === teamId || m.team_b_id === teamId) && m.status === 'completed').length },
-                { label: 'Status', value: team?.status || 'approved', color: 'text-tertiary' },
-                { label: 'Upcoming', value: matches.filter(m => (m.team_a_id === teamId || m.team_b_id === teamId) && m.status === 'scheduled').length },
-                { label: 'Payment', value: team?.payment_done ? 'Paid' : 'Pending', color: team?.payment_done ? 'text-tertiary' : 'text-error' },
+                { label: t('dashboard.matches'), value: matches.filter(m => (m.team_a_id === teamId || m.team_b_id === teamId) && m.status === 'completed').length },
+                { label: t('dashboard.status'), value: team?.status || 'approved', color: 'text-tertiary' },
+                { label: t('dashboard.upcomingLabel'), value: matches.filter(m => (m.team_a_id === teamId || m.team_b_id === teamId) && m.status === 'scheduled').length },
+                { label: t('dashboard.payment'), value: team?.payment_done ? t('dashboard.paid') : t('dashboard.pending'), color: team?.payment_done ? 'text-tertiary' : 'text-error' },
               ].map(stat => (
                 <div key={stat.label} className="text-center">
                   <p className={`text-2xl md:text-3xl font-black ${stat.color || 'text-on-surface'}`}>{stat.value}</p>
@@ -75,14 +77,14 @@ export default function DashboardPage() {
               ))}
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* Upcoming Match */}
-        <div className="md:col-span-4 primary-gradient text-on-primary rounded-[2rem] p-8 relative overflow-hidden">
+        <Card variant="gradient" className="md:col-span-4 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4 opacity-20">
             <span className="material-symbols-outlined text-6xl">stadium</span>
           </div>
-          <p className="text-xs font-bold uppercase tracking-widest opacity-70 mb-1">Next Match</p>
+          <p className="text-xs font-bold uppercase tracking-widest opacity-70 mb-1">{t('dashboard.nextMatch')}</p>
           {upcomingMatch ? (
             <>
               <p className="text-xl font-bold mb-4">vs {opponent?.team_name}</p>
@@ -100,15 +102,15 @@ export default function DashboardPage() {
               </div>
             </>
           ) : (
-            <p className="text-lg font-medium opacity-80 mt-4">No upcoming matches</p>
+            <p className="text-lg font-medium opacity-80 mt-4">{t('dashboard.noUpcomingMatches')}</p>
           )}
-        </div>
+        </Card>
 
         {/* Recent Result */}
-        <div className="md:col-span-6 bg-surface-container-low rounded-[2rem] p-8 hover:bg-surface-container-lowest transition-colors whisper-shadow">
+        <Card variant="flat" className="md:col-span-6 hover:bg-surface-container-lowest transition-colors">
           <div className="flex items-center gap-3 mb-6">
             <span className="material-symbols-outlined text-primary p-2 bg-white rounded-xl">scoreboard</span>
-            <h3 className="text-lg font-bold">Last Match Result</h3>
+            <h3 className="text-lg font-bold">{t('dashboard.lastMatchResult')}</h3>
           </div>
           {recentMatch ? (
             <div>
@@ -125,16 +127,16 @@ export default function DashboardPage() {
               </div>
             </div>
           ) : (
-            <p className="text-on-surface-variant">No completed matches yet</p>
+            <p className="text-on-surface-variant">{t('dashboard.noCompletedMatches')}</p>
           )}
-        </div>
+        </Card>
 
         {/* Notifications */}
-        <div className="md:col-span-6 bg-surface-container-low rounded-[2rem] p-8 hover:bg-surface-container-lowest transition-colors whisper-shadow">
+        <Card variant="flat" className="md:col-span-6 hover:bg-surface-container-lowest transition-colors">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <span className="material-symbols-outlined text-primary p-2 bg-white rounded-xl">notifications</span>
-              <h3 className="text-lg font-bold">Updates</h3>
+              <h3 className="text-lg font-bold">{t('dashboard.updates')}</h3>
             </div>
           </div>
           <div className="space-y-3">
@@ -156,9 +158,9 @@ export default function DashboardPage() {
                 {!notif.is_read && <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />}
               </div>
             ))}
-            {notifications.length === 0 && <p className="text-sm text-outline">No updates yet</p>}
+            {notifications.length === 0 && <p className="text-sm text-outline">{t('dashboard.noUpdates')}</p>}
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   )

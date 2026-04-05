@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
+import { useTranslation } from '../../i18n'
+import ThemeToggle from '../ui/ThemeToggle'
 
 export default function UserNavbar() {
+  const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
   const { isAuthenticated, team, logout } = useAuthStore()
@@ -10,10 +13,10 @@ export default function UserNavbar() {
   const [notifOpen, setNotifOpen] = useState(false)
 
   const navLinks = [
-    { to: '/', label: 'Home' },
-    { to: '/matches', label: 'Schedule', protected: true },
-    { to: '/standings', label: 'Standings', protected: true },
-    { to: '/info', label: 'Info' },
+    { to: '/', label: t('navigation.home') },
+    { to: '/matches', label: t('navigation.schedule'), protected: true },
+    { to: '/standings', label: t('navigation.standings'), protected: true },
+    { to: '/info', label: t('navigation.info') },
   ]
 
   const isActive = (path) => location.pathname === path
@@ -22,7 +25,7 @@ export default function UserNavbar() {
     <nav className="fixed top-0 w-full z-50 glass-nav shadow-sm h-20 flex justify-between items-center px-6 md:px-8 max-w-full mx-auto">
       <div className="flex items-center gap-8">
         <Link to="/" className="text-xl md:text-2xl font-bold tracking-tighter text-zinc-800">
-          Master Stroke
+          {t('common.appName')}
         </Link>
         <div className="hidden md:flex items-center gap-6">
           {navLinks.map(link => (
@@ -44,6 +47,7 @@ export default function UserNavbar() {
       </div>
 
       <div className="flex items-center gap-3">
+        <ThemeToggle />
         {isAuthenticated && (
           <div className="relative">
             <button
@@ -55,20 +59,20 @@ export default function UserNavbar() {
             </button>
             {notifOpen && (
               <div className="absolute right-0 top-14 w-80 bg-white rounded-2xl shadow-xl border border-stone-200/50 p-4 animate-fade-in z-50">
-                <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">Notifications</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">{t('notifications.title')}</p>
                 <div className="space-y-3">
                   <div className="flex gap-3 p-3 rounded-xl bg-stone-50 hover:bg-stone-100 transition-colors">
                     <span className="material-symbols-outlined text-primary text-sm mt-0.5">info</span>
                     <div>
-                      <p className="text-sm font-medium text-zinc-800">Welcome to the tournament!</p>
-                      <p className="text-xs text-zinc-400">Just now</p>
+                      <p className="text-sm font-medium text-zinc-800">{t('notifications.welcomeMessage')}</p>
+                      <p className="text-xs text-zinc-400">{t('notifications.justNow')}</p>
                     </div>
                   </div>
                   <div className="flex gap-3 p-3 rounded-xl hover:bg-stone-50 transition-colors">
                     <span className="material-symbols-outlined text-secondary text-sm mt-0.5">schedule</span>
                     <div>
-                      <p className="text-sm font-medium text-zinc-800">Next match: Oct 14 at 9 AM</p>
-                      <p className="text-xs text-zinc-400">1 hour ago</p>
+                      <p className="text-sm font-medium text-zinc-800">{t('notifications.nextMatchMessage')}</p>
+                      <p className="text-xs text-zinc-400">{t('notifications.hoursAgo')}</p>
                     </div>
                   </div>
                 </div>
@@ -89,7 +93,7 @@ export default function UserNavbar() {
               onClick={() => { logout(); navigate('/') }}
               className="text-xs font-medium text-zinc-400 hover:text-zinc-700 transition-colors px-3 py-1.5 rounded-lg hover:bg-stone-100"
             >
-              Logout
+              {t('common.logout')}
             </button>
           </div>
         ) : (
@@ -98,13 +102,13 @@ export default function UserNavbar() {
               to="/login"
               className="text-sm font-medium text-zinc-600 hover:text-zinc-800 transition-colors px-4 py-2"
             >
-              Login
+              {t('common.login')}
             </Link>
             <Link
               to="/register"
               className="primary-gradient text-on-primary px-5 py-2.5 rounded-xl font-medium shadow-sm hover:scale-[0.98] active:scale-95 transition-all text-sm"
             >
-              Register
+              {t('common.register')}
             </Link>
           </div>
         )}

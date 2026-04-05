@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useAuthStore } from '../../stores/authStore'
 import { matchService } from '../../services/matchService'
+import { useTranslation } from '../../i18n'
+import { Badge, FilterPills, PageHeader } from '../../components/ui'
+import { SectionLoader } from '../../components/ui/Spinner'
 
 export default function SchedulePage() {
+  const { t } = useTranslation()
   const [filter, setFilter] = useState('all')
   const [matches, setMatches] = useState([])
   const [loading, setLoading] = useState(true)
@@ -10,10 +14,10 @@ export default function SchedulePage() {
   const teamId = team?.id
 
   const filters = [
-    { key: 'all', label: 'All Matches' },
-    { key: 'my', label: 'My Team' },
-    { key: 'upcoming', label: 'Upcoming' },
-    { key: 'completed', label: 'Completed' },
+    { key: 'all', label: t('schedule.allMatches') },
+    { key: 'my', label: t('schedule.myTeam') },
+    { key: 'upcoming', label: t('common.upcoming') },
+    { key: 'completed', label: t('common.completed') },
   ]
 
   useEffect(() => {
@@ -37,7 +41,6 @@ export default function SchedulePage() {
     return true
   })
 
-  // Group by date
   const grouped = filteredMatches.reduce((acc, match) => {
     const date = new Date(match.scheduled_at).toLocaleDateString('en-IN', { weekday: 'long', month: 'short', day: 'numeric' })
     if (!acc[date]) acc[date] = []
@@ -46,33 +49,23 @@ export default function SchedulePage() {
   }, {})
 
   if (loading) {
-    return <div className="p-12 text-center text-outline animate-pulse">Loading schedule...</div>
+    return <SectionLoader message={t('schedule.loadingSchedule')} />
   }
 
   return (
     <div className="py-8 md:py-12 px-4 md:px-8 max-w-7xl mx-auto">
-      <header className="mb-10">
-        <span className="inline-block px-3 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-bold tracking-[0.1em] rounded-full uppercase mb-4">Season 2024</span>
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-[-0.04em] text-on-surface mb-3">Match Schedule</h1>
-        <p className="text-lg text-on-surface-variant leading-relaxed">Complete guide to every match across the tournament.</p>
-      </header>
+      <PageHeader
+        badge={<Badge status="info">{t('common.season')}</Badge>}
+        title={t('schedule.matchSchedule')}
+        description={t('schedule.scheduleDescription')}
+      />
 
-      {/* Filters */}
-      <div className="flex flex-wrap items-center gap-2 mb-10">
-        {filters.map(f => (
-          <button
-            key={f.key}
-            onClick={() => setFilter(f.key)}
-            className={`px-5 py-2 rounded-full text-sm font-semibold transition-colors ${
-              filter === f.key
-                ? 'bg-primary text-on-primary'
-                : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container'
-            }`}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
+      <FilterPills
+        filters={filters}
+        active={filter}
+        onChange={setFilter}
+        className="mb-10"
+      />
 
       {/* Schedule */}
       <div className="space-y-16">
@@ -95,16 +88,14 @@ export default function SchedulePage() {
                       isMyMatch ? 'bg-surface-container-lowest border border-secondary-container/50' : 'bg-surface-container-low hover:bg-surface-container-lowest'
                     }`}
                   >
-                    {/* Match Info */}
                     <div className="flex flex-col items-center lg:items-start min-w-[120px]">
-                      <span className="text-[11px] font-bold tracking-widest text-outline uppercase mb-1">Match #{match.match_number}</span>
+                      <span className="text-[11px] font-bold tracking-widest text-outline uppercase mb-1">{t('common.match')} #{match.match_number}</span>
                       <span className="text-lg font-bold">
                         {new Date(match.scheduled_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
                       </span>
                       <span className="text-sm text-on-surface-variant mt-1">{match.venue}</span>
                     </div>
 
-                    {/* Teams */}
                     <div className="flex-grow flex items-center justify-center lg:justify-between w-full gap-4 md:gap-8">
                       <div className="flex flex-col md:flex-row items-center gap-3 text-center md:text-left flex-1 justify-end">
                         <span className={`text-xl font-extrabold tracking-tight ${match.result === 'team_a' ? '' : match.result ? 'opacity-50' : ''}`}>
@@ -118,12 +109,12 @@ export default function SchedulePage() {
                       <div className="flex flex-col items-center">
                         {isCompleted ? (
                           <>
-                            <div className="text-[10px] font-black uppercase text-outline mb-1">Result</div>
+                            <div className="text-[10px] font-black uppercase text-outline mb-1">{t('common.result')}</div>
                             <div className="flex items-center gap-3">
                               <span className={`text-2xl font-black ${match.result === 'team_a' ? 'text-on-surface' : 'text-on-surface opacity-40'}`}>
                                 {match.runs_a}/{match.wickets_a}
                               </span>
-                              <span className="text-xs font-bold text-outline">VS</span>
+                              <span className="text-xs font-bold text-outline">{t('common.vs')}</span>
                               <span className={`text-2xl font-black ${match.result === 'team_b' ? 'text-on-surface' : 'text-on-surface opacity-40'}`}>
                                 {match.runs_b}/{match.wickets_b}
                               </span>
@@ -131,8 +122,8 @@ export default function SchedulePage() {
                           </>
                         ) : (
                           <>
-                            <div className="px-4 py-1 bg-surface-container-high rounded-full text-[10px] font-black uppercase text-outline tracking-widest">Upcoming</div>
-                            <div className="text-2xl font-light text-outline mt-1">VS</div>
+                            <div className="px-4 py-1 bg-surface-container-high rounded-full text-[10px] font-black uppercase text-outline tracking-widest">{t('common.upcoming')}</div>
+                            <div className="text-2xl font-light text-outline mt-1">{t('common.vs')}</div>
                           </>
                         )}
                       </div>
@@ -147,12 +138,11 @@ export default function SchedulePage() {
                       </div>
                     </div>
 
-                    {/* Result */}
                     <div className="lg:w-44 text-center lg:text-right">
                       {isCompleted ? (
                         <span className="text-sm font-bold text-tertiary">{match.summary}</span>
                       ) : isMyMatch ? (
-                        <span className="text-xs font-bold text-secondary uppercase tracking-wider">Your Match</span>
+                        <span className="text-xs font-bold text-secondary uppercase tracking-wider">{t('schedule.yourMatch')}</span>
                       ) : null}
                     </div>
                   </div>
@@ -166,8 +156,8 @@ export default function SchedulePage() {
       {filteredMatches.length === 0 && (
         <div className="text-center py-20">
           <span className="material-symbols-outlined text-5xl text-outline-variant/30 mb-4">calendar_month</span>
-          <h3 className="text-xl font-bold text-on-surface-variant">No matches found</h3>
-          <p className="text-sm text-outline mt-2">Try a different filter to view matches.</p>
+          <h3 className="text-xl font-bold text-on-surface-variant">{t('schedule.noMatchesFound')}</h3>
+          <p className="text-sm text-outline mt-2">{t('schedule.tryDifferentFilter')}</p>
         </div>
       )}
     </div>

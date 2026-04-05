@@ -2,8 +2,12 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { matchService } from '../../services/matchService'
 import { notificationService } from '../../services/notificationService'
+import { useTranslation } from '../../i18n'
+import { Button, Select, Card } from '../../components/ui'
+import { SectionLoader } from '../../components/ui/Spinner'
 
 export default function ScoreEntryPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [scheduledMatches, setScheduledMatches] = useState([])
   const [loading, setLoading] = useState(true)
@@ -41,7 +45,7 @@ export default function ScoreEntryPage() {
 
   const handlePublish = async (e) => {
     e.preventDefault()
-    if (!result) return alert('Please select a match verdict')
+    if (!result) return alert(t('admin.scores.selectVerdict'))
 
     try {
       const scoreData = {
@@ -58,21 +62,20 @@ export default function ScoreEntryPage() {
 
       await matchService.updateScore(selectedMatchId, scoreData)
       
-      // Send notification
       await notificationService.sendNotification(
         `Final Result: ${match.team_a.team_name} vs ${match.team_b.team_name} - ${summary}`,
         'result'
       )
 
-      alert('Result published successfully!')
+      alert(t('admin.scores.resultPublished'))
       navigate('/admin/tournament')
     } catch (err) {
-      alert('Failed to publish result: ' + err.message)
+      alert(t('admin.scores.failedPublish') + err.message)
     }
   }
 
   if (loading) {
-    return <div className="p-12 text-center text-outline animate-pulse">Loading matches...</div>
+    return <SectionLoader message={t('admin.scores.loadingMatches')} />
   }
 
   return (
@@ -80,25 +83,29 @@ export default function ScoreEntryPage() {
       <header className="mb-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <span className="text-xs font-bold uppercase tracking-[0.05em] text-on-surface-variant mb-2 block">Tournament Admin</span>
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-[-0.02em] text-on-surface">Score & Result Entry</h1>
+            <span className="text-xs font-bold uppercase tracking-[0.05em] text-on-surface-variant mb-2 block">{t('admin.scores.tournamentAdminLabel')}</span>
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-[-0.02em] text-on-surface">{t('admin.scores.scoreResultEntry')}</h1>
           </div>
           <div className="flex gap-3">
-            <button onClick={() => navigate(-1)} className="px-5 py-3 rounded-xl text-sm font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors">Discard</button>
-            <button onClick={handlePublish} className="px-6 py-3 rounded-xl text-sm font-semibold primary-gradient text-on-primary shadow-lg hover:scale-[1.02] active:scale-95 transition-all">Publish Result</button>
+            <Button variant="ghost" onClick={() => navigate(-1)}>{t('common.discard')}</Button>
+            <Button onClick={handlePublish}>{t('admin.scores.publishResult')}</Button>
           </div>
         </div>
       </header>
 
       {/* Match Selector */}
       <div className="mb-8">
-        <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 block">Select Match</label>
-        <select value={selectedMatchId} onChange={e => setSelectedMatchId(e.target.value)} className="bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-4 focus:ring-primary-fixed-dim/30 max-w-md w-full">
+        <Select
+          label={t('admin.scores.selectMatch')}
+          value={selectedMatchId}
+          onChange={e => setSelectedMatchId(e.target.value)}
+          className="max-w-md"
+        >
           {scheduledMatches.map(m => (
-            <option key={m.id} value={m.id}>Match #{m.match_number}: {m.team_a?.team_name} vs {m.team_b?.team_name}</option>
+            <option key={m.id} value={m.id}>{t('common.match')} #{m.match_number}: {m.team_a?.team_name} vs {m.team_b?.team_name}</option>
           ))}
-          {scheduledMatches.length === 0 && <option>No scheduled matches</option>}
-        </select>
+          {scheduledMatches.length === 0 && <option>{t('admin.scores.noScheduledMatches')}</option>}
+        </Select>
       </div>
 
       {match && (
@@ -114,16 +121,16 @@ export default function ScoreEntryPage() {
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">Runs</label>
-                  <input type="number" value={scoreA.runs} onChange={e => setScoreA(p => ({ ...p, runs: e.target.value }))} placeholder="000" required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
+                  <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.runs')}</label>
+                  <input type="number" value={scoreA.runs} onChange={e => setScoreA(p => ({ ...p, runs: e.target.value }))} placeholder={t('admin.scores.placeholderRuns')} required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">Wickets</label>
-                  <input type="number" value={scoreA.wickets} onChange={e => setScoreA(p => ({ ...p, wickets: e.target.value }))} placeholder="0" min="0" max="10" required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
+                  <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.wickets')}</label>
+                  <input type="number" value={scoreA.wickets} onChange={e => setScoreA(p => ({ ...p, wickets: e.target.value }))} placeholder={t('admin.scores.placeholderWickets')} min="0" max="10" required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">Overs</label>
-                  <input type="number" step="0.1" value={scoreA.overs} onChange={e => setScoreA(p => ({ ...p, overs: e.target.value }))} placeholder="6.0" required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
+                  <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.overs')}</label>
+                  <input type="number" step="0.1" value={scoreA.overs} onChange={e => setScoreA(p => ({ ...p, overs: e.target.value }))} placeholder={t('admin.scores.placeholderOvers')} required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
                 </div>
               </div>
             </section>
@@ -138,44 +145,44 @@ export default function ScoreEntryPage() {
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">Runs</label>
-                  <input type="number" value={scoreB.runs} onChange={e => setScoreB(p => ({ ...p, runs: e.target.value }))} placeholder="000" required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
+                  <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.runs')}</label>
+                  <input type="number" value={scoreB.runs} onChange={e => setScoreB(p => ({ ...p, runs: e.target.value }))} placeholder={t('admin.scores.placeholderRuns')} required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">Wickets</label>
-                  <input type="number" value={scoreB.wickets} onChange={e => setScoreB(p => ({ ...p, wickets: e.target.value }))} placeholder="0" min="0" max="10" required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
+                  <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.wickets')}</label>
+                  <input type="number" value={scoreB.wickets} onChange={e => setScoreB(p => ({ ...p, wickets: e.target.value }))} placeholder={t('admin.scores.placeholderWickets')} min="0" max="10" required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">Overs</label>
-                  <input type="number" step="0.1" value={scoreB.overs} onChange={e => setScoreB(p => ({ ...p, overs: e.target.value }))} placeholder="6.0" required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
+                  <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.overs')}</label>
+                  <input type="number" step="0.1" value={scoreB.overs} onChange={e => setScoreB(p => ({ ...p, overs: e.target.value }))} placeholder={t('admin.scores.placeholderOvers')} required className="w-full bg-surface-container-lowest border-outline-variant/20 focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 text-2xl font-bold tracking-tight" />
                 </div>
               </div>
             </section>
 
             {/* Match Details */}
-            <section className="bg-surface-container-lowest rounded-[2rem] p-8 whisper-shadow space-y-6">
-              <h3 className="text-xl font-bold mb-4">Final Assessment</h3>
+            <Card variant="default" className="space-y-6">
+              <h3 className="text-xl font-bold mb-4">{t('admin.scores.finalAssessment')}</h3>
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">Man of the Match</label>
-                <input type="text" value={manOfMatch} onChange={e => setManOfMatch(e.target.value)} placeholder="Player name..." className="w-full bg-surface-container-low border-none focus:ring-4 focus:ring-primary/10 rounded-2xl p-4" />
+                <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.manOfMatch')}</label>
+                <input type="text" value={manOfMatch} onChange={e => setManOfMatch(e.target.value)} placeholder={t('admin.scores.placeholderPlayer')} className="w-full bg-surface-container-low border-none focus:ring-4 focus:ring-primary/10 rounded-2xl p-4" />
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">Match Summary</label>
-                <textarea value={summary} onChange={e => setSummary(e.target.value)} rows="3" placeholder="Brief summary of the match..." className="w-full bg-surface-container-low border-none focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 leading-relaxed" />
+                <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.matchSummary')}</label>
+                <textarea value={summary} onChange={e => setSummary(e.target.value)} rows="3" placeholder={t('admin.scores.placeholderSummary')} className="w-full bg-surface-container-low border-none focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 leading-relaxed" />
               </div>
-            </section>
+            </Card>
           </div>
 
           {/* Right: Verdict */}
           <aside className="lg:col-span-4 space-y-6">
-            <div className="bg-surface-container-lowest rounded-[2rem] p-8 whisper-shadow">
-              <h3 className="text-sm font-bold uppercase tracking-widest text-on-surface-variant mb-6">Match Verdict</h3>
+            <Card variant="default">
+              <h3 className="text-sm font-bold uppercase tracking-widest text-on-surface-variant mb-6">{t('admin.scores.matchVerdict')}</h3>
               <div className="space-y-3">
                 {[
-                  { value: 'team_a', label: `${match.team_a?.team_name} Won` },
-                  { value: 'team_b', label: `${match.team_b?.team_name} Won` },
-                  { value: 'tie', label: 'Tie Match' },
-                  { value: 'no_result', label: 'No Result' },
+                  { value: 'team_a', label: t('admin.scores.teamWon', { team: match.team_a?.team_name }) },
+                  { value: 'team_b', label: t('admin.scores.teamWon', { team: match.team_b?.team_name }) },
+                  { value: 'tie', label: t('admin.scores.tieMatch') },
+                  { value: 'no_result', label: t('admin.scores.noResult') },
                 ].map(opt => (
                   <label key={opt.value} className="group flex items-center justify-between p-4 rounded-2xl bg-surface-container-low hover:bg-secondary-container transition-colors cursor-pointer">
                     <span className="font-semibold text-on-surface">{opt.label}</span>
@@ -183,21 +190,21 @@ export default function ScoreEntryPage() {
                   </label>
                 ))}
               </div>
-            </div>
+            </Card>
 
             <div className="bg-primary rounded-[2rem] p-8 text-on-primary">
               <div className="flex items-center gap-2 mb-3 opacity-70">
                 <span className="material-symbols-outlined text-sm">info</span>
-                <span className="text-xs font-bold uppercase tracking-widest">Note</span>
+                <span className="text-xs font-bold uppercase tracking-widest">{t('admin.scores.noteTitle')}</span>
               </div>
               <p className="text-sm font-medium leading-relaxed">
-                Publishing the result will automatically update the points table and send notifications to all teams.
+                {t('admin.scores.noteMessage')}
               </p>
             </div>
           </aside>
         </form>
       )}
-      {scheduledMatches.length === 0 && <div className="text-center py-20 text-on-surface-variant">No scheduled matches left for score entry.</div>}
+      {scheduledMatches.length === 0 && <div className="text-center py-20 text-on-surface-variant">{t('admin.scores.noScoreEntry')}</div>}
     </div>
   )
 }
