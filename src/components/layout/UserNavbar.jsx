@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import { useTranslation } from '../../i18n'
-import ThemeToggle from '../ui/ThemeToggle'
 
 export default function UserNavbar() {
   const { t } = useTranslation()
@@ -47,7 +46,6 @@ export default function UserNavbar() {
       </div>
 
       <div className="flex items-center gap-3">
-        <ThemeToggle />
         {isAuthenticated && (
           <div className="relative">
             <button

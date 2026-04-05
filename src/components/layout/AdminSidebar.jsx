@@ -1,7 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import { useTranslation } from '../../i18n'
-import ThemeToggle from '../ui/ThemeToggle'
 
 const navItems = [
   { to: '/admin/dashboard', icon: 'dashboard', labelKey: 'navigation.dashboard' },
@@ -76,9 +75,8 @@ export default function AdminSidebar() {
         {t('admin.sidebar.newMatch')}
       </Link>
 
-      {/* Theme Toggle + Logout */}
+      {/* Logout */}
       <div className="flex items-center gap-2">
-        <ThemeToggle />
         <button
           onClick={() => { logout(); navigate('/admin/login') }}
           className="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-xl transition-all text-sm font-medium"

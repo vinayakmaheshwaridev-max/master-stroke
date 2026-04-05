@@ -308,6 +308,135 @@ body {
   background: #6a706e;
 }
 
+/* ========================================
+   CRICKET THEME 🏏
+   Activated via: <html data-theme="cricket">
+   Inspired by: pitch green, bat gold,
+   ball red, wicket brown, stadium sky
+   ======================================== */
+
+[data-theme="cricket"] {
+  /* ---- Surfaces (pitch-inspired warm cream) ---- */
+  --color-surface: #faf8f2;
+  --color-surface-bright: #fdfcf7;
+  --color-surface-dim: #e8e2d4;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f5f1e8;
+  --color-surface-container: #efe9dc;
+  --color-surface-container-high: #e6dfd0;
+  --color-surface-container-highest: #ddd5c4;
+  --color-surface-variant: #e0d8c8;
+  --color-surface-tint: #1b6b3a;
+  --color-background: #faf8f2;
+
+  /* ---- On-Surface (text on light bg) ---- */
+  --color-on-surface: #1a1c17;
+  --color-on-surface-variant: #4a4d40;
+  --color-on-background: #1a1c17;
+
+  /* ---- Primary (pitch green — the heart of cricket) ---- */
+  --color-primary: #1b6b3a;
+  --color-primary-dim: #155a30;
+  --color-primary-container: #a8f0b6;
+  --color-primary-fixed: #a8f0b6;
+  --color-primary-fixed-dim: #7cd68e;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #00210a;
+  --color-on-primary-fixed: #00210a;
+  --color-on-primary-fixed-variant: #04522a;
+  --color-inverse-primary: #7cd68e;
+
+  /* ---- Secondary (bat gold / willow wood) ---- */
+  --color-secondary: #8b6914;
+  --color-secondary-dim: #745810;
+  --color-secondary-container: #ffdea0;
+  --color-secondary-fixed: #ffdea0;
+  --color-secondary-fixed-dim: #e6c478;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #2c1f00;
+  --color-on-secondary-fixed: #2c1f00;
+  --color-on-secondary-fixed-variant: #6a5000;
+
+  /* ---- Tertiary (wicket brown / ground soil) ---- */
+  --color-tertiary: #7c5b3a;
+  --color-tertiary-dim: #69492a;
+  --color-tertiary-container: #ffdcbb;
+  --color-tertiary-fixed: #ffdcbb;
+  --color-tertiary-fixed-dim: #e6b98e;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #2e1500;
+  --color-on-tertiary-fixed: #2e1500;
+  --color-on-tertiary-fixed-variant: #5e4222;
+
+  /* ---- Error (cricket ball red — cherry) ---- */
+  --color-error: #ba1a2e;
+  --color-error-dim: #930020;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #410006;
+
+  /* ---- Outline ---- */
+  --color-outline: #6f7665;
+  --color-outline-variant: #bfc6b3;
+
+  /* ---- Inverse ---- */
+  --color-inverse-surface: #2f312a;
+  --color-inverse-on-surface: #f1f0e7;
+
+  /* ---- Status Colors (cricket-aware) ---- */
+  --color-status-approved-bg: #d4f5d8;
+  --color-status-approved-text: #0f5c2a;
+  --color-status-pending-bg: #fff0d4;
+  --color-status-pending-text: #8b6914;
+  --color-status-rejected-bg: #ffdad6;
+  --color-status-rejected-text: #ba1a2e;
+  --color-status-scheduled-bg: #ffdea0;
+  --color-status-scheduled-text: #6a5000;
+  --color-status-completed-bg: #d4f5d8;
+  --color-status-completed-text: #0f5c2a;
+}
+
+/* ---- Cricket theme utility overrides ---- */
+[data-theme="cricket"] body {
+  background-color: #faf8f2;
+  color: #1a1c17;
+}
+
+[data-theme="cricket"] ::selection {
+  background-color: #a8f0b6;
+  color: #00210a;
+}
+
+[data-theme="cricket"] .primary-gradient {
+  background: linear-gradient(145deg, #1b6b3a 0%, #155a30 100%);
+  color: #ffffff;
+}
+
+[data-theme="cricket"] .hero-gradient {
+  background: linear-gradient(145deg, #1b6b3a 0%, #0a4420 100%);
+}
+
+[data-theme="cricket"] .glass-nav {
+  background: rgba(250, 248, 242, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+[data-theme="cricket"] .whisper-shadow,
+[data-theme="cricket"] .premium-shadow {
+  box-shadow: 0px 20px 40px rgba(27, 107, 58, 0.08);
+}
+
+[data-theme="cricket"] .custom-scrollbar::-webkit-scrollbar-track {
+  background: #efe9dc;
+}
+[data-theme="cricket"] .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #bfc6b3;
+}
+[data-theme="cricket"] .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #6f7665;
+}
+
 /* ---- Smooth theme transition ---- */
 html {
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -318,3 +447,4 @@ html *::before,
 html *::after {
   transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
+

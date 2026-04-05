@@ -1,43 +1,48 @@
 import { create } from 'zustand'
 
 /**
- * Theme store — manages light/dark mode with localStorage persistence.
+ * Theme store — manages light / dark / cricket themes
+ * with localStorage persistence.
  *
  * Usage:
- *   const { theme, toggleTheme } = useThemeStore()
+ *   const { theme, toggleTheme, setTheme } = useThemeStore()
  *
  * The store applies `data-theme` on <html> automatically.
  * System preference is used as fallback when no user choice exists.
  */
 
 const STORAGE_KEY = 'ms-theme'
+const THEMES = ['light', 'dark', 'cricket']
+
+const THEME_META_COLORS = {
+  light: '#f9f9f7',
+  dark: '#0e1110',
+  cricket: '#faf8f2',
+}
 
 function getInitialTheme() {
-  // Check localStorage first
   const saved = localStorage.getItem(STORAGE_KEY)
-  if (saved === 'dark' || saved === 'light') return saved
+  if (THEMES.includes(saved)) return saved
 
-  // Fallback to OS preference
-  if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
-    return 'dark'
-  }
-
-  return 'light'
+  return 'cricket'
 }
 
 function applyTheme(theme) {
   const root = document.documentElement
   root.setAttribute('data-theme', theme)
 
-  // Also update meta theme-color for mobile browsers
+  // Update meta theme-color for mobile browsers
   const meta = document.querySelector('meta[name="theme-color"]')
   if (meta) {
-    meta.setAttribute('content', theme === 'dark' ? '#0e1110' : '#f9f9f7')
+    meta.setAttribute('content', THEME_META_COLORS[theme] || '#f9f9f7')
   }
 }
 
 export const useThemeStore = create((set, get) => ({
   theme: getInitialTheme(),
+
+  /** All available themes */
+  themes: THEMES,
 
   /** Initialize theme on app mount */
   init() {
@@ -54,17 +59,19 @@ export const useThemeStore = create((set, get) => ({
     })
   },
 
-  /** Toggle between light and dark */
+  /** Cycle to next theme: light → dark → cricket → light */
   toggleTheme() {
-    const next = get().theme === 'dark' ? 'light' : 'dark'
+    const current = get().theme
+    const idx = THEMES.indexOf(current)
+    const next = THEMES[(idx + 1) % THEMES.length]
     localStorage.setItem(STORAGE_KEY, next)
     applyTheme(next)
     set({ theme: next })
   },
 
-  /** Set a specific theme */
+  /** Set a specific theme by name */
   setTheme(theme) {
-    if (theme !== 'dark' && theme !== 'light') return
+    if (!THEMES.includes(theme)) return
     localStorage.setItem(STORAGE_KEY, theme)
     applyTheme(theme)
     set({ theme })
