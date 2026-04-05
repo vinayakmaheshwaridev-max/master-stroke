@@ -10,6 +10,11 @@ export default function TeamManagementPage() {
   const [teams, setTeams] = useState([])
   const [loading, setLoading] = useState(true)
   const [approvalModal, setApprovalModal] = useState(null)
+  const [paymentModal, setPaymentModal] = useState(null)
+  const [actionModal, setActionModal] = useState(null)
+  const [editingPassword, setEditingPassword] = useState(false)
+  const [newPassword, setNewPassword] = useState('')
+  const [passwordUpdating, setPasswordUpdating] = useState(false)
 
   const fetchTeams = async () => {
     setLoading(true)
@@ -35,13 +40,34 @@ export default function TeamManagementPage() {
   ]
   const filtered = filter === 'all' ? teams : teams.filter(t => t.status === filter)
 
+  const confirmAction = (team, action) => {
+    setActionModal({ team, action })
+  }
+
+  const handleActionConfirm = () => {
+    if (!actionModal) return
+    if (actionModal.action === 'approve') {
+      handleApprove(actionModal.team)
+    } else if (actionModal.action === 'reject') {
+      handleReject(actionModal.team.id)
+    }
+    setActionModal(null)
+  }
+
   const handleApprove = async (team) => {
     try {
-      await teamService.updateTeam(team.id, { status: 'approved' })
-      setTeams(prev => prev.map(t => t.id === team.id ? { ...t, status: 'approved' } : t))
-      setApprovalModal(team)
+      const generatedPassword = Math.random().toString(36).slice(-8)
+      
+      // We pass the generated password via teamService
+      // (This assumes you will either update the Supabase 'teams' table to have a "password" column
+      // or teamService.approveTeam will handle the logic internally)
+      const approvedTeam = await teamService.approveTeam(team, generatedPassword)
+      
+      setTeams(prev => prev.map(t => t.id === team.id ? { ...approvedTeam } : t))
+      setApprovalModal(approvedTeam)
     } catch (err) {
-      alert(t('admin.teams.failedApprove'))
+      alert(t('admin.teams.failedApprove') + '\n' + (err.message || ''))
+      console.error(err)
     }
   }
 
@@ -54,10 +80,17 @@ export default function TeamManagementPage() {
     }
   }
 
-  const handlePayment = async (teamId, paid) => {
+  const confirmPaymentToggle = (teamId, isPaid) => {
+    setPaymentModal({ teamId, isPaid })
+  }
+
+  const handlePaymentConfirm = async () => {
+    if (!paymentModal) return
     try {
-      await teamService.updateTeam(teamId, { payment_done: paid })
-      setTeams(prev => prev.map(t => t.id === teamId ? { ...t, payment_done: paid } : t))
+      const { teamId, isPaid } = paymentModal
+      await teamService.updateTeam(teamId, { payment_done: isPaid })
+      setTeams(prev => prev.map(t => t.id === teamId ? { ...t, payment_done: isPaid } : t))
+      setPaymentModal(null)
     } catch (err) {
       alert(t('admin.teams.failedPayment'))
     }
@@ -67,7 +100,22 @@ export default function TeamManagementPage() {
     return <SectionLoader message={t('admin.teams.loadingTeams')} />
   }
 
-  const headers = t('admin.teams.tableHeaders')
+  const tableHeaders = [
+    t('admin.teams.tableHeaders.hash'),
+    t('admin.teams.tableHeaders.teamName'),
+    t('admin.teams.tableHeaders.captain'),
+    t('admin.teams.tableHeaders.mobile'),
+    t('admin.teams.tableHeaders.email'),
+    t('admin.teams.tableHeaders.age'),
+    t('admin.teams.tableHeaders.status'),
+    t('admin.teams.tableHeaders.paid'),
+    t('admin.teams.tableHeaders.actions'),
+    t('admin.teams.tableHeaders.password')
+  ]
+  const actionHeader = t('admin.teams.tableHeaders.actions')
+  const statusHeader = t('admin.teams.tableHeaders.status')
+  const paidHeader = t('admin.teams.tableHeaders.paid')
+  const passwordHeader = t('admin.teams.tableHeaders.password')
 
   return (
     <div className="min-h-screen">
@@ -89,9 +137,9 @@ export default function TeamManagementPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse min-w-[800px]">
               <thead>
-                <tr className="bg-surface-container-low/50">
-                  {[headers.hash, headers.teamName, headers.captain, headers.mobile, headers.email, headers.age, headers.status, headers.paid, headers.actions].map(h => (
-                    <th key={h} className={`px-5 py-4 text-[11px] font-bold uppercase tracking-widest text-outline-variant ${h === headers.actions ? 'text-right' : h === headers.status || h === headers.paid ? 'text-center' : ''}`}>{h}</th>
+                <tr className="bg-primary text-on-primary">
+                  {tableHeaders.map((h, i) => (
+                    <th key={i} className={`px-5 py-4 text-[11px] font-bold uppercase tracking-widest ${h === actionHeader || h === passwordHeader ? 'text-right' : h === statusHeader || h === paidHeader ? 'text-center' : ''}`}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -108,19 +156,28 @@ export default function TeamManagementPage() {
                       <Badge status={team.status}>{team.status}</Badge>
                     </td>
                     <td className="px-5 py-5 text-center">
-                      <input type="checkbox" checked={team.payment_done} onChange={e => handlePayment(team.id, e.target.checked)} disabled={team.status === 'rejected'} className="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20 disabled:opacity-30" />
+                      <input type="checkbox" checked={team.payment_done} onChange={e => confirmPaymentToggle(team.id, e.target.checked)} disabled={team.status === 'rejected'} className="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20 disabled:opacity-30" />
                     </td>
                     <td className="px-5 py-5 text-right space-x-1">
-                      {team.status === 'pending' && (
-                        <>
-                          <button onClick={() => handleApprove(team)} className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-all" title="Approve">
-                            <span className="material-symbols-outlined">check_circle</span>
-                          </button>
-                          <button onClick={() => handleReject(team.id)} className="p-2 text-error hover:bg-red-50 rounded-lg transition-all" title="Reject">
-                            <span className="material-symbols-outlined">cancel</span>
-                          </button>
-                        </>
-                      )}
+                      <button 
+                        onClick={() => confirmAction(team, 'approve')} 
+                        disabled={team.status === 'approved'}
+                        className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-all disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed" 
+                        title="Approve">
+                        <span className="material-symbols-outlined">check_circle</span>
+                      </button>
+                      <button 
+                        onClick={() => confirmAction(team, 'reject')} 
+                        disabled={team.status === 'rejected'}
+                        className="p-2 text-error hover:bg-red-50 rounded-lg transition-all disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed" 
+                        title="Reject">
+                        <span className="material-symbols-outlined">cancel</span>
+                      </button>
+                    </td>
+                    <td className="px-5 py-5 text-right space-x-1">
+                      <button onClick={() => setApprovalModal(team)} className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-all" title="View Credentials">
+                        <span className="material-symbols-outlined">key</span>
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -156,6 +213,60 @@ export default function TeamManagementPage() {
                   <label className="text-[10px] uppercase tracking-widest font-bold text-outline-variant block mb-1">{t('admin.dashboard.statusCol')}</label>
                   <p className="text-sm font-mono font-bold text-on-surface bg-white px-3 py-1 inline-block rounded shadow-sm">{t('admin.teams.readyForLogin')}</p>
                 </div>
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-outline-variant block">{t('admin.teams.tableHeaders.password')}</label>
+                    {!editingPassword && (
+                      <button onClick={() => { setEditingPassword(true); setNewPassword('') }} className="text-primary hover:text-primary-dim flex items-center transition-all bg-primary/10 px-2 py-0.5 rounded">
+                        <span className="material-symbols-outlined text-[12px] mr-1">edit</span>
+                        <span className="text-[10px] uppercase font-bold tracking-wider">Reset</span>
+                      </button>
+                    )}
+                  </div>
+                  {editingPassword ? (
+                    <div className="flex gap-2 items-center">
+                      <input 
+                        type="text" 
+                        value={newPassword} 
+                        onChange={(e) => setNewPassword(e.target.value)} 
+                        className="text-sm font-mono font-semibold text-on-surface bg-white px-3 py-1.5 rounded border border-outline-variant/40 shadow-inner w-full outline-primary focus:border-primary transition-all"
+                        placeholder="Enter new password..."
+                      />
+                      <button 
+                        onClick={async () => {
+                          if (!newPassword.trim()) return
+                          setPasswordUpdating(true)
+                          try {
+                            const updatedUser = await teamService.updateTeamPassword(approvalModal, newPassword)
+                            setApprovalModal(updatedUser)
+                            setTeams(prev => prev.map(t => t.id === updatedUser.id ? updatedUser : t))
+                            setEditingPassword(false)
+                          } catch (err) {
+                            alert("Failed to update password: " + err.message)
+                          } finally {
+                            setPasswordUpdating(false)
+                          }
+                        }}
+                        disabled={passwordUpdating}
+                        className="p-1.5 bg-primary text-on-primary rounded hover:bg-primary-dim disabled:opacity-50 transition-all shadow-sm flex-shrink-0"
+                      >
+                        <span className="material-symbols-outlined text-sm">{passwordUpdating ? 'hourglass_empty' : 'check'}</span>
+                      </button>
+                      <button onClick={() => setEditingPassword(false)} className="p-1.5 bg-surface-variant text-on-surface-variant rounded hover:bg-outline-variant/30 transition-all flex-shrink-0">
+                        <span className="material-symbols-outlined text-sm">close</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="bg-white px-3 py-1.5 inline-flex items-center rounded border border-outline-variant/20 shadow-sm gap-2">
+                      <span className="text-sm font-mono font-bold tracking-[0.2em] text-on-surface">
+                        {approvalModal._tempPassword ? approvalModal._tempPassword : '••••••••'}
+                      </span>
+                      {!approvalModal._tempPassword && (
+                        <span className="text-[10px] uppercase tracking-wider font-bold text-outline bg-surface-container px-1.5 py-0.5 rounded">Encrypted</span>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="flex flex-col gap-3">
                 <Button variant="whatsapp" fullWidth size="lg">
@@ -167,13 +278,43 @@ export default function TeamManagementPage() {
                   fullWidth
                   size="lg"
                   icon="content_copy"
-                  onClick={() => navigator.clipboard?.writeText(`Email: ${approvalModal.email}\nMobile: ${approvalModal.mobile}`)}
+                  onClick={() => navigator.clipboard?.writeText(`Hi ${approvalModal.captain_name},\nYour team '${approvalModal.team_name}' has been approved for Master Stroke Box Cricket!\n\nHere are your login credentials:\nEmail/Mobile: ${approvalModal.email || approvalModal.mobile}\nPassword: ${approvalModal._tempPassword || '[Encrypted - Please Reset if Lost]'}\n\nPlease login to the team portal to check your schedule.`)}
                 >
                   {t('common.copyDetails')}
                 </Button>
               </div>
             </>
           )}
+        </Modal.Body>
+      </Modal>
+
+      {/* Payment Confirmation Modal */}
+      <Modal open={!!paymentModal} onClose={() => setPaymentModal(null)}>
+        <Modal.Body>
+          <Modal.Header
+            title="Confirm Payment Status"
+            subtitle={paymentModal?.isPaid ? "Mark this team's payment as done?" : "Reverse this team's payment status to unpaid?"}
+            onClose={() => setPaymentModal(null)}
+          />
+          <div className="flex gap-3 pt-6">
+            <Button variant="secondary" fullWidth size="lg" onClick={() => setPaymentModal(null)}>Cancel</Button>
+            <Button variant="primary" fullWidth size="lg" onClick={handlePaymentConfirm}>Confirm</Button>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      {/* Action Confirmation Modal */}
+      <Modal open={!!actionModal} onClose={() => setActionModal(null)}>
+        <Modal.Body>
+          <Modal.Header
+            title="Confirm Action"
+            subtitle={`Are you sure you want to ${actionModal?.action} this team?`}
+            onClose={() => setActionModal(null)}
+          />
+          <div className="flex gap-3 pt-6">
+            <Button variant="secondary" fullWidth size="lg" onClick={() => setActionModal(null)}>Cancel</Button>
+            <Button variant="primary" fullWidth size="lg" onClick={handleActionConfirm}>Confirm</Button>
+          </div>
         </Modal.Body>
       </Modal>
     </div>

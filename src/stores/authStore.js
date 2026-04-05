@@ -28,6 +28,11 @@ export const useAuthStore = create((set) => ({
 
       if (teamError) throw teamError
 
+      if (teamData && teamData.status !== 'approved') {
+        await supabase.auth.signOut()
+        throw new Error("Your team has not been approved or has been rejected.")
+      }
+
       set({ 
         user: data.user, 
         team: teamData, 
