@@ -12,7 +12,7 @@ export default function UserNavbar() {
   const [notifOpen, setNotifOpen] = useState(false)
 
   const navLinks = [
-    { to: '/', label: t('navigation.home') },
+    { to: '/dashboard', label: t('navigation.dashboard'), protected: true },
     { to: '/matches', label: t('navigation.schedule'), protected: true },
     { to: '/standings', label: t('navigation.standings'), protected: true },
     { to: '/info', label: t('navigation.info') },
@@ -23,7 +23,7 @@ export default function UserNavbar() {
   return (
     <nav className="fixed top-0 w-full z-50 glass-nav shadow-sm h-20 flex justify-between items-center px-6 md:px-8 max-w-full mx-auto">
       <div className="flex items-center gap-8">
-        <Link to="/" className="text-xl md:text-2xl font-bold tracking-tighter text-zinc-800">
+        <Link to={isAuthenticated ? '/dashboard' : '/'} className="text-xl md:text-2xl font-bold tracking-tighter text-zinc-800">
           {t('common.appName')}
         </Link>
         <div className="hidden md:flex items-center gap-6">
