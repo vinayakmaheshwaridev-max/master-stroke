@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useAuthStore } from './stores/authStore'
+import { ToastProvider } from './components/ui'
 // App.css removed — contained only unused Vite scaffold styles
 
 // Layouts
@@ -34,6 +35,7 @@ function App() {
   }, [initialize])
 
   return (
+    <ToastProvider>
     <BrowserRouter>
       <Routes>
         {/* User Panel */}
@@ -61,6 +63,7 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+    </ToastProvider>
   )
 }
 

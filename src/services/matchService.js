@@ -24,8 +24,10 @@ export const matchService = {
     return data
   },
   async updateScore(id, scoreData) {
-    const { data, error } = await supabase.from('matches').update({ ...scoreData, status: 'completed', updated_at: new Date().toISOString() }).eq('id', id).select().single()
+    const { error } = await supabase
+      .from('matches')
+      .update({ ...scoreData, status: 'completed', updated_at: new Date().toISOString() })
+      .eq('id', id)
     if (error) throw error
-    return data
   }
 }

@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { matchService } from '../../services/matchService'
 import { notificationService } from '../../services/notificationService'
 import { useTranslation } from '../../i18n'
-import { Button, Select, Card } from '../../components/ui'
+import { Button, Select, Card, useToast } from '../../components/ui'
 import { SectionLoader } from '../../components/ui/Spinner'
 
 export default function ScoreEntryPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { toast } = useToast()
+  const formRef = useRef(null)
   const [scheduledMatches, setScheduledMatches] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedMatchId, setSelectedMatchId] = useState('')
@@ -45,7 +47,8 @@ export default function ScoreEntryPage() {
 
   const handlePublish = async (e) => {
     e.preventDefault()
-    if (!result) return alert(t('admin.scores.selectVerdict'))
+    if (!match) return toast(t('admin.scores.selectVerdict'), 'warning')
+    if (!result) return toast(t('admin.scores.selectVerdict'), 'warning')
 
     try {
       const scoreData = {
@@ -61,16 +64,21 @@ export default function ScoreEntryPage() {
       }
 
       await matchService.updateScore(selectedMatchId, scoreData)
-      
-      await notificationService.sendNotification(
-        `Final Result: ${match.team_a.team_name} vs ${match.team_b.team_name} - ${summary}`,
-        'result'
-      )
 
-      alert(t('admin.scores.resultPublished'))
+      // Send notification separately so a failure here doesn't block the publish
+      try {
+        await notificationService.sendNotification(
+          `Final Result: ${match.team_a?.team_name} vs ${match.team_b?.team_name} - ${summary}`,
+          'result'
+        )
+      } catch (notifErr) {
+        console.warn('Notification failed (non-critical):', notifErr)
+      }
+
+      toast(t('admin.scores.resultPublished'), 'success')
       navigate('/admin/tournament')
     } catch (err) {
-      alert(t('admin.scores.failedPublish') + err.message)
+      toast(t('admin.scores.failedPublish') + err.message, 'error')
     }
   }
 
@@ -88,7 +96,19 @@ export default function ScoreEntryPage() {
           </div>
           <div className="flex gap-3">
             <Button variant="ghost" onClick={() => navigate(-1)}>{t('common.discard')}</Button>
-            <Button onClick={handlePublish}>{t('admin.scores.publishResult')}</Button>
+            <Button
+              type="button"
+              onClick={() => {
+                if (formRef.current) {
+                  formRef.current.requestSubmit()
+                } else {
+                  // No match loaded yet — show toast
+                  toast(t('admin.scores.selectVerdict'), 'warning')
+                }
+              }}
+            >
+              {t('admin.scores.publishResult')}
+            </Button>
           </div>
         </div>
       </header>
@@ -109,7 +129,7 @@ export default function ScoreEntryPage() {
       </div>
 
       {match && (
-        <form onSubmit={handlePublish} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <form ref={formRef} onSubmit={handlePublish} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8 space-y-6">
             {/* Team A */}
             <section className="bg-surface-container-low rounded-[2rem] p-8 transition-all hover:bg-surface-container">
