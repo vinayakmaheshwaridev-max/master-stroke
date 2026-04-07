@@ -27,6 +27,9 @@ import ScoreEntryPage from './pages/admin/ScoreEntryPage'
 import TournamentOverviewPage from './pages/admin/TournamentOverviewPage'
 import NotificationsPage from './pages/admin/NotificationsPage'
 
+// Utility Pages
+import NotFoundPage from './pages/NotFoundPage'
+
 function App() {
   const initialize = useAuthStore(s => s.initialize)
 
@@ -61,6 +64,9 @@ function App() {
           <Route path="/admin/tournament" element={<TournamentOverviewPage />} />
           <Route path="/admin/notifications" element={<NotificationsPage />} />
         </Route>
+
+        {/* Catch All Route */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
     </ToastProvider>
