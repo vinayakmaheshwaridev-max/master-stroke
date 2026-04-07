@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import { hasPortalSessionToken } from '../../lib/supabase'
 import { PageLoader } from '../ui/Spinner'
@@ -17,6 +17,7 @@ const HOME_ROUTE_BY_PORTAL = {
 
 function PortalRoute({ children, portal, requireAuth = false, guestOnly = false }) {
   const { activePortal, isAuthenticated, loading, logout } = useAuthStore()
+  const location = useLocation()
   const hasExpectedToken = hasPortalSessionToken(portal)
   const isPortalAuthenticated = isAuthenticated && activePortal === portal && hasExpectedToken
   const isWrongPortal = isAuthenticated && activePortal && activePortal !== portal
@@ -29,6 +30,10 @@ function PortalRoute({ children, portal, requireAuth = false, guestOnly = false 
 
   if (loading) {
     return <PageLoader />
+  }
+
+  if (isAuthenticated && location.pathname === '/') {
+    return <Navigate to={HOME_ROUTE_BY_PORTAL[activePortal]} replace />
   }
 
   if (isWrongPortal) {
