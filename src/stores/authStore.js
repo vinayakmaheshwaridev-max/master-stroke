@@ -1,48 +1,236 @@
 import { create } from 'zustand'
-import { supabase } from '../lib/supabase'
+import {
+  ACTIVE_PORTAL_STORAGE_KEY,
+  getPortalFromPathname,
+  getSupabaseClientForPortal,
+  getPortalSessionStorageKey,
+  hasPortalSessionToken,
+  supabaseAdminAuth,
+  supabaseUser,
+} from '../lib/supabase'
 
-export const useAuthStore = create((set) => ({
+const LOGGED_OUT_STATE = {
   user: null,
   team: null,
   isAuthenticated: false,
   isAdmin: false,
+  activePortal: null,
+}
+
+let listenersBound = false
+let syncPromise = null
+
+function getStorage() {
+  return typeof window === 'undefined' ? null : window.localStorage
+}
+
+function setActivePortalStorage(portal) {
+  const storage = getStorage()
+
+  if (!storage) {
+    return
+  }
+
+  if (portal) {
+    storage.setItem(ACTIVE_PORTAL_STORAGE_KEY, portal)
+    return
+  }
+
+  storage.removeItem(ACTIVE_PORTAL_STORAGE_KEY)
+}
+
+function getPreferredPortal() {
+  const storage = getStorage()
+  const storedPortal = storage?.getItem(ACTIVE_PORTAL_STORAGE_KEY)
+
+  if (storedPortal === 'admin' || storedPortal === 'user') {
+    return storedPortal
+  }
+
+  if (typeof window === 'undefined') {
+    return 'user'
+  }
+
+  return getPortalFromPathname(window.location.pathname)
+}
+
+async function clearPortalSession(portal) {
+  const client = getSupabaseClientForPortal(portal)
+  const storage = getStorage()
+
+  try {
+    await client.auth.signOut({ scope: 'local' })
+  } catch {
+    // Ignore cleanup failures and always remove the persisted token below.
+  }
+
+  storage?.removeItem(getPortalSessionStorageKey(portal))
+}
+
+async function clearAllSessions() {
+  await Promise.all([
+    clearPortalSession('user'),
+    clearPortalSession('admin'),
+  ])
+  setActivePortalStorage(null)
+}
+
+async function getApprovedTeam(authUserId) {
+  const { data, error } = await supabaseUser
+    .from('teams')
+    .select('*')
+    .eq('auth_user_id', authUserId)
+    .maybeSingle()
+
+  if (error) {
+    throw error
+  }
+
+  if (!data || data.status !== 'approved') {
+    return null
+  }
+
+  return data
+}
+
+async function getValidatedUserSession() {
+  const { data: { session } } = await supabaseUser.auth.getSession()
+
+  if (!hasPortalSessionToken('user')) {
+    if (session) {
+      await clearPortalSession('user')
+    }
+    return null
+  }
+
+  if (!session) {
+    getStorage()?.removeItem(getPortalSessionStorageKey('user'))
+    return null
+  }
+
+  const team = await getApprovedTeam(session.user.id)
+
+  if (!team) {
+    await clearPortalSession('user')
+    return null
+  }
+
+  return {
+    user: session.user,
+    team,
+    isAdmin: false,
+    activePortal: 'user',
+  }
+}
+
+async function getValidatedAdminSession() {
+  const { data: { session } } = await supabaseAdminAuth.auth.getSession()
+
+  if (!hasPortalSessionToken('admin')) {
+    if (session) {
+      await clearPortalSession('admin')
+    }
+    return null
+  }
+
+  if (!session) {
+    getStorage()?.removeItem(getPortalSessionStorageKey('admin'))
+    return null
+  }
+
+  if (session.user.user_metadata?.role !== 'admin') {
+    await clearPortalSession('admin')
+    return null
+  }
+
+  return {
+    user: session.user,
+    team: null,
+    isAdmin: true,
+    activePortal: 'admin',
+  }
+}
+
+function bindSessionListeners(get) {
+  if (listenersBound || typeof window === 'undefined') {
+    return
+  }
+
+  listenersBound = true
+
+  const sync = () => {
+    void get().syncSession()
+  }
+
+  supabaseUser.auth.onAuthStateChange(() => {
+    sync()
+  })
+
+  supabaseAdminAuth.auth.onAuthStateChange(() => {
+    sync()
+  })
+
+  window.addEventListener('storage', sync)
+  window.addEventListener('focus', sync)
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      sync()
+    }
+  })
+
+  window.setInterval(() => {
+    const { isAuthenticated, activePortal, logout } = get()
+
+    if (!isAuthenticated || !activePortal) {
+      return
+    }
+
+    if (!hasPortalSessionToken(activePortal)) {
+      void logout()
+    }
+  }, 1000)
+}
+
+export const useAuthStore = create((set, get) => ({
+  ...LOGGED_OUT_STATE,
   loading: true,
 
   // login: For team owners using Email (or Phone)
   login: async (email, password) => {
     set({ loading: true })
+    setActivePortalStorage('user')
+
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabaseUser.auth.signInWithPassword({
         email,
         password,
       })
 
       if (error) throw error
 
-      // After auth login, find the team associated with this auth_user_id
-      const { data: teamData, error: teamError } = await supabase
-        .from('teams')
-        .select('*')
-        .eq('auth_user_id', data.user.id)
-        .maybeSingle()
+      const teamData = await getApprovedTeam(data.user.id)
 
-      if (teamError) throw teamError
-
-      if (teamData && teamData.status !== 'approved') {
-        await supabase.auth.signOut()
+      if (!teamData) {
+        await clearPortalSession('user')
         throw new Error("Your team has not been approved or has been rejected.")
       }
 
-      set({ 
-        user: data.user, 
-        team: teamData, 
-        isAuthenticated: true, 
-        isAdmin: false, 
-        loading: false 
+      await clearPortalSession('admin')
+      setActivePortalStorage('user')
+
+      set({
+        user: data.user,
+        team: teamData,
+        isAuthenticated: true,
+        isAdmin: false,
+        activePortal: 'user',
+        loading: false,
       })
+
       return { success: true }
     } catch (error) {
-      set({ loading: false })
+      await clearPortalSession('user')
+      await get().syncSession()
       return { success: false, error: error.message }
     }
   },
@@ -50,8 +238,10 @@ export const useAuthStore = create((set) => ({
   // adminLogin: Check for 'admin' role in user metadata
   adminLogin: async (email, password) => {
     set({ loading: true })
+    setActivePortalStorage('admin')
+
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabaseAdminAuth.auth.signInWithPassword({
         email,
         password,
       })
@@ -61,64 +251,129 @@ export const useAuthStore = create((set) => ({
       const isAdmin = data.user.user_metadata?.role === 'admin'
 
       if (!isAdmin) {
-        await supabase.auth.signOut()
+        await clearPortalSession('admin')
         throw new Error('Unauthorized: Admin access required')
       }
+
+      await clearPortalSession('user')
+      setActivePortalStorage('admin')
 
       set({
         user: data.user,
         team: null,
         isAuthenticated: true,
         isAdmin: true,
+        activePortal: 'admin',
         loading: false,
       })
+
       return { success: true }
     } catch (error) {
-      set({ loading: false })
+      await clearPortalSession('admin')
+      await get().syncSession()
       return { success: false, error: error.message }
     }
   },
 
   logout: async () => {
-    await supabase.auth.signOut()
-    set({ user: null, team: null, isAuthenticated: false, isAdmin: false, loading: false })
+    set({ loading: true })
+    await clearAllSessions()
+    set({ ...LOGGED_OUT_STATE, loading: false })
   },
 
   setLoading: (loading) => set({ loading }),
 
-  // Initialize: Check for active session
-  initialize: async () => {
-    const { data: { session } } = await supabase.auth.getSession()
-    
-    if (session) {
-      const isAdmin = session.user.user_metadata?.role === 'admin'
-      
-      let teamData = null
-      if (!isAdmin) {
-        const { data } = await supabase
-          .from('teams')
-          .select('*')
-          .eq('auth_user_id', session.user.id)
-          .maybeSingle()
-        teamData = data
-      }
-
-      set({ 
-        user: session.user, 
-        team: teamData, 
-        isAuthenticated: true, 
-        isAdmin, 
-        loading: false 
-      })
-    } else {
-      set({ loading: false })
+  syncSession: async ({ forceLoading = false } = {}) => {
+    if (syncPromise) {
+      return syncPromise
     }
 
-    // Listen for auth changes
-    supabase.auth.onAuthStateChange(async (_event, session) => {
-      if (!session) {
-        set({ user: null, team: null, isAuthenticated: false, isAdmin: false })
+    if (forceLoading) {
+      set({ loading: true })
+    }
+
+    syncPromise = (async () => {
+      try {
+        const [userSession, adminSession] = await Promise.all([
+          getValidatedUserSession(),
+          getValidatedAdminSession(),
+        ])
+
+        if (userSession && adminSession) {
+          const preferredPortal = getPreferredPortal()
+
+          if (preferredPortal === 'admin') {
+            await clearPortalSession('user')
+            setActivePortalStorage('admin')
+            set({
+              user: adminSession.user,
+              team: null,
+              isAuthenticated: true,
+              isAdmin: true,
+              activePortal: 'admin',
+              loading: false,
+            })
+            return
+          }
+
+          await clearPortalSession('admin')
+          setActivePortalStorage('user')
+          set({
+            user: userSession.user,
+            team: userSession.team,
+            isAuthenticated: true,
+            isAdmin: false,
+            activePortal: 'user',
+            loading: false,
+          })
+          return
+        }
+
+        if (adminSession) {
+          setActivePortalStorage('admin')
+          set({
+            user: adminSession.user,
+            team: null,
+            isAuthenticated: true,
+            isAdmin: true,
+            activePortal: 'admin',
+            loading: false,
+          })
+          return
+        }
+
+        if (userSession) {
+          setActivePortalStorage('user')
+          set({
+            user: userSession.user,
+            team: userSession.team,
+            isAuthenticated: true,
+            isAdmin: false,
+            activePortal: 'user',
+            loading: false,
+          })
+          return
+        }
+
+        setActivePortalStorage(null)
+        set({ ...LOGGED_OUT_STATE, loading: false })
+      } catch (error) {
+        console.error('Failed to synchronize auth session:', error)
+        await clearAllSessions()
+        set({ ...LOGGED_OUT_STATE, loading: false })
       }
-    })
+    })()
+
+    try {
+      await syncPromise
+    } finally {
+      syncPromise = null
+    }
+  },
+
+  // Initialize: Check for active session in both portals
+  initialize: async () => {
+    bindSessionListeners(get)
+    await get().syncSession({ forceLoading: true })
   },
 }))

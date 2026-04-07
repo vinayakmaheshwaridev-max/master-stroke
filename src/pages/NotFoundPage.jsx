@@ -3,13 +3,19 @@ import { useAuthStore } from '../stores/authStore'
 
 export default function NotFoundPage() {
   const location = useLocation()
-  const { isAuthenticated } = useAuthStore()
+  const { activePortal, isAuthenticated } = useAuthStore()
 
-  // Determine back home location based on URL path area
-  const isAdminArea = location.pathname.startsWith('/admin')
-  const backHomeUrl = isAdminArea 
-    ? (isAuthenticated ? '/admin/dashboard' : '/admin/login') 
-    : (isAuthenticated ? '/dashboard' : '/')
+  const isAdminPath = location.pathname.startsWith('/admin')
+  const showAdminLinks = activePortal === 'admin' || (!isAuthenticated && isAdminPath)
+
+  let backHomeUrl = '/'
+  if (activePortal === 'admin') {
+    backHomeUrl = '/admin/dashboard'
+  } else if (activePortal === 'user') {
+    backHomeUrl = '/dashboard'
+  } else if (showAdminLinks) {
+    backHomeUrl = '/admin/login'
+  }
 
   return (
     <div className="min-h-screen bg-[#faf8f2] flex flex-col font-sans">
@@ -59,14 +65,14 @@ export default function NotFoundPage() {
 
         {/* Utility Cards */}
         <div className="z-10 grid grid-cols-3 gap-4 sm:gap-6 w-full max-w-xl">
-          <Link to={isAdminArea ? "/admin/matches" : "/matches"} className="flex flex-col items-center justify-center p-6 bg-[#f5f1e8] hover:bg-[#efe9dc] transition-colors rounded-3xl group">
+          <Link to={showAdminLinks ? "/admin/scheduler" : "/matches"} className="flex flex-col items-center justify-center p-6 bg-[#f5f1e8] hover:bg-[#efe9dc] transition-colors rounded-3xl group">
             <span className="material-symbols-outlined text-4xl text-[#4a4d40] mb-3 group-hover:scale-110 transition-transform">
               sports_cricket
             </span>
             <span className="text-sm font-semibold text-[#1a1c17]">Matches</span>
           </Link>
 
-          <Link to={isAdminArea ? "/admin/tournament" : "/standings"} className="flex flex-col items-center justify-center p-6 bg-[#f5f1e8] hover:bg-[#efe9dc] transition-colors rounded-3xl group">
+          <Link to={showAdminLinks ? "/admin/tournament" : "/standings"} className="flex flex-col items-center justify-center p-6 bg-[#f5f1e8] hover:bg-[#efe9dc] transition-colors rounded-3xl group">
             <span className="material-symbols-outlined text-4xl text-[#4a4d40] mb-3 group-hover:scale-110 transition-transform">
               leaderboard
             </span>

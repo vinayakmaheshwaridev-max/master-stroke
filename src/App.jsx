@@ -7,7 +7,7 @@ import { ToastProvider } from './components/ui'
 // Layouts
 import UserLayout from './components/layout/UserLayout'
 import AdminLayout from './components/layout/AdminLayout'
-import { ProtectedRoute, AdminRoute } from './components/auth/ProtectedRoute'
+import { AdminGuestRoute, AdminRoute, ProtectedRoute, PublicUserRoute, UserGuestRoute } from './components/auth/ProtectedRoute'
 
 // User Pages
 import LandingPage from './pages/user/LandingPage'
@@ -42,7 +42,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* User Panel */}
-        <Route element={<UserLayout />}>
+        <Route element={<PublicUserRoute><UserLayout /></PublicUserRoute>}>
           <Route path="/" element={<LandingPage />} />
           <Route path="/register" element={<RegistrationPage />} />
           <Route path="/info" element={<InfoPage />} />
@@ -52,8 +52,8 @@ function App() {
         </Route>
 
         {/* Standalone Login Pages (no navbar) */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/login" element={<UserGuestRoute><LoginPage /></UserGuestRoute>} />
+        <Route path="/admin/login" element={<AdminGuestRoute><AdminLoginPage /></AdminGuestRoute>} />
 
         {/* Admin Panel */}
         <Route element={<AdminRoute><AdminLayout /></AdminRoute>}>
