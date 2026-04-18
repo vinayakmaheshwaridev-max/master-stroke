@@ -47,17 +47,19 @@ export default function UserNavbar() {
 
       <div className="flex items-center gap-3">
         {isAuthenticated && (
-          <Link
-            to="/notifications"
-            className="material-symbols-outlined text-zinc-600 p-2 rounded-full hover:bg-stone-100/50 transition-colors relative block"
-          >
-            notifications
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full animate-pulse ring-2 ring-white" />
-          </Link>
+          <div className="hidden md:block">
+            <Link
+              to="/notifications"
+              className="material-symbols-outlined text-zinc-600 p-2 rounded-full hover:bg-stone-100/50 transition-colors relative block"
+            >
+              notifications
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full animate-pulse ring-2 ring-white" />
+            </Link>
+          </div>
         )}
 
         {isAuthenticated ? (
-          <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3">
             <div className="hidden md:flex items-center gap-2">
               <div className="h-9 w-9 rounded-full bg-surface-container-high flex items-center justify-center text-xs font-bold text-primary">
                 {team?.team_name?.slice(0, 2).toUpperCase() || 'U'}
@@ -72,7 +74,7 @@ export default function UserNavbar() {
             </button>
           </div>
         ) : (
-          <div className="flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2">
             <Link
               to="/login"
               className="text-sm font-medium text-zinc-600 hover:text-zinc-800 transition-colors px-4 py-2"
@@ -89,12 +91,14 @@ export default function UserNavbar() {
         )}
 
         {/* Mobile menu button */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden material-symbols-outlined text-zinc-600 p-2"
-        >
-          {mobileOpen ? 'close' : 'menu'}
-        </button>
+        <div className="md:hidden">
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="material-symbols-outlined text-zinc-600 p-2"
+          >
+            {mobileOpen ? 'close' : 'menu'}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
@@ -115,6 +119,49 @@ export default function UserNavbar() {
                 </Link>
               )
             ))}
+            
+            {isAuthenticated && (
+              <>
+                <div className="h-px bg-stone-100 my-2" />
+                <Link
+                  to="/notifications"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-3 text-lg font-medium py-2 text-zinc-500"
+                >
+                  Notification
+                  <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                </Link>
+                <button
+                  onClick={() => { setMobileOpen(false); toast.info(t('auth.signedOut') || 'Signed out successfully'); logout(); navigate('/') }}
+                  className="flex items-center gap-3 text-lg font-medium py-2 text-zinc-500 text-left"
+                >
+                  <span className="material-symbols-outlined text-xl">logout</span>
+                  {t('common.logout')}
+                </button>
+              </>
+            )}
+            
+            {!isAuthenticated && (
+              <>
+                <div className="h-px bg-stone-100 my-2" />
+                <Link
+                  to="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-3 text-lg font-medium py-2 text-zinc-500"
+                >
+                  <span className="material-symbols-outlined text-xl">login</span>
+                  {t('common.login')}
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-3 text-lg font-medium py-2 text-primary"
+                >
+                  <span className="material-symbols-outlined text-xl">person_add</span>
+                  {t('common.register')}
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}
