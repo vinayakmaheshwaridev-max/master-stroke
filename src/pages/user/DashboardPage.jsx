@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import { teamService } from '../../services/teamService'
 import { matchService } from '../../services/matchService'
-import { notificationService } from '../../services/notificationService'
 
 export default function DashboardPage() {
   const { team } = useAuthStore()
@@ -13,16 +12,14 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [standings, setStandings] = useState([])
   const [matches, setMatches] = useState([])
-  const [notifications, setNotifications] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
       try {
-        const [fetchedTeams, fetchedMatches, fetchedNotifications] = await Promise.all([
+        const [fetchedTeams, fetchedMatches] = await Promise.all([
           teamService.getTeams('approved'),
-          matchService.getMatches(),
-          notificationService.getNotifications(teamId)
+          matchService.getMatches()
         ])
 
         const teamStats = {}
@@ -69,7 +66,6 @@ export default function DashboardPage() {
 
         setStandings(computedStandings)
         setMatches(fetchedMatches)
-        setNotifications(fetchedNotifications.slice(0, 4))
       } catch (error) {
         console.error('Error fetching dashboard data:', error)
       } finally {
@@ -111,7 +107,7 @@ export default function DashboardPage() {
       {/* Bento Grid */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Team Stats Card (Large) */}
-        <div className="md:col-span-8 bg-surface-container-lowest rounded-[2rem] p-8 whisper-shadow relative overflow-hidden group">
+        <div className="md:col-span-12 bg-surface-container-lowest rounded-[2rem] p-8 whisper-shadow relative overflow-hidden group">
           <div className="absolute -right-8 -top-8 w-40 h-40 bg-primary/5 rounded-full group-hover:scale-150 transition-transform duration-700" />
           <div className="relative z-10">
             <div className="flex items-center gap-3 mb-6">
@@ -139,7 +135,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Upcoming Match */}
-        <div className="md:col-span-4 primary-gradient text-on-primary rounded-[2rem] p-8 relative overflow-hidden">
+        <div className="md:col-span-6 primary-gradient text-on-primary rounded-[2rem] p-8 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4 opacity-20">
             <span className="material-symbols-outlined text-6xl">stadium</span>
           </div>
@@ -188,36 +184,6 @@ export default function DashboardPage() {
           ) : (
             <p className="text-on-surface-variant">No completed matches yet</p>
           )}
-        </div>
-
-        {/* Notifications */}
-        <div className="md:col-span-6 bg-surface-container-low rounded-[2rem] p-8 hover:bg-surface-container-lowest transition-colors whisper-shadow">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-primary p-2 bg-white rounded-xl">notifications</span>
-              <h3 className="text-lg font-bold">Updates</h3>
-            </div>
-            <Link to="/notifications" className="text-xs font-bold text-primary hover:underline">View All</Link>
-          </div>
-          <div className="space-y-3">
-            {notifications.map(notif => (
-              <div key={notif.id} className="flex gap-3 p-3 rounded-xl hover:bg-surface-container transition-colors">
-                <span className={`material-symbols-outlined text-sm mt-1 ${notif.type === 'important' ? 'text-error' : notif.type === 'result' ? 'text-tertiary' : 'text-primary'
-                  }`}>
-                  {notif.type === 'important' ? 'warning' : notif.type === 'result' ? 'emoji_events' : 'info'}
-                </span>
-                <div className="flex-1 min-w-0">
-                  <p className={`text-sm leading-relaxed ${notif.is_read ? 'text-on-surface-variant' : 'text-on-surface font-medium'}`}>
-                    {notif.message}
-                  </p>
-                  <p className="text-xs text-outline mt-1">
-                    {new Date(notif.created_at).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })}
-                  </p>
-                </div>
-                {!notif.is_read && <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />}
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>
