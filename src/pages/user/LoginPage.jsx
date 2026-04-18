@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import { useTranslation } from '../../i18n'
-import { Button, Input, Alert } from '../../components/ui'
+import { Button, Input, Alert, toast } from '../../components/ui'
 
 export default function LoginPage() {
   const { t } = useTranslation()
@@ -21,12 +21,16 @@ export default function LoginPage() {
     try {
       const result = await login(identifier, password)
       if (result.success) {
+        toast.success(t('auth.welcomeBack') || 'Welcome back!')
         navigate('/dashboard')
       } else {
-        setError(result.error || t('auth.invalidCredentials'))
+        const msg = result.error || t('auth.invalidCredentials')
+        setError(msg)
+        toast.error(msg)
       }
     } catch (err) {
       setError(err.message)
+      toast.error(err.message)
     } finally {
       setLoading(false)
     }

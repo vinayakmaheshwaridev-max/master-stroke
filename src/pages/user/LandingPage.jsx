@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { teamService } from '../../services/teamService'
 import { settingsService } from '../../services/settingsService'
 import { useTranslation } from '../../i18n'
-import { Button, Card } from '../../components/ui'
+import { Button, Card, toast } from '../../components/ui'
 
 export default function LandingPage() {
   const { t } = useTranslation()
@@ -22,6 +22,7 @@ export default function LandingPage() {
         setIsRegistrationOpen(status)
       } catch (err) {
         console.error('Error fetching landing data:', err)
+        toast.error(t('landing.failedLoadTournament') || 'Failed to load tournament data')
       } finally {
         setLoading(false)
       }

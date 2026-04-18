@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { teamService } from '../../services/teamService'
 import { settingsService } from '../../services/settingsService'
 import { useTranslation } from '../../i18n'
-import { Button, Input, Alert, Modal } from '../../components/ui'
+import { Button, Input, Alert, Modal, toast } from '../../components/ui'
 import { SectionLoader } from '../../components/ui/Spinner'
 
 const registrationSchema = z.object({
@@ -33,6 +33,7 @@ export default function RegistrationPage() {
         setIsOpen(status)
       } catch (err) {
         console.error('Error checking registration status:', err)
+        toast.error(t('registration.failedCheckStatus') || 'Failed to check registration status')
       } finally {
         setLoading(false)
       }
@@ -51,6 +52,7 @@ export default function RegistrationPage() {
       const exists = await teamService.checkTeamNameExists(data.team_name)
       if (exists) {
         setError(t('registration.teamNameExists'))
+        toast.error(t('registration.teamNameExists'))
         return
       }
 
@@ -63,9 +65,12 @@ export default function RegistrationPage() {
         status: 'pending',
         payment_done: false
       })
+      toast.success(t('registration.registrationSuccess') || 'Registration submitted successfully!')
       setSubmitted(true)
     } catch (err) {
-      setError(t('registration.registrationFailed') + err.message)
+      const msg = t('registration.registrationFailed') + err.message
+      setError(msg)
+      toast.error(msg)
     }
   }
 
@@ -133,7 +138,7 @@ export default function RegistrationPage() {
             <p className="text-sm text-on-surface-variant">{t('registration.allFieldsRequired')}</p>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit, () => toast.error(t('registration.fixValidationErrors') || 'Please fill all required fields correctly'))} className="space-y-6">
             {error && <Alert variant="error">{error}</Alert>}
 
             <Input

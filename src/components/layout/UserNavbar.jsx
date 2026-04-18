@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import { useTranslation } from '../../i18n'
+import { toast } from '../../components/ui'
 
 export default function UserNavbar() {
   const { t } = useTranslation()
@@ -88,7 +89,7 @@ export default function UserNavbar() {
               <span className="text-sm font-medium text-zinc-700 hidden lg:block">{team?.team_name}</span>
             </div>
             <button
-              onClick={() => { logout(); navigate('/') }}
+              onClick={() => { toast.info(t('auth.signedOut') || 'Signed out successfully'); logout(); navigate('/') }}
               className="text-xs font-medium text-zinc-400 hover:text-zinc-700 transition-colors px-3 py-1.5 rounded-lg hover:bg-stone-100"
             >
               {t('common.logout')}

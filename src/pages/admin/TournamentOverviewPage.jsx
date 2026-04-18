@@ -3,7 +3,7 @@ import { teamService } from '../../services/teamService'
 import { matchService } from '../../services/matchService'
 import { computePointsTable } from '../../services/pointsService'
 import { useTranslation } from '../../i18n'
-import { Badge } from '../../components/ui'
+import { Badge, toast } from '../../components/ui'
 import { SectionLoader } from '../../components/ui/Spinner'
 
 export default function TournamentOverviewPage() {
@@ -23,6 +23,7 @@ export default function TournamentOverviewPage() {
         setStandings(computePointsTable(teams, m))
       } catch (err) {
         console.error('Error fetching overview data:', err)
+        toast.error(t('admin.tournament.failedLoadOverview') || 'Failed to load tournament data')
       } finally {
         setLoading(false)
       }

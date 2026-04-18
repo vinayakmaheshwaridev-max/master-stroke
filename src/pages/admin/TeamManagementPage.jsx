@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { teamService } from '../../services/teamService'
 import { useTranslation } from '../../i18n'
-import { Badge, FilterPills, Button, Modal } from '../../components/ui'
+import { Badge, FilterPills, Button, Modal, toast } from '../../components/ui'
 import { SectionLoader } from '../../components/ui/Spinner'
 
 export default function TeamManagementPage() {
@@ -23,6 +23,7 @@ export default function TeamManagementPage() {
       setTeams(data || [])
     } catch (err) {
       console.error('Error fetching teams:', err)
+      toast.error(t('admin.teams.failedLoadTeams') || 'Failed to load teams')
     } finally {
       setLoading(false)
     }
@@ -65,8 +66,9 @@ export default function TeamManagementPage() {
       
       setTeams(prev => prev.map(t => t.id === team.id ? { ...approvedTeam } : t))
       setApprovalModal(approvedTeam)
+      toast.success(t('admin.teams.teamApprovedSuccess') || `Team "${team.team_name}" approved successfully`)
     } catch (err) {
-      alert(t('admin.teams.failedApprove') + '\n' + (err.message || ''))
+      toast.error(t('admin.teams.failedApprove') + (err.message ? ': ' + err.message : ''))
       console.error(err)
     }
   }
@@ -75,8 +77,9 @@ export default function TeamManagementPage() {
     try {
       await teamService.updateTeam(teamId, { status: 'rejected' })
       setTeams(prev => prev.map(t => t.id === teamId ? { ...t, status: 'rejected' } : t))
+      toast.success(t('admin.teams.teamRejectedSuccess') || 'Team rejected')
     } catch (err) {
-      alert(t('admin.teams.failedReject'))
+      toast.error(t('admin.teams.failedReject'))
     }
   }
 
@@ -91,8 +94,9 @@ export default function TeamManagementPage() {
       await teamService.updateTeam(teamId, { payment_done: isPaid })
       setTeams(prev => prev.map(t => t.id === teamId ? { ...t, payment_done: isPaid } : t))
       setPaymentModal(null)
+      toast.success(isPaid ? (t('admin.teams.paymentMarkedDone') || 'Payment marked as done') : (t('admin.teams.paymentMarkedPending') || 'Payment marked as pending'))
     } catch (err) {
-      alert(t('admin.teams.failedPayment'))
+      toast.error(t('admin.teams.failedPayment'))
     }
   }
 
@@ -241,8 +245,9 @@ export default function TeamManagementPage() {
                             setApprovalModal(updatedUser)
                             setTeams(prev => prev.map(t => t.id === updatedUser.id ? updatedUser : t))
                             setEditingPassword(false)
+                            toast.success(t('admin.teams.passwordUpdated') || 'Password updated successfully')
                           } catch (err) {
-                            alert("Failed to update password: " + err.message)
+                            toast.error((t('admin.teams.failedPasswordUpdate') || 'Failed to update password') + ': ' + err.message)
                           } finally {
                             setPasswordUpdating(false)
                           }
@@ -278,7 +283,7 @@ export default function TeamManagementPage() {
                   fullWidth
                   size="lg"
                   icon="content_copy"
-                  onClick={() => navigator.clipboard?.writeText(`Hi ${approvalModal.captain_name},\nYour team '${approvalModal.team_name}' has been approved for Master Stroke Box Cricket!\n\nHere are your login credentials:\nEmail/Mobile: ${approvalModal.email || approvalModal.mobile}\nPassword: ${approvalModal._tempPassword || '[Encrypted - Please Reset if Lost]'}\n\nPlease login to the team portal to check your schedule.`)}
+                  onClick={() => { navigator.clipboard?.writeText(`Hi ${approvalModal.captain_name},\nYour team '${approvalModal.team_name}' has been approved for Master Stroke Box Cricket!\n\nHere are your login credentials:\nEmail/Mobile: ${approvalModal.email || approvalModal.mobile}\nPassword: ${approvalModal._tempPassword || '[Encrypted - Please Reset if Lost]'}\n\nPlease login to the team portal to check your schedule.`); toast.success(t('admin.teams.credentialsCopied') || 'Credentials copied to clipboard') }}
                 >
                   {t('common.copyDetails')}
                 </Button>

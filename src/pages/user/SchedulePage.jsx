@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuthStore } from '../../stores/authStore'
 import { matchService } from '../../services/matchService'
 import { useTranslation } from '../../i18n'
-import { Badge, FilterPills, PageHeader } from '../../components/ui'
+import { Badge, FilterPills, PageHeader, toast } from '../../components/ui'
 import { SectionLoader } from '../../components/ui/Spinner'
 
 export default function SchedulePage() {
@@ -27,6 +27,7 @@ export default function SchedulePage() {
         setMatches(data)
       } catch (err) {
         console.error('Error fetching matches:', err)
+        toast.error(t('schedule.failedLoadSchedule') || 'Failed to load match schedule')
       } finally {
         setLoading(false)
       }

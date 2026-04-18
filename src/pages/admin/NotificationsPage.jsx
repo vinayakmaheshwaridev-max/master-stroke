@@ -1,16 +1,31 @@
 import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { notificationService } from '../../services/notificationService'
 import { teamService } from '../../services/teamService'
 import { useTranslation } from '../../i18n'
-import { Button, Select } from '../../components/ui'
+import { Button, Select, toast } from '../../components/ui'
 import { SectionLoader } from '../../components/ui/Spinner'
+
+const notificationSchema = z.object({
+  recipient: z.string().min(1, 'Please select a recipient'),
+  type: z.enum(['info', 'reminder', 'result', 'important'], { required_error: 'Please select a type' }),
+  message: z.string().min(1, 'Message cannot be empty').max(500, 'Message must be 500 characters or less'),
+})
 
 export default function NotificationsPage() {
   const { t } = useTranslation()
   const [notifications, setNotifications] = useState([])
   const [teams, setTeams] = useState([])
   const [loading, setLoading] = useState(true)
-  const [form, setForm] = useState({ recipient: 'all', type: 'info', message: '' })
+
+  const { register, handleSubmit, formState: { errors }, reset, watch } = useForm({
+    resolver: zodResolver(notificationSchema),
+    defaultValues: { recipient: 'all', type: 'info', message: '' },
+  })
+
+  const selectedType = watch('type')
 
   const fetchData = async () => {
     try {
@@ -22,6 +37,7 @@ export default function NotificationsPage() {
       setTeams(te || [])
     } catch (err) {
       console.error('Error fetching notifications data:', err)
+      toast.error(t('admin.notifications.failedLoadNotifications') || 'Failed to load notifications')
     } finally {
       setLoading(false)
     }
@@ -29,17 +45,20 @@ export default function NotificationsPage() {
 
   useEffect(() => { fetchData() }, [])
 
-  const handleSend = async (e) => {
-    e.preventDefault()
+  const onSubmit = async (data) => {
     try {
-      const recipientId = form.recipient === 'all' ? null : form.recipient
-      await notificationService.sendNotification(form.message, form.type, recipientId)
+      const recipientId = data.recipient === 'all' ? null : data.recipient
+      await notificationService.sendNotification(data.message, data.type, recipientId)
       fetchData()
-      setForm(p => ({ ...p, message: '' }))
-      alert(t('admin.notifications.notificationSent'))
+      reset({ recipient: 'all', type: 'info', message: '' })
+      toast.success(t('admin.notifications.notificationSent'))
     } catch (err) {
-      alert(t('admin.notifications.failedSend') + err.message)
+      toast.error(t('admin.notifications.failedSend') + err.message)
     }
+  }
+
+  const onInvalid = () => {
+    toast.error(t('admin.notifications.fixValidationErrors') || 'Please fix the errors before sending')
   }
 
   const typeIcons = { info: 'info', reminder: 'notifications', result: 'emoji_events', important: 'warning' }
@@ -58,25 +77,34 @@ export default function NotificationsPage() {
         {/* Compose */}
         <section className="lg:col-span-5 bg-surface-container-low rounded-[2rem] p-8 shadow-sm">
           <h2 className="text-xl font-bold mb-6">{t('admin.notifications.composeBroadcast')}</h2>
-          <form onSubmit={handleSend} className="space-y-5">
-            <Select label={t('admin.notifications.recipient')} value={form.recipient} onChange={e => setForm(p=>({...p,recipient:e.target.value}))}>
-              <option value="all">{t('admin.notifications.allRegisteredTeams')}</option>
-              {teams.map(te => <option key={te.id} value={te.id}>{te.team_name}</option>)}
-            </Select>
+          <form onSubmit={handleSubmit(onSubmit, onInvalid)} noValidate className="space-y-5">
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.notifications.type')}</label>
+              <label className="text-xs font-bold tracking-wide uppercase text-on-surface-variant ml-1">{t('admin.notifications.recipient')}</label>
+              <select
+                {...register('recipient')}
+                className={`w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-4 focus:ring-primary-fixed-dim/30 transition-all ${errors.recipient ? 'ring-2 ring-error' : ''}`}
+              >
+                <option value="all">{t('admin.notifications.allRegisteredTeams')}</option>
+                {teams.map(te => <option key={te.id} value={te.id}>{te.team_name}</option>)}
+              </select>
+              {errors.recipient && <p className="text-xs text-error pl-1">{errors.recipient.message}</p>}
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.notifications.type')} *</label>
               <div className="grid grid-cols-2 gap-3">
                 {['info','reminder','result','important'].map(tp=>(
                   <label key={tp} className="cursor-pointer">
-                    <input type="radio" name="type" value={tp} checked={form.type===tp} onChange={e=>setForm(p=>({...p,type:e.target.value}))} className="hidden peer" />
-                    <div className={`p-3 text-center rounded-xl bg-surface-container-lowest border border-outline-variant/10 peer-checked:bg-primary peer-checked:text-on-primary transition-all text-sm font-medium capitalize ${tp==='important'?'peer-checked:bg-error':''}`}>{tp}</div>
+                    <input type="radio" value={tp} {...register('type')} className="hidden peer" />
+                    <div className={`p-3 text-center rounded-xl bg-surface-container-lowest border transition-all text-sm font-medium capitalize ${errors.type ? 'border-error/50' : 'border-outline-variant/10'} peer-checked:bg-primary peer-checked:text-on-primary ${tp==='important'?'peer-checked:bg-error':''}`}>{tp}</div>
                   </label>
                 ))}
               </div>
+              {errors.type && <p className="text-xs text-error pl-1">{errors.type.message}</p>}
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.notifications.message')}</label>
-              <textarea value={form.message} onChange={e=>setForm(p=>({...p,message:e.target.value}))} required placeholder={t('admin.notifications.placeholderMessage')} rows="4" className="w-full bg-surface-container-lowest border-outline-variant/20 rounded-xl py-3 px-4 focus:ring-4 focus:ring-primary-fixed-dim/30 resize-none leading-relaxed" />
+              <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.notifications.message')} *</label>
+              <textarea {...register('message')} placeholder={t('admin.notifications.placeholderMessage')} rows="4" className={`w-full bg-surface-container-lowest border-outline-variant/20 rounded-xl py-3 px-4 focus:ring-4 focus:ring-primary-fixed-dim/30 resize-none leading-relaxed ${errors.message ? 'ring-2 ring-error' : ''}`} />
+              {errors.message && <p className="text-xs text-error pl-1">{errors.message.message}</p>}
             </div>
             <Button type="submit" fullWidth size="lg">{t('admin.notifications.sendNotification')}</Button>
           </form>

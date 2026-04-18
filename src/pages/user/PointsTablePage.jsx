@@ -4,7 +4,7 @@ import { teamService } from '../../services/teamService'
 import { matchService } from '../../services/matchService'
 import { computePointsTable } from '../../services/pointsService'
 import { useTranslation } from '../../i18n'
-import { Badge, PageHeader } from '../../components/ui'
+import { Badge, PageHeader, toast } from '../../components/ui'
 import { SectionLoader } from '../../components/ui/Spinner'
 
 export default function PointsTablePage() {
@@ -25,6 +25,7 @@ export default function PointsTablePage() {
         setStandings(table)
       } catch (err) {
         console.error('Error fetching points table:', err)
+        toast.error(t('standings.failedLoadStandings') || 'Failed to load standings')
       } finally {
         setLoading(false)
       }

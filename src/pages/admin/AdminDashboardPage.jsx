@@ -4,7 +4,7 @@ import { teamService } from '../../services/teamService'
 import { matchService } from '../../services/matchService'
 import { settingsService } from '../../services/settingsService'
 import { useTranslation } from '../../i18n'
-import { Card, Badge, PageHeader } from '../../components/ui'
+import { Card, Badge, PageHeader, toast } from '../../components/ui'
 import { SectionLoader } from '../../components/ui/Spinner'
 
 export default function AdminDashboardPage() {
@@ -27,6 +27,7 @@ export default function AdminDashboardPage() {
         setRegOpen(status)
       } catch (err) {
         console.error('Error fetching admin dashboard:', err)
+        toast.error(t('admin.dashboard.failedLoadDashboard') || 'Failed to load dashboard data')
       } finally {
         setLoading(false)
       }
@@ -48,8 +49,9 @@ export default function AdminDashboardPage() {
     try {
       await settingsService.setRegistrationStatus(!regOpen)
       setRegOpen(!regOpen)
+      toast.success(!regOpen ? (t('admin.dashboard.registrationOpened') || 'Registration opened') : (t('admin.dashboard.registrationClosed') || 'Registration closed'))
     } catch (err) {
-      alert(t('admin.dashboard.failedToggleReg'))
+      toast.error(t('admin.dashboard.failedToggleReg'))
     }
   }
 

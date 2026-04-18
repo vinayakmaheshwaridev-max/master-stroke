@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import { useTranslation } from '../../i18n'
-import { Button, Input, Alert } from '../../components/ui'
+import { Button, Input, Alert, toast } from '../../components/ui'
 
 export default function AdminLoginPage() {
   const { t } = useTranslation()
@@ -20,12 +20,16 @@ export default function AdminLoginPage() {
     try {
       const result = await adminLogin(email, password)
       if (result.success) {
+        toast.success(t('auth.welcomeAdmin') || 'Welcome, Admin!')
         navigate('/admin/dashboard')
       } else {
-        setError(result.error || t('auth.invalidAdminCredentials'))
+        const msg = result.error || t('auth.invalidAdminCredentials')
+        setError(msg)
+        toast.error(msg)
       }
     } catch (err) {
       setError(err.message)
+      toast.error(err.message)
     } finally {
       setLoading(false)
     }
