@@ -91,7 +91,7 @@ export default function NotFoundPage() {
       {/* Footer */}
       <footer className="w-full py-6 px-8 flex flex-col sm:flex-row items-center justify-between z-10 border-t border-[#e0d8c8] bg-[#faf8f2]">
         <p className="text-sm text-[#6f7665] font-medium mb-4 sm:mb-0">
-          © 2024 Cricket Tournament Platform. All rights reserved.
+          © {new Date().getFullYear()} Cricket Tournament Platform. All rights reserved.
         </p>
         <div className="flex items-center gap-6 text-sm text-[#6f7665] font-medium">
           <Link to="/info" className="hover:text-[#4a4d40] transition-colors hover:underline">Privacy Policy</Link>

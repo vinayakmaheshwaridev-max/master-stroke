@@ -2,11 +2,11 @@
   "common": {
     "appName": "Master Stroke",
     "appSubtitle": "Box Cricket",
-    "season": "Season 2024",
+    "season": "Season 2026",
     "boxCricket": "BOX CRICKET",
     "loading": "Loading...",
     "vs": "VS",
-    "copyright": "© 2024 Master Stroke Box Cricket. All rights reserved.",
+    "copyright": "© 2026 Master Stroke Box Cricket. All rights reserved.",
     "backToHome": "Back to Home",
     "backToTournament": "Back to Tournament",
     "submit": "Submit",
@@ -81,7 +81,7 @@
     "placeholderPassword": "••••••••••••"
   },
   "landing": {
-    "seasonBadge": "Season 2024 • Box Cricket",
+    "seasonBadge": "Season 2026 • Box Cricket",
     "heroTitle": "Master Stroke",
     "heroSubtitle": "Box Cricket",
     "heroDescription": "The premier box cricket tournament experience. Register your team, compete against the best, and chase glory on the pitch.",
@@ -188,7 +188,7 @@
     "loadingSchedule": "Loading schedule..."
   },
   "standings": {
-    "groupStage": "Group Stage 2024",
+    "groupStage": "Group Stage 2026",
     "pointsTable": "Points Table",
     "rank": "Rank",
     "teamName": "Team Name",
