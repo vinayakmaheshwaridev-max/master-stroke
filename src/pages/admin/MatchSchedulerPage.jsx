@@ -33,7 +33,7 @@ const SELECT_FIELD_CLASS = `${FIELD_CLASS} font-medium`
 const FIELD_LABEL_CLASS = 'text-[11px] font-bold tracking-wide uppercase text-on-surface-variant ml-1'
 const FILTER_FIELD_CLASS =
   'w-full rounded-xl border border-outline-variant/20 bg-surface-container-lowest px-3 py-2 text-xs font-semibold text-on-surface outline-none transition focus:ring-4 focus:ring-primary-fixed-dim/30'
-const SCHEDULER_PAGE_SIZE = 6
+const SCHEDULER_PAGE_SIZE = 10
 const SCHEDULER_FILTER_DEFAULTS = {
   date: '',
   time: '',

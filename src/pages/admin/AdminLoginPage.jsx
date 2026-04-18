@@ -16,7 +16,6 @@ export default function AdminLoginPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { adminLogin } = useAuthStore()
-  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   const { register, handleSubmit, formState: { errors } } = useForm({
@@ -25,7 +24,6 @@ export default function AdminLoginPage() {
   })
 
   const onSubmit = async (data) => {
-    setError('')
     setLoading(true)
     try {
       const result = await adminLogin(data.email, data.password)
@@ -34,11 +32,9 @@ export default function AdminLoginPage() {
         navigate('/admin/dashboard')
       } else {
         const msg = result.error || t('auth.invalidAdminCredentials')
-        setError(msg)
         toast.error(msg)
       }
     } catch (err) {
-      setError(err.message)
       toast.error(err.message)
     } finally {
       setLoading(false)
@@ -58,12 +54,6 @@ export default function AdminLoginPage() {
           </div>
 
           <div className="bg-surface-container-lowest rounded-3xl p-8 whisper-shadow">
-            {error && (
-              <div className="mb-6">
-                <Alert variant="error">{error}</Alert>
-              </div>
-            )}
-
             <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
               <Input
                 label={t('auth.emailAddress')}
@@ -101,13 +91,6 @@ export default function AdminLoginPage() {
             <Alert variant="info" icon="verified_user" className="mt-8">
               {t('auth.adminAccessHint')}
             </Alert>
-          </div>
-
-          <div className="text-center mt-6">
-            <a href="/" className="inline-flex items-center gap-2 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors">
-              <span className="material-symbols-outlined text-base">arrow_back</span>
-              {t('common.backToTournament')}
-            </a>
           </div>
         </div>
       </main>

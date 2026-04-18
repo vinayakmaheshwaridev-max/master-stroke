@@ -37,13 +37,13 @@ const DETAIL_INPUT_CLASS =
   'w-full rounded-[0.9rem] border border-[#ece4d7] bg-[#f7f2e7] px-3 py-2 text-xs font-medium text-on-surface outline-none transition placeholder:text-on-surface/40 focus:border-[#6d995c] focus:ring-4 focus:ring-[#2d7a43]/10'
 const FILTER_FIELD_CLASS =
   'w-full rounded-xl border border-[#e7ddcc] bg-white px-3 py-2 text-xs font-semibold text-on-surface outline-none transition focus:border-[#6d995c] focus:ring-4 focus:ring-[#2d7a43]/10'
-const SCORE_RECORDS_PAGE_SIZE = 5
+const SCORE_RECORDS_PAGE_SIZE = 10
 const SCORE_FILTER_DEFAULTS = {
   date: '',
   time: '',
   matchId: '',
   teamId: '',
-  status: INCOMPLETE_STATUS_FILTER,
+  status: '',
 }
 
 const pageBackgroundStyle = {
@@ -139,8 +139,8 @@ const scoreEntrySchema = z.object({
     z.number({ required_error: 'Overs is required', invalid_type_error: 'Overs must be a number' }).min(0, 'Overs cannot be negative').max(50, 'Maximum 50 overs').refine(overRefine, overMessage)
   ),
   result: z.enum(['team_a', 'team_b', 'tie', 'no_result'], { required_error: 'Please select a match verdict', invalid_type_error: 'Please select a match verdict' }),
-  man_of_match: z.string().min(1, 'Man of the Match is required').max(100, 'Name must be 100 characters or less'),
-  summary: z.string().min(1, 'Match summary is required').max(500, 'Summary must be 500 characters or less'),
+  man_of_match: z.string().max(100, 'Name must be 100 characters or less').optional().or(z.literal('')),
+  summary: z.string().max(500, 'Summary must be 500 characters or less').optional().or(z.literal('')),
 }).superRefine((data, ctx) => {
   if (data.result !== 'no_result' && data.overs_a === 0 && data.overs_b === 0) {
     ctx.addIssue({
@@ -609,7 +609,8 @@ export default function ScoreEntryPage() {
       }
 
       toast(t('admin.scores.resultPublished'), 'success')
-      navigate('/admin/tournament')
+      await loadMatches()
+      reset(DEFAULT_FORM_VALUES)
     } catch (err) {
       toast(t('admin.scores.failedPublish') + err.message, 'error')
     }
@@ -649,36 +650,14 @@ export default function ScoreEntryPage() {
         </header>
 
         <div className="relative min-h-0 flex-1 overflow-hidden">
-          {noMatches && (
-            <div className="absolute inset-0 z-20 flex items-center justify-center rounded-[2rem]">
-              <div className="absolute inset-0 rounded-[2rem] bg-white/50 backdrop-blur-sm" />
-              <div className="relative z-10 flex max-w-sm flex-col items-center gap-4 rounded-[2rem] border border-white/80 bg-white/92 px-8 py-10 text-center shadow-[0_22px_40px_rgba(62,52,33,0.12)]">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#f1eadb] text-[#56724f]">
-                  <span className="material-symbols-outlined text-[2rem]">sports_cricket</span>
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-xl font-black tracking-tight text-on-surface">
-                    {t('admin.scores.noMatchAvailable') || 'No Match Available'}
-                  </h3>
-                  <p className="text-sm font-medium text-on-surface/70">
-                    {t('admin.scores.noMatchDescription') || 'Schedule matches first to start entering scores and results.'}
-                  </p>
-                </div>
-                <Button variant="ghost" onClick={() => navigate('/admin/scheduler')}>
-                  <span className="material-symbols-outlined text-sm">calendar_month</span>
-                  {t('admin.scores.goToScheduler') || 'Go to Scheduler'}
-                </Button>
-              </div>
-            </div>
-          )}
-
-          <div className={`grid h-full min-h-0 gap-4 xl:grid-cols-[minmax(0,1.12fr)_minmax(340px,0.88fr)] ${noMatches ? 'pointer-events-none select-none opacity-40' : ''}`}>
-            <form
-              ref={formRef}
-              onSubmit={handleSubmit(onSubmit, onInvalid)}
-              noValidate
-              className="h-full min-h-0 space-y-4 overflow-hidden"
-            >
+          <div className="grid h-full min-h-0 gap-4 xl:grid-cols-[minmax(0,1.12fr)_minmax(340px,0.88fr)]">
+            <div className="relative h-full min-h-0">
+              <form
+                ref={formRef}
+                onSubmit={handleSubmit(onSubmit, onInvalid)}
+                noValidate
+                className="h-full min-h-0 space-y-4 overflow-hidden"
+              >
               <section
                 className="rounded-[1.5rem] border border-white/70 px-4 py-4 shadow-[0_18px_36px_rgba(62,52,33,0.09)] backdrop-blur-[2px] md:px-5 md:py-5"
                 style={entryPanelStyle}
@@ -813,7 +792,7 @@ export default function ScoreEntryPage() {
               </section>
 
               <section
-                className="rounded-[1.5rem] border border-white/80 px-4 py-4 shadow-[0_16px_32px_rgba(62,52,33,0.07)] backdrop-blur-sm md:px-5 md:py-5"
+                className="mb-8 rounded-[1.5rem] border border-white/80 px-4 py-4 shadow-[0_16px_32px_rgba(62,52,33,0.07)] backdrop-blur-sm md:mb-10 md:px-5 md:py-5"
                 style={detailPanelStyle}
               >
                 <div className="space-y-3">
@@ -822,7 +801,7 @@ export default function ScoreEntryPage() {
                   </h2>
 
                   <div className="space-y-1.5">
-                    <label className={FIELD_LABEL_CLASS}>{t('admin.scores.manOfMatch')} *</label>
+                    <label className={FIELD_LABEL_CLASS}>{t('admin.scores.manOfMatch')}</label>
                     <input
                       type="text"
                       placeholder={t('admin.scores.placeholderPlayer')}
@@ -833,7 +812,7 @@ export default function ScoreEntryPage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className={FIELD_LABEL_CLASS}>{t('admin.scores.matchSummary')} *</label>
+                    <label className={FIELD_LABEL_CLASS}>{t('admin.scores.matchSummary')}</label>
                     <textarea
                       rows="3"
                       placeholder={t('admin.scores.placeholderSummary')}
@@ -844,7 +823,31 @@ export default function ScoreEntryPage() {
                   </div>
                 </div>
               </section>
-            </form>
+              </form>
+
+              {noMatches && (
+                <div className="absolute inset-0 z-20 flex items-center justify-center rounded-[1.5rem]">
+                  <div className="absolute inset-0 rounded-[1.5rem] bg-white/50 backdrop-blur-sm" />
+                  <div className="relative z-10 mx-4 flex max-w-sm flex-col items-center gap-4 rounded-[1.5rem] border border-white/80 bg-white/92 px-6 py-8 text-center shadow-[0_22px_40px_rgba(62,52,33,0.12)]">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#f1eadb] text-[#56724f]">
+                      <span className="material-symbols-outlined text-[1.75rem]">sports_cricket</span>
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="text-lg font-black tracking-tight text-on-surface">
+                        {t('admin.scores.noMatchAvailable') || 'No Match Available'}
+                      </h3>
+                      <p className="text-sm font-medium text-on-surface/70">
+                        {t('admin.scores.noMatchDescription') || 'Schedule matches first to start entering scores and results.'}
+                      </p>
+                    </div>
+                    <Button variant="ghost" onClick={() => navigate('/admin/scheduler')}>
+                      <span className="material-symbols-outlined text-sm">calendar_month</span>
+                      {t('admin.scores.goToScheduler') || 'Go to Scheduler'}
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
 
             <aside className="flex h-full min-h-0 flex-col overflow-hidden rounded-[1.5rem] border border-white/70 bg-[rgba(255,255,255,0.58)] p-3 shadow-[0_18px_36px_rgba(62,52,33,0.07)] backdrop-blur-[2px]">
               <div className="px-2 pb-3">
