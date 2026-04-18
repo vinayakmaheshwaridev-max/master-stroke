@@ -23,6 +23,24 @@ export const matchService = {
     if (error) throw error
     return data
   },
+  async markPastScheduledMatchesPending(cutoffDateTime) {
+    const { error } = await supabase
+      .from('matches')
+      .update({ status: 'pending', updated_at: new Date().toISOString() })
+      .eq('status', 'scheduled')
+      .lt('scheduled_at', cutoffDateTime)
+    if (error) throw error
+  },
+  async updateMatch(id, matchData) {
+    const { data, error } = await supabase
+      .from('matches')
+      .update({ ...matchData, updated_at: new Date().toISOString() })
+      .eq('id', id)
+      .select()
+      .single()
+    if (error) throw error
+    return data
+  },
   async updateScore(id, scoreData) {
     const { error } = await supabase
       .from('matches')
