@@ -17,6 +17,7 @@ import DashboardPage from './pages/user/DashboardPage'
 import SchedulePage from './pages/user/SchedulePage'
 import PointsTablePage from './pages/user/PointsTablePage'
 import InfoPage from './pages/user/InfoPage'
+import UserNotificationsPage from './pages/user/UserNotificationsPage'
 
 // Admin Pages
 import AdminLoginPage from './pages/admin/AdminLoginPage'
@@ -50,6 +51,7 @@ function App() {
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
           <Route path="/matches" element={<ProtectedRoute><SchedulePage /></ProtectedRoute>} />
           <Route path="/standings" element={<ProtectedRoute><PointsTablePage /></ProtectedRoute>} />
+          <Route path="/notifications" element={<ProtectedRoute><UserNotificationsPage /></ProtectedRoute>} />
         </Route>
 
         {/* Standalone Login Pages (no navbar) */}

@@ -14,7 +14,6 @@ import {
   getMatchScoreStatus,
   getTimeInputValue,
   getTodayStartDateTimeValue,
-  getUnloggedMatchStatus,
   isIncompleteScoreStatus,
 } from '../../utils/matchStatus'
 
@@ -282,7 +281,7 @@ export default function MatchSchedulerPage() {
       if (editingMatch) {
         const updatedMatchData = editingMatch.status === MATCH_STATUS.completed
           ? matchData
-          : { ...matchData, status: getUnloggedMatchStatus(matchData.scheduled_at) }
+          : { ...matchData, status: MATCH_STATUS.scheduled }
 
         await matchService.updateMatch(editingMatch.id, updatedMatchData)
         toast.success(t('admin.scheduler.matchUpdated') || 'Match updated successfully')
@@ -290,7 +289,7 @@ export default function MatchSchedulerPage() {
       } else {
         await matchService.createMatch({
           ...matchData,
-          status: getUnloggedMatchStatus(matchData.scheduled_at),
+          status: MATCH_STATUS.scheduled,
         })
         toast.success(t('admin.scheduler.matchScheduled') || 'Match scheduled successfully')
       }

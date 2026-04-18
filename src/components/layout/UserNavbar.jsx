@@ -10,7 +10,6 @@ export default function UserNavbar() {
   const navigate = useNavigate()
   const { isAuthenticated, team, logout } = useAuthStore()
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [notifOpen, setNotifOpen] = useState(false)
 
   const navLinks = [
     { to: '/dashboard', label: t('navigation.dashboard'), protected: true },
@@ -48,36 +47,13 @@ export default function UserNavbar() {
 
       <div className="flex items-center gap-3">
         {isAuthenticated && (
-          <div className="relative">
-            <button
-              onClick={() => setNotifOpen(!notifOpen)}
-              className="material-symbols-outlined text-zinc-600 p-2 rounded-full hover:bg-stone-100/50 transition-colors relative"
-            >
-              notifications
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-            </button>
-            {notifOpen && (
-              <div className="absolute right-0 top-14 w-80 bg-white rounded-2xl shadow-xl border border-stone-200/50 p-4 animate-fade-in z-50">
-                <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">{t('notifications.title')}</p>
-                <div className="space-y-3">
-                  <div className="flex gap-3 p-3 rounded-xl bg-stone-50 hover:bg-stone-100 transition-colors">
-                    <span className="material-symbols-outlined text-primary text-sm mt-0.5">info</span>
-                    <div>
-                      <p className="text-sm font-medium text-zinc-800">{t('notifications.welcomeMessage')}</p>
-                      <p className="text-xs text-zinc-400">{t('notifications.justNow')}</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-3 p-3 rounded-xl hover:bg-stone-50 transition-colors">
-                    <span className="material-symbols-outlined text-secondary text-sm mt-0.5">schedule</span>
-                    <div>
-                      <p className="text-sm font-medium text-zinc-800">{t('notifications.nextMatchMessage')}</p>
-                      <p className="text-xs text-zinc-400">{t('notifications.hoursAgo')}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+          <Link
+            to="/notifications"
+            className="material-symbols-outlined text-zinc-600 p-2 rounded-full hover:bg-stone-100/50 transition-colors relative block"
+          >
+            notifications
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full animate-pulse ring-2 ring-white" />
+          </Link>
         )}
 
         {isAuthenticated ? (

@@ -1,20 +1,103 @@
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
-import { mockMatches, mockNotifications, getTeamName, computePointsTable } from '../../data/mockData'
+import { teamService } from '../../services/teamService'
+import { matchService } from '../../services/matchService'
+import { notificationService } from '../../services/notificationService'
 
 export default function DashboardPage() {
   const { team } = useAuthStore()
-  const teamId = team?.id || '1'
-  const teamName = team?.team_name || 'Royal Challengers'
+  const teamId = team?.id
+  const teamName = team?.team_name
 
-  const standings = computePointsTable()
+  const [isLoading, setIsLoading] = useState(true)
+  const [standings, setStandings] = useState([])
+  const [matches, setMatches] = useState([])
+  const [notifications, setNotifications] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true)
+      try {
+        const [fetchedTeams, fetchedMatches, fetchedNotifications] = await Promise.all([
+          teamService.getTeams('approved'),
+          matchService.getMatches(),
+          notificationService.getNotifications(teamId)
+        ])
+
+        const teamStats = {}
+        fetchedTeams.forEach(t => {
+          teamStats[t.id] = {
+            id: t.id,
+            team_name: t.team_name,
+            played: 0, won: 0, lost: 0, tied: 0,
+            points: 0, nrr: 0,
+            runs_scored: 0, overs_faced: 0,
+            runs_conceded: 0, overs_bowled: 0,
+          }
+        })
+
+        fetchedMatches.filter(m => m.status === 'completed').forEach(match => {
+          const a = teamStats[match.team_a_id]
+          const b = teamStats[match.team_b_id]
+          if (!a || !b) return
+
+          a.played++; b.played++
+          a.runs_scored += match.runs_a || 0; a.overs_faced += match.overs_a || 0
+          a.runs_conceded += match.runs_b || 0; a.overs_bowled += match.overs_b || 0
+          b.runs_scored += match.runs_b || 0; b.overs_faced += match.overs_b || 0
+          b.runs_conceded += match.runs_a || 0; b.overs_bowled += match.overs_a || 0
+
+          if (match.result === 'team_a') {
+            a.won++; a.points += 2; b.lost++
+          } else if (match.result === 'team_b') {
+            b.won++; b.points += 2; a.lost++
+          } else if (match.result === 'tie') {
+            a.tied++; a.points += 1; b.tied++; b.points += 1
+          }
+        })
+
+        Object.values(teamStats).forEach(t => {
+          if (t.overs_faced > 0 && t.overs_bowled > 0) {
+            t.nrr = (t.runs_scored / t.overs_faced) - (t.runs_conceded / t.overs_bowled)
+          }
+        })
+
+        const computedStandings = Object.values(teamStats)
+          .sort((a, b) => b.points - a.points || b.nrr - a.nrr)
+          .map((t, i) => ({ ...t, rank: i + 1 }))
+
+        setStandings(computedStandings)
+        setMatches(fetchedMatches)
+        setNotifications(fetchedNotifications.slice(0, 4))
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    if (teamId) {
+      fetchData()
+    } else {
+      setIsLoading(false)
+    }
+  }, [teamId])
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[50vh]">
+        <span className="material-symbols-outlined animate-spin text-4xl text-primary">progress_activity</span>
+      </div>
+    )
+  }
+
   const myStats = standings.find(s => s.id === teamId) || { played: 0, won: 0, lost: 0, tied: 0, points: 0, nrr: 0, rank: '-' }
 
-  const upcomingMatch = mockMatches.find(m => m.status === 'scheduled' && (m.team_a_id === teamId || m.team_b_id === teamId))
-  const recentMatch = [...mockMatches].reverse().find(m => m.status === 'completed' && (m.team_a_id === teamId || m.team_b_id === teamId))
+  const upcomingMatch = matches.find(m => m.status === 'scheduled' && (m.team_a_id === teamId || m.team_b_id === teamId))
+  const recentMatch = [...matches].reverse().find(m => m.status === 'completed' && (m.team_a_id === teamId || m.team_b_id === teamId))
 
-  const notifications = mockNotifications.filter(n => n.team_id === null || n.team_id === teamId).slice(0, 4)
-
-  const opponentId = upcomingMatch ? (upcomingMatch.team_a_id === teamId ? upcomingMatch.team_b_id : upcomingMatch.team_a_id) : null
+  const opponentName = upcomingMatch ? (upcomingMatch.team_a_id === teamId ? upcomingMatch.team_b?.team_name : upcomingMatch.team_a?.team_name) : null
 
   return (
     <div className="py-8 md:py-12 px-4 md:px-8 max-w-7xl mx-auto">
@@ -63,7 +146,7 @@ export default function DashboardPage() {
           <p className="text-xs font-bold uppercase tracking-widest opacity-70 mb-1">Next Match</p>
           {upcomingMatch ? (
             <>
-              <p className="text-xl font-bold mb-4">vs {getTeamName(opponentId)}</p>
+              <p className="text-xl font-bold mb-4">vs {opponentName || 'TBD'}</p>
               <div className="flex flex-col gap-2 text-sm font-medium opacity-90 border-t border-white/10 pt-4">
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-base">schedule</span>
@@ -91,11 +174,11 @@ export default function DashboardPage() {
           {recentMatch ? (
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="font-bold">{getTeamName(recentMatch.team_a_id)}</span>
+                <span className="font-bold">{recentMatch.team_a?.team_name || 'Team A'}</span>
                 <span className="text-2xl font-black">{recentMatch.runs_a}/{recentMatch.wickets_a}</span>
               </div>
               <div className="flex items-center justify-between mb-4 opacity-60">
-                <span>{getTeamName(recentMatch.team_b_id)}</span>
+                <span>{recentMatch.team_b?.team_name || 'Team B'}</span>
                 <span className="text-2xl font-black">{recentMatch.runs_b}/{recentMatch.wickets_b}</span>
               </div>
               <div className="pt-3 border-t border-outline-variant/20">
@@ -114,7 +197,7 @@ export default function DashboardPage() {
               <span className="material-symbols-outlined text-primary p-2 bg-white rounded-xl">notifications</span>
               <h3 className="text-lg font-bold">Updates</h3>
             </div>
-            <span className="text-xs font-bold text-primary">View All</span>
+            <Link to="/notifications" className="text-xs font-bold text-primary hover:underline">View All</Link>
           </div>
           <div className="space-y-3">
             {notifications.map(notif => (

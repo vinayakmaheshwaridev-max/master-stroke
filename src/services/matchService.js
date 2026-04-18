@@ -24,12 +24,9 @@ export const matchService = {
     return data
   },
   async markPastScheduledMatchesPending(cutoffDateTime) {
-    const { error } = await supabase
-      .from('matches')
-      .update({ status: 'pending', updated_at: new Date().toISOString() })
-      .eq('status', 'scheduled')
-      .lt('scheduled_at', cutoffDateTime)
-    if (error) throw error
+    // The match_status enum in PostgreSQL does not allow 'pending'.
+    // The frontend dynamically computes the 'pending' status via getUnloggedMatchStatus()
+    // based on scheduled_at time, so mutating the database is unnecessary.
   },
   async updateMatch(id, matchData) {
     const { data, error } = await supabase
