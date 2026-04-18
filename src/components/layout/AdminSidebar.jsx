@@ -8,7 +8,6 @@ const navItems = [
   { to: '/admin/scheduler', icon: 'calendar_month', labelKey: 'navigation.scheduler' },
   { to: '/admin/scores', icon: 'sports_score', labelKey: 'navigation.scores' },
   { to: '/admin/tournament', icon: 'info', labelKey: 'navigation.tournament' },
-  { to: '/admin/notifications', icon: 'notifications', labelKey: 'navigation.messages' },
 ]
 
 export default function AdminSidebar() {
