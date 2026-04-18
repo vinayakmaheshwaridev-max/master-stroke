@@ -103,7 +103,7 @@ export default function NotificationsPage() {
             </div>
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.notifications.message')} *</label>
-              <textarea {...register('message')} placeholder={t('admin.notifications.placeholderMessage')} rows="4" className={`w-full bg-surface-container-lowest border-outline-variant/20 rounded-xl py-3 px-4 focus:ring-4 focus:ring-primary-fixed-dim/30 resize-none leading-relaxed ${errors.message ? 'ring-2 ring-error' : ''}`} />
+              <textarea {...register('message')} rows="4" className={`w-full bg-surface-container-lowest border-outline-variant/20 rounded-xl py-3 px-4 focus:ring-4 focus:ring-primary-fixed-dim/30 resize-none leading-relaxed ${errors.message ? 'ring-2 ring-error' : ''}`} />
               {errors.message && <p className="text-xs text-error pl-1">{errors.message.message}</p>}
             </div>
             <Button type="submit" fullWidth size="lg">{t('admin.notifications.sendNotification')}</Button>

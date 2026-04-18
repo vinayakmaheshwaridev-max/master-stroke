@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { teamService } from '../../services/teamService'
 import { useTranslation } from '../../i18n'
 import { Badge, FilterPills, Button, Modal, toast } from '../../components/ui'
@@ -6,7 +7,9 @@ import { SectionLoader } from '../../components/ui/Spinner'
 
 export default function TeamManagementPage() {
   const { t } = useTranslation()
-  const [filter, setFilter] = useState('all')
+  const [searchParams] = useSearchParams()
+  const initialTab = searchParams.get('tab') || 'all'
+  const [filter, setFilter] = useState(initialTab)
   const [teams, setTeams] = useState([])
   const [loading, setLoading] = useState(true)
   const [approvalModal, setApprovalModal] = useState(null)
@@ -234,7 +237,6 @@ export default function TeamManagementPage() {
                         value={newPassword} 
                         onChange={(e) => setNewPassword(e.target.value)} 
                         className="text-sm font-mono font-semibold text-on-surface bg-white px-3 py-1.5 rounded border border-outline-variant/40 shadow-inner w-full outline-primary focus:border-primary transition-all"
-                        placeholder="Enter new password..."
                       />
                       <button 
                         onClick={async () => {

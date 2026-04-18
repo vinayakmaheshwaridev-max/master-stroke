@@ -147,7 +147,7 @@ export default function MatchSchedulerPage() {
             </div>
             <div className="space-y-2">
               <label className="text-xs font-bold tracking-wide uppercase text-on-surface-variant ml-1">{t('admin.scheduler.notes')}</label>
-              <textarea {...register('notes')} placeholder={t('admin.scheduler.specialRequirements')} rows="2" className="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm focus:ring-4 focus:ring-primary-fixed-dim/30" />
+              <textarea {...register('notes')} rows="2" className="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm focus:ring-4 focus:ring-primary-fixed-dim/30" />
             </div>
             <Button type="submit" fullWidth size="lg">
               {t('admin.scheduler.scheduleMatch')}

@@ -165,7 +165,7 @@ export default function AdminDashboardPage() {
 
         <div className="space-y-6">
           <h3 className="text-xl font-extrabold tracking-tight">{t('admin.dashboard.quickActions')}</h3>
-          <Link to="/admin/teams" className="block bg-primary text-on-primary rounded-[2rem] p-6 shadow-xl shadow-primary/10 relative overflow-hidden hover:scale-[1.02] transition-transform">
+          <Link to="/admin/teams?tab=pending" className="block bg-primary text-on-primary rounded-[2rem] p-6 shadow-xl shadow-primary/10 relative overflow-hidden hover:scale-[1.02] transition-transform">
             <span className="material-symbols-outlined absolute top-4 right-4 opacity-20 text-4xl">groups</span>
             <p className="text-xs font-bold uppercase tracking-widest opacity-70 mb-1">{t('common.pending')}</p>
             <p className="text-xl font-bold">{t('admin.dashboard.teamsNeedReview', { count: pending })}</p>

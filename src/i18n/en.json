@@ -28,7 +28,8 @@
     "result": "Result",
     "upcoming": "Upcoming",
     "completed": "Completed",
-    "scheduled": "Scheduled"
+    "scheduled": "Scheduled",
+    "pending": "Pending"
   },
   "navigation": {
     "home": "Home",

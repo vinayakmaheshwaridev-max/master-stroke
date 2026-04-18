@@ -144,7 +144,6 @@ export default function RegistrationPage() {
             <Input
               label={t('registration.teamName')}
               required
-              placeholder={t('registration.placeholderTeamName')}
               error={errors.team_name?.message}
               {...register('team_name')}
             />
@@ -152,7 +151,6 @@ export default function RegistrationPage() {
             <Input
               label={t('registration.captainName')}
               required
-              placeholder={t('registration.placeholderCaptainName')}
               error={errors.captain_name?.message}
               {...register('captain_name')}
             />
@@ -162,14 +160,12 @@ export default function RegistrationPage() {
                 label={t('registration.age')}
                 required
                 type="number"
-                placeholder={t('registration.placeholderAge')}
                 error={errors.age?.message}
                 {...register('age')}
               />
               <Input
                 label={t('registration.mobile')}
                 required
-                placeholder={t('registration.placeholderMobile')}
                 error={errors.mobile?.message}
                 {...register('mobile')}
               />
@@ -178,7 +174,6 @@ export default function RegistrationPage() {
             <Input
               label={t('registration.emailOptional')}
               type="email"
-              placeholder={t('registration.placeholderEmail')}
               error={errors.email?.message}
               {...register('email')}
             />

@@ -247,17 +247,17 @@ export default function ScoreEntryPage() {
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.runs')} *</label>
-                  <input type="number" {...register('runs_a')} placeholder={t('admin.scores.placeholderRuns')} className={fieldClass('runs_a')} />
+                  <input type="number" {...register('runs_a')} className={fieldClass('runs_a')} />
                   {errors.runs_a && <p className="text-xs text-error pl-1">{errors.runs_a.message}</p>}
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.wickets')} *</label>
-                  <input type="number" {...register('wickets_a')} placeholder={t('admin.scores.placeholderWickets')} className={fieldClass('wickets_a')} />
+                  <input type="number" {...register('wickets_a')} className={fieldClass('wickets_a')} />
                   {errors.wickets_a && <p className="text-xs text-error pl-1">{errors.wickets_a.message}</p>}
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.overs')} *</label>
-                  <input type="number" step="0.1" {...register('overs_a')} placeholder={t('admin.scores.placeholderOvers')} className={fieldClass('overs_a')} />
+                  <input type="number" step="0.1" {...register('overs_a')} className={fieldClass('overs_a')} />
                   {errors.overs_a && <p className="text-xs text-error pl-1">{errors.overs_a.message}</p>}
                 </div>
               </div>
@@ -274,17 +274,17 @@ export default function ScoreEntryPage() {
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.runs')} *</label>
-                  <input type="number" {...register('runs_b')} placeholder={t('admin.scores.placeholderRuns')} className={fieldClass('runs_b')} />
+                  <input type="number" {...register('runs_b')} className={fieldClass('runs_b')} />
                   {errors.runs_b && <p className="text-xs text-error pl-1">{errors.runs_b.message}</p>}
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.wickets')} *</label>
-                  <input type="number" {...register('wickets_b')} placeholder={t('admin.scores.placeholderWickets')} className={fieldClass('wickets_b')} />
+                  <input type="number" {...register('wickets_b')} className={fieldClass('wickets_b')} />
                   {errors.wickets_b && <p className="text-xs text-error pl-1">{errors.wickets_b.message}</p>}
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.overs')} *</label>
-                  <input type="number" step="0.1" {...register('overs_b')} placeholder={t('admin.scores.placeholderOvers')} className={fieldClass('overs_b')} />
+                  <input type="number" step="0.1" {...register('overs_b')} className={fieldClass('overs_b')} />
                   {errors.overs_b && <p className="text-xs text-error pl-1">{errors.overs_b.message}</p>}
                 </div>
               </div>
@@ -295,12 +295,12 @@ export default function ScoreEntryPage() {
               <h3 className="text-xl font-bold mb-4">{t('admin.scores.finalAssessment')}</h3>
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.manOfMatch')} *</label>
-                <input type="text" {...register('man_of_match')} placeholder={t('admin.scores.placeholderPlayer')} className={`w-full bg-surface-container-low border-none focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 ${errors.man_of_match ? 'ring-2 ring-error' : ''}`} />
+                <input type="text" {...register('man_of_match')} className={`w-full bg-surface-container-low border-none focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 ${errors.man_of_match ? 'ring-2 ring-error' : ''}`} />
                 {errors.man_of_match && <p className="text-xs text-error pl-1">{errors.man_of_match.message}</p>}
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">{t('admin.scores.matchSummary')} *</label>
-                <textarea {...register('summary')} rows="3" placeholder={t('admin.scores.placeholderSummary')} className={`w-full bg-surface-container-low border-none focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 leading-relaxed ${errors.summary ? 'ring-2 ring-error' : ''}`} />
+                <textarea {...register('summary')} rows="3" className={`w-full bg-surface-container-low border-none focus:ring-4 focus:ring-primary/10 rounded-2xl p-4 leading-relaxed ${errors.summary ? 'ring-2 ring-error' : ''}`} />
                 {errors.summary && <p className="text-xs text-error pl-1">{errors.summary.message}</p>}
               </div>
             </Card>

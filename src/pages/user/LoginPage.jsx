@@ -1,25 +1,35 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { useAuthStore } from '../../stores/authStore'
 import { useTranslation } from '../../i18n'
 import { Button, Input, Alert, toast } from '../../components/ui'
 
+const loginSchema = z.object({
+  identifier: z.string().min(1, 'Email or Mobile is required'),
+  password: z.string().min(1, 'Password is required'),
+})
+
 export default function LoginPage() {
   const { t } = useTranslation()
-  const [identifier, setIdentifier] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { login } = useAuthStore()
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { identifier: '', password: '' },
+  })
+
+  const onSubmit = async (data) => {
     setError('')
     setLoading(true)
     
     try {
-      const result = await login(identifier, password)
+      const result = await login(data.identifier, data.password)
       if (result.success) {
         toast.success(t('auth.welcomeBack') || 'Welcome back!')
         navigate('/dashboard')
@@ -57,16 +67,14 @@ export default function LoginPage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
               <Input
                 label={t('auth.mobileOrEmail')}
                 icon="person"
                 id="identifier"
                 type="text"
-                value={identifier}
-                onChange={e => setIdentifier(e.target.value)}
-                placeholder={t('auth.placeholderEmail')}
-                required
+                {...register('identifier')}
+                error={errors.identifier?.message}
               />
 
               <div className="space-y-2">
@@ -81,13 +89,11 @@ export default function LoginPage() {
                   <input
                     id="password"
                     type="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    placeholder={t('auth.placeholderPassword')}
-                    required
-                    className="block w-full pl-11 pr-4 py-3.5 bg-surface-container-low border-none rounded-xl text-on-surface placeholder-outline focus:ring-4 focus:ring-primary-fixed-dim/30 transition-all"
+                    {...register('password')}
+                    className={`block w-full pl-11 pr-4 py-3.5 bg-surface-container-low border-none rounded-xl text-on-surface transition-all ${errors.password ? 'ring-2 ring-error focus:ring-error focus:ring-4' : 'focus:ring-4 focus:ring-primary-fixed-dim/30'}`}
                   />
                 </div>
+                {errors.password && <p className="text-xs text-error pl-1 mt-1">{errors.password.message}</p>}
               </div>
 
               <div className="pt-2">

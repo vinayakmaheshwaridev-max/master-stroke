@@ -1,24 +1,34 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { useAuthStore } from '../../stores/authStore'
 import { useTranslation } from '../../i18n'
 import { Button, Input, Alert, toast } from '../../components/ui'
 
+const adminLoginSchema = z.object({
+  email: z.string().min(1, 'Email is required').email('Invalid email format'),
+  password: z.string().min(1, 'Password is required'),
+})
+
 export default function AdminLoginPage() {
   const { t } = useTranslation()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { adminLogin } = useAuthStore()
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(adminLoginSchema),
+    defaultValues: { email: '', password: '' },
+  })
+
+  const onSubmit = async (data) => {
     setError('')
     setLoading(true)
     try {
-      const result = await adminLogin(email, password)
+      const result = await adminLogin(data.email, data.password)
       if (result.success) {
         toast.success(t('auth.welcomeAdmin') || 'Welcome, Admin!')
         navigate('/admin/dashboard')
@@ -54,25 +64,21 @@ export default function AdminLoginPage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
               <Input
                 label={t('auth.emailAddress')}
                 icon="alternate_email"
                 type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder={t('auth.placeholderAdminEmail')}
-                required
+                {...register('email')}
+                error={errors.email?.message}
               />
 
               <Input
                 label={t('auth.password')}
                 icon="key"
                 type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder={t('auth.placeholderPassword')}
-                required
+                {...register('password')}
+                error={errors.password?.message}
               />
 
               <div className="pt-2">
