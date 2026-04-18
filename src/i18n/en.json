@@ -48,6 +48,7 @@
     "info": "Info",
     "dashboard": "Dashboard",
     "scheduler": "Scheduler",
+    "aiScheduler": "AI Scheduler",
     "scores": "Scores",
     "tournament": "Tournament",
     "messages": "Messages"

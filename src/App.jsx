@@ -23,6 +23,7 @@ import AdminLoginPage from './pages/admin/AdminLoginPage'
 import AdminDashboardPage from './pages/admin/AdminDashboardPage'
 import TeamManagementPage from './pages/admin/TeamManagementPage'
 import MatchSchedulerPage from './pages/admin/MatchSchedulerPage'
+import AiSchedulerPage from './pages/admin/AiSchedulerPage'
 import ScoreEntryPage from './pages/admin/ScoreEntryPage'
 import TournamentOverviewPage from './pages/admin/TournamentOverviewPage'
 import NotificationsPage from './pages/admin/NotificationsPage'
@@ -60,6 +61,7 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
           <Route path="/admin/teams" element={<TeamManagementPage />} />
           <Route path="/admin/scheduler" element={<MatchSchedulerPage />} />
+          <Route path="/admin/ai-scheduler" element={<AiSchedulerPage />} />
           <Route path="/admin/scores" element={<ScoreEntryPage />} />
           <Route path="/admin/tournament" element={<TournamentOverviewPage />} />
           <Route path="/admin/notifications" element={<NotificationsPage />} />

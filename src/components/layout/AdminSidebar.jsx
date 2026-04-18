@@ -7,6 +7,7 @@ const navItems = [
   { to: '/admin/dashboard', icon: 'dashboard', labelKey: 'navigation.dashboard' },
   { to: '/admin/teams', icon: 'groups', labelKey: 'common.teams' },
   { to: '/admin/scheduler', icon: 'calendar_month', labelKey: 'navigation.scheduler' },
+  { to: '/admin/ai-scheduler', icon: 'auto_awesome', labelKey: 'navigation.aiScheduler' },
   { to: '/admin/scores', icon: 'sports_score', labelKey: 'navigation.scores' },
   { to: '/admin/tournament', icon: 'info', labelKey: 'navigation.tournament' },
 ]
